@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Miuma
 
-## Getting Started
+Miuma é uma plataforma digital que conecta doadores a cuidadores independentes de animais, permitindo que cuidadores publiquem casos reais de animais sob seus cuidados e que doadores possam contribuir de forma transparente, confiável e simples.
 
-First, run the development server:
+**Visão Geral**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **O que é**: Uma plataforma para dar visibilidade a cuidadores e arrecadar recursos para tratamentos, vacinas, castração e abrigo de animais.
+- **Público-alvo**: Cuidadores independentes de animais e pessoas/organizações que desejam doar.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Missão**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Missão**: Facilitar doações responsáveis, aumentar a transparência e garantir que cada animal receba os recursos necessários para sua saúde e bem-estar.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Principais Funcionalidades**
 
-## Learn More
+- **Para Cuidadores**: Cadastro de perfil com informações básicas, fotos e redes sociais; publicação de casos; upload de imagens; painel para acompanhar doações recebidas.
+- **Para Doadores**: Explorar cuidadores e casos; visualizar informações completas sobre cada animal; realizar doações diretamente ao cuidador.
 
-To learn more about Next.js, take a look at the following resources:
+**Status do Projeto**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Em construção**: A plataforma está em desenvolvimento. Recursos essenciais (cadastro, publicação de casos, fluxo de doação) estão sendo implementados e testados.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Story Map — Planos Futuros (não concluídos)**
 
-## Deploy on Vercel
+- **Criação do banco de dados e backend**: Projeto e implementação do backend e do banco de dados.
+- **Criação de contas de cuidadores**: Implementar fluxo de registro e gerenciamento de perfis para cuidadores (dados, fotos, redes sociais, verificação básica).
+- **Criação de conta de doadores**: Criar fluxo de registro para doadores, incluindo opções de perfil e métodos de pagamento.
+- **Autenticação com roles**: Criar sistema de autenticação que diferencie cuidadores e doadores, garantindo acesso apropriado às funcionalidades.
+- **Integrar gateway de pagamento**: Escolher e integrar um provedor de pagamentos para processar doações.
+- **Criar checkout**: Implementar um checkout seguro e simples para doações (valor, recorrência opcional, confirmação/recibo).
+- **Split de pagamentos**: Implementar funcionalidade para dividir o pagemento para o cuidador e para a plataforma.
+- **Disparo de emails**: Implementar envio de emails transacionais e notificações — por exemplo, quando um cuidador registra uma nova conquista ou atualização para seus doadores.
+- **Feed de imagens pelos doadores**: Permitir que doadores enviem imagens dos animais (como um feed) para complementar casos e atualizações.
+- **Busca de cuidadores**: Criar uma busca com filtros (localização, tipo de ajuda, status do caso) para facilitar a descoberta de cuidadores e casos.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Contribuindo**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Pull requests e issues são bem-vindos. Para contribuições, abra uma issue descrevendo a proposta antes de enviar um PR.
+
+**Contato**
+
+- Para dúvidas ou propostas de parceria, use os canais do repositório ou adicione informações de contato nesta seção.
+
+---
+
+Este repositório contém a implementação inicial da Miuma — mais recursos e documentação serão adicionados à medida que o projeto evoluir.
