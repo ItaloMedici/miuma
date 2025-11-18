@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { LandingPageData } from "@/interfaces/marketing";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 type Props = {
   caregivers: LandingPageData["caregivers"];
@@ -40,9 +42,15 @@ export const FeaturedCaregivers = ({ caregivers }: Props) => {
                 <p className="text-sm text-muted-foreground leading-relaxed italic">
                   &quot;{caregiver.testimonial}&quot;
                 </p>
-                <Button variant="outline" className="w-full" size="sm">
+                <Link
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "sm" }),
+                    "w-full"
+                  )}
+                  href={`/${caregiver.profileId}`}
+                >
                   Ajudar este cuidador
-                </Button>
+                </Link>
               </div>
             </div>
           ))}
