@@ -118,21 +118,21 @@ export function Gallery({ gallery }: Props) {
           url={additionalPhotos[0].url}
           alt={additionalPhotos[0].alt || "Foto da galeria 1"}
           onClick={() => openByUrl(additionalPhotos[0].url)}
-          className="h-full"
+          className="h-full aspect-auto"
         />
       );
     }
 
     if (photoCount === 2) {
       return (
-        <div className="grid grid-rows-2 gap-2">
+        <div className="grid grid-rows-2 gap-2 h-full">
           {additionalPhotos.slice(0, 2).map((img, idx) => (
             <GalleryImage
               key={img.url || idx}
               url={img.url}
               alt={img.alt || `Foto da galeria ${idx + 1}`}
               onClick={() => openByUrl(img.url)}
-              className="h-full"
+              className="aspect-auto"
             />
           ))}
         </div>
@@ -140,14 +140,14 @@ export function Gallery({ gallery }: Props) {
     }
 
     return (
-      <div className="grid grid-cols-2 grid-rows-2 gap-2">
+      <div className="grid grid-cols-2 grid-rows-2 gap-2 h-full">
         {additionalPhotos.slice(0, 4).map((img, idx) => (
           <GalleryImage
             key={img.url || idx}
             url={img.url}
             alt={img.alt || `Foto da galeria ${idx + 1}`}
             onClick={() => openByUrl(img.url)}
-            className="h-full w-full"
+            className="aspect-auto"
           />
         ))}
       </div>
