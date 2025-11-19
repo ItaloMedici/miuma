@@ -24,7 +24,7 @@ export const HowItWorksForCaregivers = () => {
   ];
 
   return (
-    <section id="para-cuidadores" className="py-20 px-6">
+    <section id="para-cuidadores" className="py-14 md:py-20 px-6">
       <div className="container mx-auto max-w-7xl">
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-4xl font-bold tracking-tight">
@@ -41,7 +41,7 @@ export const HowItWorksForCaregivers = () => {
             return (
               <div
                 key={index}
-                className="p-8 rounded-2xl bg-background border border-border space-y-4"
+                className="p-4 md:p-8 rounded-2xl bg-background border border-border space-y-4"
               >
                 <div className="w-12 h-12 rounded-xl bg-third/10 flex items-center justify-center">
                   <Icon className="w-6 h-6 text-third" />

@@ -1,6 +1,7 @@
 import { buttonVariants } from "@/components/ui/button";
 import { LandingPageData } from "@/interfaces/marketing";
 import { cn } from "@/lib";
+import Image from "next/image";
 import Link from "next/link";
 
 type Props = {
@@ -11,7 +12,7 @@ export const FeaturedCaregivers = ({ caregivers }: Props) => {
   if (!caregivers?.length) return null;
 
   return (
-    <section id="cuidadores" className="py-20 px-6 anchor-offset">
+    <section id="cuidadores" className="py-14 md:py-20 px-6 anchor-offset">
       <div className="container mx-auto max-w-7xl">
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-4xl font-bold tracking-tight">
@@ -27,11 +28,19 @@ export const FeaturedCaregivers = ({ caregivers }: Props) => {
           {caregivers.map((caregiver, index) => (
             <div
               key={index}
-              className="p-6 rounded-2xl bg-card border border-border space-y-4 hover:shadow-lg transition-shadow"
+              className="p-4 md:p-6 rounded-3xl bg-card border border-border space-y-4 hover:shadow-lg transition-shadow"
             >
-              <div className="aspect-square rounded-xl bg-muted border border-border flex items-center justify-center">
-                <div className="w-24 h-24 rounded-full bg-accent/20" />
-              </div>
+              {caregiver.imageUrl && (
+                <div className="rounded-xl aspect-video md:aspect-square bg-muted border border-border overflow-hidden">
+                  <Image
+                    src={caregiver.imageUrl}
+                    alt={caregiver.name}
+                    width={250}
+                    height={250}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              )}
               <div className="space-y-3">
                 <div>
                   <h3 className="text-lg font-semibold">{caregiver.name}</h3>
@@ -40,7 +49,7 @@ export const FeaturedCaregivers = ({ caregivers }: Props) => {
                   </p>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed italic">
-                  &quot;{caregiver.testimonial}&quot;
+                  &quot;{caregiver.shortBio}&quot;
                 </p>
                 <Link
                   className={cn(

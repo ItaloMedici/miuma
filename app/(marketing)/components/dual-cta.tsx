@@ -3,10 +3,10 @@ import { Heart, UserPlus } from "lucide-react";
 
 export const DualCTA = () => {
   return (
-    <section className="py-20 px-6">
+    <section className="py-14 md:py-20 px-6">
       <div className="container mx-auto max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-6">
-          <div className="p-12 rounded-2xl bg-primary/5 border border-primary/20 space-y-6">
+          <div className="p-4 md:p-12 rounded-2xl bg-primary/5 border border-primary/20 space-y-6">
             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
               <Heart className="w-6 h-6 text-primary" />
             </div>
@@ -24,7 +24,7 @@ export const DualCTA = () => {
             </Button>
           </div>
 
-          <div className="p-12 rounded-2xl bg-third/5 border border-third/20 space-y-6">
+          <div className="p-4 md:p-12  rounded-2xl bg-third/5 border border-third/20 space-y-6">
             <div className="w-12 h-12 rounded-xl bg-third/10 flex items-center justify-center">
               <UserPlus className="w-6 h-6 text-third" />
             </div>

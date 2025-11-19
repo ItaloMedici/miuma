@@ -1,6 +1,9 @@
 export const About = () => {
   return (
-    <section id="sobre-nos" className="py-20 px-6 bg-muted/30 anchor-offset">
+    <section
+      id="sobre-nos"
+      className="py-14 md:py-20 px-6 bg-muted/30 anchor-offset"
+    >
       <div className="container mx-auto max-w-7xl">
         <div className="max-w-3xl mx-auto">
           <div className="text-center space-y-4 mb-12">

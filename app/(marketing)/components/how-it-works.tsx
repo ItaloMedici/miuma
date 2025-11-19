@@ -23,7 +23,7 @@ export const HowItWorksForDonors = () => {
   ];
 
   return (
-    <section id="como-funciona" className="py-20 px-6 anchor-offset">
+    <section id="como-funciona" className="py-14 md:py-20 px-6 anchor-offset">
       <div className="container mx-auto max-w-7xl">
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-4xl font-bold tracking-tight">
@@ -40,7 +40,7 @@ export const HowItWorksForDonors = () => {
             return (
               <div
                 key={index}
-                className="p-8 rounded-2xl bg-card border border-border space-y-4"
+                className="p-4 md:p-8 rounded-2xl bg-card border border-border space-y-4"
               >
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
                   <Icon className="w-6 h-6 text-primary" />

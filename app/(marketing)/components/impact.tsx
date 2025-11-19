@@ -21,7 +21,7 @@ export const Impact = ({ metrics }: { metrics: LandingPageData["impact"] }) => {
   ];
 
   return (
-    <section className="py-20 px-6">
+    <section className="py-14 md:py-20 px-6">
       <div className="container mx-auto max-w-7xl">
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-4xl font-bold tracking-tight">
@@ -37,7 +37,7 @@ export const Impact = ({ metrics }: { metrics: LandingPageData["impact"] }) => {
             <div
               key={index}
               className={cn(
-                "p-8 rounded-2xl bg-background border border-border text-center space-y-2"
+                "p-4 md:p-8 rounded-2xl bg-background border border-border text-center space-y-2"
               )}
             >
               <div className="text-4xl font-bold text-primary">
