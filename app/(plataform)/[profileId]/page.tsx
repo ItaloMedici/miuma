@@ -10,6 +10,7 @@ import { Gallery } from "./components/Gallery";
 import { MobileDonationBar } from "./components/MobileDonationBar";
 import { OngoingCases } from "./components/OngoingCases";
 import { PetsInCare } from "./components/PetsInCare";
+import { ProfileNavHeader } from "./components/ProfileNavHeader";
 import { RecentUpdates } from "./components/RecentUpdates";
 import { SocialMedia } from "./components/SocialMedia";
 import { SocialProofSection } from "./components/SocialProofSection";
@@ -56,6 +57,7 @@ export default async function CaregiverProfile({
   return (
     <div className="min-h-screen bg-background">
       {/* <Navbar variant="full" /> */}
+      <ProfileNavHeader />
 
       <main className="pt-6 md:pt-12 pb-24 lg:pb-20 px-6">
         {/* Gallery Section */}
@@ -76,17 +78,25 @@ export default async function CaregiverProfile({
                   socialMedia={caregiver.socialMedia}
                 />
 
-                <CaregiverDescription
-                  description={caregiver.descriptionMarkdown}
-                />
+                <section id="sobre">
+                  <CaregiverDescription
+                    description={caregiver.descriptionMarkdown}
+                  />
+                </section>
 
                 {/* <BillingProgress billingInfo={caregiver.billingInfo} /> */}
 
-                <PetsInCare pets={caregiver.petsInCare} />
+                <section id="animais">
+                  <PetsInCare pets={caregiver.petsInCare} />
+                </section>
 
-                <OngoingCases cases={caregiver.ongoingCases} />
+                <section id="casos">
+                  <OngoingCases cases={caregiver.ongoingCases} />
+                </section>
 
-                <RecentUpdates updates={caregiver.recentUpdates} />
+                <section id="atualizacoes">
+                  <RecentUpdates updates={caregiver.recentUpdates} />
+                </section>
 
                 <SocialProofSection socialProof={caregiver.socialProof} />
 
