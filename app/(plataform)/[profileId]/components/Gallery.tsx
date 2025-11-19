@@ -3,12 +3,12 @@
 import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 
-import { CoregiverProfileGallery } from "@/interfaces/caregiver";
-import { cn } from "@/lib/utils";
+import { CaregiverGallery } from "@/interfaces/caregiver";
+import { cn } from "@/lib";
 import { GalleryModal } from "./GalleryModal";
 
 type Props = {
-  gallery: CoregiverProfileGallery;
+  gallery: CaregiverGallery;
 };
 
 type GalleryImageProps = {

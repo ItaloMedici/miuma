@@ -1,0 +1,42 @@
+import { CaregiverProfileData } from "@/interfaces/caregiver";
+import { SocialMediaLink } from "./SocialMediaLink";
+
+interface SocialMediaProps {
+  socialMedia?: CaregiverProfileData["socialMedia"];
+}
+
+type SocialPlatform =
+  | "instagram"
+  | "facebook"
+  | "whatsapp"
+  | "youtube"
+  | "tiktok"
+  | "website";
+
+export function SocialMedia({ socialMedia }: SocialMediaProps) {
+  if (!socialMedia) return null;
+
+  const socialLinks = Object.entries(socialMedia).filter(([, url]) => url) as [
+    SocialPlatform,
+    string
+  ][];
+
+  if (socialLinks.length === 0) return null;
+
+  return (
+    <section className="pt-4 md:pt-8">
+      <h2 className="text-lg font-semibold mb-4">Redes Sociais</h2>
+      <div className="flex flex-wrap gap-3">
+        {socialLinks.map(([platform, url]) => (
+          <SocialMediaLink
+            key={platform}
+            platform={platform}
+            url={url}
+            variant="with-label"
+            size="sm"
+          />
+        ))}
+      </div>
+    </section>
+  );
+}

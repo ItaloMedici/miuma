@@ -1,4 +1,4 @@
-import { CaregiverProfileBillingInfo } from "@/interfaces/caregiver";
+import { CaregiverProfileBillingInfo } from "@/interfaces/profile";
 
 export function BillingProgress({
   billingInfo,
@@ -12,7 +12,7 @@ export function BillingProgress({
           {billingInfo.supporters} apoiadores
         </span>
         <span className="font-medium">
-          {billingInfo.currentSupport} / {billingInfo.monthlyGoal}
+          {billingInfo.currentMonthlySupport} / {billingInfo.monthlyGoal}
           <span className="text-xs font-light text-muted-foreground ml-1">
             /mês
           </span>

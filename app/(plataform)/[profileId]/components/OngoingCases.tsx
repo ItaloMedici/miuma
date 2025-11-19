@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { OngoingCase } from "@/interfaces/caregiver";
+import { HouseHeart } from "lucide-react";
 import Image from "next/image";
 
 export const OngoingCases = ({ cases }: { cases: OngoingCase[] }) => {
@@ -15,7 +16,8 @@ export const OngoingCases = ({ cases }: { cases: OngoingCase[] }) => {
   return (
     <section id="casos" className="space-y-6">
       <div className="space-y-2">
-        <h2 className="text-xl md:text-2xl font-bold tracking-tight">
+        <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center gap-2">
+          <HouseHeart className="w-4 h-4 text-muted-foreground" />
           Casos em andamento
         </h2>
         <p className="text-sm md:text-base text-muted-foreground">

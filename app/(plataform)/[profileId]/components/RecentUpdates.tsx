@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { RecentUpdate } from "@/interfaces/caregiver";
+import { Mailbox } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { GalleryModal } from "./GalleryModal";
@@ -33,7 +34,8 @@ export const RecentUpdates = ({ updates }: { updates: RecentUpdate[] }) => {
   return (
     <section id="atualizacoes" className="space-y-6">
       <div className="space-y-2">
-        <h2 className="text-xl md:text-2xl font-bold tracking-tight">
+        <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center gap-2">
+          <Mailbox className="w-4 h-4 text-muted-foreground" />
           Atualizações recentes
         </h2>
         <p className="text-sm md:text-base text-muted-foreground">
@@ -55,7 +57,7 @@ export const RecentUpdates = ({ updates }: { updates: RecentUpdate[] }) => {
               </div>
 
               {/* Content */}
-              <div className="flex-1 pb-6">
+              <div className="flex-1 md:pb-6">
                 <div className="flex items-baseline gap-2 mb-2">
                   <time className="text-xs md:text-sm font-semibold text-muted-foreground">
                     {formatDate(update.date)}

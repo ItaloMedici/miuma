@@ -1,4 +1,7 @@
 import { Footer } from "@/components/footer";
+import { profile } from "console";
+import { Metadata } from "next";
+import { cache } from "react";
 import { getProfile } from "./action";
 import CaregiverDescription from "./components/CaregiverDescription";
 import { CaregiverHeader } from "./components/CaregiverHeader";
@@ -8,16 +11,47 @@ import { MobileDonationBar } from "./components/MobileDonationBar";
 import { OngoingCases } from "./components/OngoingCases";
 import { PetsInCare } from "./components/PetsInCare";
 import { RecentUpdates } from "./components/RecentUpdates";
+import { SocialMedia } from "./components/SocialMedia";
 import { SocialProofSection } from "./components/SocialProofSection";
+
+const cachedProfile = cache((id: string) => {
+  return getProfile(id);
+});
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ profileId: string }>;
+}): Promise<Metadata> => {
+  const paramsList = await params;
+  const id = paramsList.profileId;
+
+  const caregiver = await cachedProfile(id);
+
+  if (!caregiver) {
+    return { title: "Cuidador não encontrado" };
+  }
+
+  const title = `${caregiver.profile.name} — Cuidador de animais em ${caregiver.profile.location}`;
+  const description =
+    caregiver.profile.shortBio ||
+    `Conheça ${profile.name}, cuidador de animais na Miuma.`;
+
+  return {
+    title,
+    description,
+  };
+};
 
 export default async function CaregiverProfile({
   params,
 }: {
   params: Promise<{ profileId: string }>;
 }) {
-  const id = (await params).profileId;
+  const paramsList = await params;
+  const id = paramsList.profileId;
 
-  const caregiver = await getProfile(id);
+  const caregiver = await cachedProfile(id);
 
   return (
     <div className="min-h-screen bg-background">
@@ -36,10 +70,11 @@ export default async function CaregiverProfile({
           <div className="container mx-auto max-w-7xl">
             <div className="grid lg:grid-cols-3 gap-8 items-start">
               {/* Left Content Column */}
-              <div className="lg:col-span-2 space-y-12">
-                <div className="space-y-12">
-                  <CaregiverHeader profile={caregiver.profile} />
-                </div>
+              <div className="lg:col-span-2 space-y-8 md:space-y-12">
+                <CaregiverHeader
+                  profile={caregiver.profile}
+                  socialMedia={caregiver.socialMedia}
+                />
 
                 <CaregiverDescription
                   description={caregiver.descriptionMarkdown}
@@ -54,6 +89,8 @@ export default async function CaregiverProfile({
                 <RecentUpdates updates={caregiver.recentUpdates} />
 
                 <SocialProofSection socialProof={caregiver.socialProof} />
+
+                <SocialMedia socialMedia={caregiver.socialMedia} />
               </div>
 
               {/* Right Sticky Donation Card - Desktop only */}

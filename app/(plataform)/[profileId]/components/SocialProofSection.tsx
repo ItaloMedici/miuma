@@ -1,13 +1,19 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SocialProof } from "@/interfaces/caregiver";
-import { Heart } from "lucide-react";
+import { ChevronDown, ChevronUp, HandHeart } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 export const SocialProofSection = ({
   socialProof,
 }: {
   socialProof: SocialProof;
 }) => {
+  const [showAll, setShowAll] = useState(false);
+
   if (!socialProof) return null;
 
   const formatDate = (dateString: string) => {
@@ -19,10 +25,17 @@ export const SocialProofSection = ({
     }).format(date);
   };
 
+  const testimonials = socialProof.testimonials || [];
+  const displayedTestimonials = showAll
+    ? testimonials
+    : testimonials.slice(0, 4);
+  const hasMore = testimonials.length > 4;
+
   return (
     <section id="depoimentos" className="space-y-6">
       <div className="space-y-2">
-        <h2 className="text-xl md:text-2xl font-bold tracking-tight">
+        <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center gap-2">
+          <HandHeart className="w-4 h-4 text-muted-foreground" />
           Quem já faz parte dessa história
         </h2>
         <p className="text-sm md:text-base text-muted-foreground">
@@ -30,29 +43,11 @@ export const SocialProofSection = ({
         </p>
       </div>
 
-      {/* Total Supporters Badge */}
-      <Card className="p-6 bg-primary/5 border-primary/20">
-        <div className="flex items-center justify-center gap-3">
-          <Heart className="w-6 h-6 text-primary fill-primary" />
-          <div className="text-center">
-            <p className="text-3xl font-bold text-primary">
-              {socialProof.totalSupporters}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {socialProof.totalSupporters === 1
-                ? "pessoa já apoiou"
-                : "pessoas já apoiaram"}
-            </p>
-          </div>
-        </div>
-      </Card>
-
       {/* Testimonials */}
-      {socialProof.testimonials && socialProof.testimonials.length > 0 && (
+      {testimonials.length > 0 && (
         <div className="space-y-4">
-          <h3 className="text-md md:text-xl font-semibold">Depoimentos</h3>
           <div className="grid gap-4">
-            {socialProof.testimonials.map((testimonial) => (
+            {displayedTestimonials.map((testimonial) => (
               <Card key={testimonial.id} className="p-4 md:p-6 space-y-3">
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center md:items-start gap-4">
@@ -92,6 +87,28 @@ export const SocialProofSection = ({
               </Card>
             ))}
           </div>
+
+          {hasMore && (
+            <div className="flex justify-center">
+              <Button
+                variant="outline"
+                onClick={() => setShowAll(!showAll)}
+                className="gap-2"
+              >
+                {showAll ? (
+                  <>
+                    Ver menos
+                    <ChevronUp className="w-4 h-4" />
+                  </>
+                ) : (
+                  <>
+                    Ver todos os depoimentos ({testimonials.length})
+                    <ChevronDown className="w-4 h-4" />
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </section>

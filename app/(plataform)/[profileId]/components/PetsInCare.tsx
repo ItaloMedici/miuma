@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { PetInCare } from "@/interfaces/caregiver";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib";
 import { PawPrint } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
