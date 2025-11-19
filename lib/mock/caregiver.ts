@@ -3,19 +3,19 @@ import { CaregiverDataJson, CaregiverEntity } from "@/interfaces/caregiver";
 const data: CaregiverDataJson = {
   profile: {
     caregiverImageUrl:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100",
+      "https://images.unsplash.com/photo-1636957690653-1c8f74f7c295?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     galleryImages: {
       cover: {
-        url: "https://images.unsplash.com/photo-1759046346389-a63d2e3548bf?q=80&w=1287&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1708792277856-e38dfb4f95e5?q=80&w=1808&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         alt: "Foto de capa",
       },
       photos: [
         {
-          url: "https://images.unsplash.com/photo-1494947665470-20322015e3a8?q=80&w=2370&auto=format&fit=crop",
+          url: "https://images.unsplash.com/photo-1693830352296-1d2de2a43214?q=80&w=1760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
           alt: "Foto 1",
         },
         {
-          url: "https://images.unsplash.com/photo-1560743641-3914f2c45636?q=80&w=1287&auto=format&fit=crop",
+          url: "https://images.unsplash.com/photo-1680925652180-cee37b90b371?q=80&w=1690&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
           alt: "Foto 2",
         },
       ],
@@ -104,7 +104,7 @@ Juntos, estamos transformando vidas - tanto dos animais quanto a minha. 🐾❤�
         targetAmount: 1500,
         currentAmount: 950,
         imageUrl:
-          "https://images.unsplash.com/photo-1649609152484-970b013af72a?w=400",
+          "https://images.unsplash.com/photo-1632236542159-809925d85fc0?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
     ],
     recentUpdates: [
@@ -113,6 +113,22 @@ Juntos, estamos transformando vidas - tanto dos animais quanto a minha. 🐾❤�
         date: "2024-11-15",
         message: "Luna passou pela consulta",
         emoji: "❤️",
+      },
+      {
+        id: "2",
+        date: "2024-11-18",
+        message: "Chegaram as rações",
+        emoji: "📦",
+        images: [
+          {
+            alt: "Foto de rações recebidas",
+            url: "https://images.unsplash.com/photo-1647616350787-6428e907a7fa?q=80&w=1285&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          },
+          {
+            alt: "Foto de voluntários descarregando as rações",
+            url: "https://images.unsplash.com/photo-1728183258910-a8e3e885f2a0?q=80&w=940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          },
+        ],
       },
     ],
     socialProof: {
@@ -131,49 +147,49 @@ Juntos, estamos transformando vidas - tanto dos animais quanto a minha. 🐾❤�
         id: "1",
         name: "Luna",
         imageUrl:
-          "https://images.unsplash.com/photo-1649609152484-970b013af72a?w=400",
+          "https://images.unsplash.com/photo-1632236498225-fb69b5bb378c?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         description: "Cachorrinha de 4 anos resgatada da rua",
       },
       {
         id: "2",
         name: "Thor",
         imageUrl:
-          "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400",
+          "https://images.unsplash.com/photo-1693830352296-1d2de2a43214?q=80&w=1760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         description: "Cachorro de porte grande com 6 anos, muito carinhoso",
       },
       {
         id: "3",
         name: "Mel",
         imageUrl:
-          "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400",
+          "https://images.unsplash.com/photo-1708792277856-e38dfb4f95e5?q=80&w=1808&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         description: "Gatinha laranja de 2 anos, muito brincalhona",
       },
       {
         id: "4",
         name: "Bob",
         imageUrl:
-          "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400",
+          "https://images.unsplash.com/photo-1661539494374-b700fa59a6e8?q=80&w=1430&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         description: "Vira-lata de 8 anos, o mais velho da turma",
       },
       {
         id: "5",
         name: "Nina",
         imageUrl:
-          "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400",
+          "https://images.unsplash.com/photo-1599692392256-2d084495fe15?q=80&w=1760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         description: "Filhote de 1 ano super energética",
       },
       {
         id: "6",
         name: "Rex",
         imageUrl:
-          "https://images.unsplash.com/photo-1560743641-3914f2c45636?w=400",
+          "https://images.unsplash.com/photo-1755526739110-0890eaa8d0f0?q=80&w=1668&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         description: "Pastor alemão de 5 anos, muito protetor",
       },
       {
         id: "7",
         name: "Pipoca",
         imageUrl:
-          "https://images.unsplash.com/photo-1494947665470-20322015e3a8?w=400",
+          "https://images.unsplash.com/photo-1606425270259-998c37268501?q=80&w=1758&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         description: "Gato branco de 3 anos, adora dormir",
       },
       {
@@ -187,28 +203,28 @@ Juntos, estamos transformando vidas - tanto dos animais quanto a minha. 🐾❤�
         id: "9",
         name: "Bella",
         imageUrl:
-          "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400",
+          "https://images.unsplash.com/photo-1582079313048-f13462814383?q=80&w=1760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         description: "Golden Retriever de 3 anos, extremamente dócil",
       },
       {
         id: "10",
         name: "Simba",
         imageUrl:
-          "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400",
+          "https://images.unsplash.com/photo-1680925652180-cee37b90b371?q=80&w=1690&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         description: "Gato tigrado de 5 anos, muito independente",
       },
       {
         id: "11",
         name: "Chico",
         imageUrl:
-          "https://images.unsplash.com/photo-1534351450181-ea9f78427fe8?w=400",
+          "https://images.unsplash.com/photo-1724989755339-6d76cbbe93db?q=80&w=1760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         description: "Poodle de 7 anos, carinhoso e tranquilo",
       },
       {
         id: "12",
         name: "Mia",
         imageUrl:
-          "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=400",
+          "https://images.unsplash.com/photo-1585271903432-ef0fe9b14e19?q=80&w=1760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         description: "Gatinha siamesa de 2 anos, muito vocal",
       },
     ],
@@ -361,17 +377,29 @@ const secondData: CaregiverDataJson = {
   profile: {
     galleryImages: {
       cover: {
-        url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=1287&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1625794084867-8ddd239946b1?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         alt: "Foto de capa José",
       },
       photos: [
         {
-          url: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?q=80&w=2370&auto=format&fit=crop",
+          url: "https://images.unsplash.com/photo-1708963937384-6d1bca9dac2a?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
           alt: "Foto 1",
         },
         {
-          url: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=1287&auto=format&fit=crop",
+          url: "https://images.unsplash.com/photo-1626736637845-53045bb9695b?q=80&w=3411&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
           alt: "Foto 2",
+        },
+        {
+          url: "https://images.unsplash.com/photo-1602241628512-459cdd3234fe?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          alt: "Foto 2",
+        },
+        {
+          url: "https://images.unsplash.com/photo-1611250282006-4484dd3fba6b?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          alt: "Foto 3",
+        },
+        {
+          url: "https://images.unsplash.com/photo-1581285217236-a2355291f9c9?q=80&w=1315&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          alt: "Foto 4",
         },
       ],
     },
@@ -531,7 +559,7 @@ Quero agradecer especialmente:
         targetAmount: 2000,
         currentAmount: 1200,
         imageUrl:
-          "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400",
+          "https://images.unsplash.com/photo-1627323721367-94128c3fa0f7?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
     ],
     recentUpdates: [
@@ -570,7 +598,7 @@ Quero agradecer especialmente:
         id: "1",
         name: "Max",
         imageUrl:
-          "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400",
+          "https://images.unsplash.com/photo-1513549054-cb3611a004fe?q=80&w=1335&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         description: "Cachorro de 6 anos em tratamento",
       },
     ],
@@ -597,7 +625,7 @@ Quero agradecer especialmente:
       website: "https://resgateanimal-poa.com.br",
     },
     caregiverImageUrl:
-      "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=1287&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1762110098942-f967f5c08fd5?q=80&w=1335&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   stats: {
     totalDonationsReceived: 82000,
