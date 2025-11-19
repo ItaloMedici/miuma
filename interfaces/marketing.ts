@@ -3,10 +3,9 @@ export interface LandingPageData {
     id: string;
     profileId: string;
     name: string;
-    workDescription: string;
     petsUnderCare: string;
     imageUrl?: string;
-    testimonial: string;
+    shortBio: string;
   }>;
   impact: {
     totalCaregivers: string;
