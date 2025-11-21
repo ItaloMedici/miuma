@@ -1,7 +1,7 @@
 import { CaregiverDataJson } from "@/interfaces/caregiver";
 import { CaregiverProfile } from "@/interfaces/profile";
-import { caregivers } from "@/lib/mock/caregiver";
 import { formatCurrency } from "@/lib/utils/currency";
+import { caregiverUseCases } from "@/use-cases/caregiver";
 import { formatDate } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { notFound } from "next/navigation";
@@ -9,7 +9,7 @@ import { notFound } from "next/navigation";
 export const getProfile = async (
   profileId: string
 ): Promise<CaregiverProfile> => {
-  const caregiver = caregivers.find((cg) => cg.profileId === profileId);
+  const caregiver = await caregiverUseCases.getCaregiverByProfileId(profileId);
 
   if (!caregiver) {
     notFound();
