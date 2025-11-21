@@ -104,8 +104,8 @@ export default async function CaregiverProfile({
               </div>
 
               {/* Right Sticky Donation Card - Desktop only */}
-              <div className="hidden lg:block lg:sticky lg:top-12">
-                <DonationCard profileId={caregiver.profile.id} />
+              <div className="hidden lg:block lg:sticky lg:top-18">
+                <DonationCard pixKey={caregiver.billingInfo.pixKey} />
               </div>
             </div>
           </div>
@@ -113,7 +113,7 @@ export default async function CaregiverProfile({
       </main>
 
       {/* Mobile Fixed Donation Bar */}
-      <MobileDonationBar profileId={caregiver.profile.id} />
+      <MobileDonationBar pixKey={caregiver.billingInfo.pixKey} />
 
       <Footer />
     </div>

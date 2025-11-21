@@ -3,160 +3,301 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Check, Heart, Shield } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { cn } from "@/lib";
+import {
+  ArrowRight,
+  BedDouble,
+  CheckCircle2,
+  Circle,
+  Clipboard,
+  ClipboardCheck,
+  HandHeart,
+  Heart,
+  Info,
+  Pill,
+  ShieldPlus,
+  Stethoscope,
+  Utensils,
+} from "lucide-react";
 import { useState } from "react";
 
-export function DonationCard({
-  profileId,
-  compact,
-}: {
-  profileId?: string;
-  compact?: boolean;
-}) {
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-  const [pixAmount, setPixAmount] = useState("");
+// log scale
+const DONATION_VALUES = [2, 5, 10, 35, 65, 85, 125, 160, 200];
+const MIN_VALUE = DONATION_VALUES[0];
+const MAX_VALUE = DONATION_VALUES[DONATION_VALUES.length - 1];
 
-  const subscriptionPlans = [
-    {
-      id: "basic",
-      name: "Apoiador",
-      value: 30,
-      description: "Ajuda com ração e cuidados básicos",
-    },
-    {
-      id: "standard",
-      name: "Protetor",
-      value: 50,
-      description: "Garante alimentação e consultas",
-    },
-    {
-      id: "premium",
-      name: "Guardião",
-      value: 100,
-      description: "Cobre medicamentos e emergências",
-    },
-  ];
+const impactTiers = [
+  {
+    id: 1,
+    threshold: DONATION_VALUES[0], // 5
+    label: "Carinho Diário",
+    icon: HandHeart,
+  },
+  {
+    id: 1,
+    threshold: DONATION_VALUES[3], // 35
+    label: "Refeições Diárias",
+    icon: Utensils,
+  },
+  {
+    id: 2,
+    threshold: DONATION_VALUES[4], // 65
+    label: "Cama Quente & Conforto",
+    icon: BedDouble,
+  },
+  {
+    id: 3,
+    threshold: DONATION_VALUES[5], // 85
+    label: "Consultas Veterinárias",
+    icon: Stethoscope,
+  },
+  {
+    id: 4,
+    threshold: DONATION_VALUES[6], // 125
+    label: "Remédios & Tratamentos",
+    icon: Pill,
+  },
+  {
+    id: 5,
+    threshold: DONATION_VALUES[8], // 200
+    label: "Fundo de Emergência",
+    icon: ShieldPlus,
+  },
+];
 
-  const handleSubscription = (planId: string) => {
-    setSelectedPlan(planId);
-    // TODO: implement subscription flow (connect to payments)
+export function DonationCard({ pixKey }: { pixKey?: string }) {
+  const [pixCopied, setPixCopied] = useState(false);
+  const [donationType, setDonationType] = useState<"monthly" | "once">(
+    "monthly"
+  );
+  const [sliderIndex, setSliderIndex] = useState(4); // Default to 35 (index 3)
+  const amount = DONATION_VALUES[sliderIndex];
+
+  const handleDonation = () => {
+    // TODO: implement donation flow
   };
 
-  const handlePixDonation = () => {
-    // TODO: implement PIX donation flow (generate QR / open modal)
+  const handleCopyPix = () => {
+    if (!pixKey) return;
+    navigator.clipboard.writeText(pixKey);
+    // feedback to user that the pix key was copied
+    setPixCopied(true);
+    setTimeout(() => setPixCopied(false), 2000);
   };
 
   return (
-    <Card className="p-6 space-y-4 shadow-none">
-      <div>
-        <h2 className="text-2xl font-bold mb-2">Apoie</h2>
-        <p className="text-muted-foreground text-sm">
-          Escolha como você quer ajudar
-        </p>
-      </div>
+    <Card className="relative overflow-hidden border-0 sm:border sm:border-border shadow-none py-0 sm:rounded-4xl">
+      {/* Decorative blobs */}
+      <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/10 rounded-full blur-3xl opacity-60 pointer-events-none" />
+      <div className="absolute -top-8 -left-8 w-24 h-24 bg-fourth/10 rounded-full blur-2xl opacity-60 pointer-events-none" />
 
-      <Tabs defaultValue="subscription" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="subscription">Mensal</TabsTrigger>
-          <TabsTrigger value="pix">PIX único</TabsTrigger>
-        </TabsList>
+      {/* Content */}
+      <div className="relative z-10 p-0 sm:p-6 space-y-6">
+        {/* Donation Type Toggle */}
+        <div className="bg-muted p-1 rounded-2xl flex relative">
+          <button
+            onClick={() => setDonationType("monthly")}
+            className={`flex-1 py-1 text-sm font-medium rounded-xl transition-all ${
+              donationType === "monthly"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Mensal
+          </button>
+          <button
+            onClick={() => setDonationType("once")}
+            className={`flex-1 py-1 text-sm font-medium rounded-xl transition-all ${
+              donationType === "once"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Única vez Pix
+          </button>
+        </div>
 
-        <TabsContent value="subscription" className="space-y-4 mt-6">
-          <div className="space-y-3">
-            {subscriptionPlans.map((plan) => (
-              <Card
-                key={plan.id}
-                className={`p-4 cursor-pointer transition-all border-2 ${
-                  selectedPlan === plan.id
-                    ? "border-primary bg-accent"
-                    : "border-border hover:border-accent-foreground/20"
-                }`}
-                onClick={() => handleSubscription(plan.id)}
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold">{plan.name}</h3>
-                      {selectedPlan === plan.id && (
-                        <Check className="w-4 h-4 text-primary" />
-                      )}
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {plan.description}
-                    </p>
-                    <p className="text-2xl font-bold">
-                      R$ {plan.value}
-                      <span className="text-sm font-normal text-muted-foreground">
-                        /mês
-                      </span>
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-            <p className="text-sm font-medium flex items-center gap-2">
-              <Shield className="w-4 h-4" />
-              Sobre as taxas
-            </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Uma pequena taxa é cobrada apenas para cobrir custos do
-              processador de pagamento e manutenção da plataforma. Não temos
-              fins lucrativos. A maior parte do valor vai direto para o
-              cuidador.
-            </p>
-          </div>
-
-          <Button size="lg" className="w-full" disabled={!selectedPlan}>
-            Confirmar assinatura mensal
-          </Button>
-        </TabsContent>
-
-        <TabsContent value="pix" className="space-y-4 mt-6">
-          <div className="space-y-3">
+        {/* Slider Section */}
+        {donationType === "monthly" ? (
+          <>
             <div>
-              <Label htmlFor="amount">Valor da doação</Label>
-              <div className="relative mt-2">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  R$
-                </span>
-                <Input
-                  id="amount"
-                  type="number"
-                  placeholder="50,00"
-                  className="pl-10"
-                  value={pixAmount}
-                  onChange={(e) => setPixAmount(e.target.value)}
+              <div className="flex flex-col items-center mb-4 sm:mb-6">
+                <div className="flex items-baseline space-x-1">
+                  <span className="text-md sm:text-xl font-light text-muted-foreground tracking-tight">
+                    R$
+                  </span>
+                  <span className="text-4xl font-medium tracking-tighter">
+                    {amount}
+                  </span>
+                </div>
+              </div>
+
+              <div className="relative w-full flex items-center px-1">
+                <Slider
+                  value={[sliderIndex]}
+                  onValueChange={(value) => setSliderIndex(value[0])}
+                  min={0}
+                  max={DONATION_VALUES.length - 1}
+                  step={1}
+                  className="w-full"
                 />
               </div>
+              <div className="flex justify-between mt-2 text-xs text-muted-foreground font-medium px-1">
+                <span>R$ {MIN_VALUE}</span>
+                <span>R$ {MAX_VALUE}+</span>
+              </div>
+            </div>
+            {/* Impact Scale */}
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-2 pl-1">
+                Seu Impacto
+              </p>
+
+              {impactTiers.map((tier) => {
+                const isActive = amount >= tier.threshold;
+                const Icon = tier.icon;
+                const CheckIcon = isActive ? CheckCircle2 : Circle;
+
+                return (
+                  <div
+                    key={tier.id}
+                    className={`flex items-center justify-between p-2 rounded-md border transition-all ${
+                      isActive
+                        ? "bg-primary/5 border-primary/30"
+                        : "border-transparent"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon
+                        className={`w-4 h-4 transition-all ${
+                          isActive
+                            ? "text-primary opacity-100"
+                            : "text-muted-foreground/30 opacity-50"
+                        }`}
+                      />
+                      <span
+                        className={`text-xs sm:text-sm font-medium transition-colors ${
+                          isActive
+                            ? "text-foreground"
+                            : "text-muted-foreground/50"
+                        }`}
+                      >
+                        {tier.label}
+                      </span>
+                    </div>
+                    <CheckIcon
+                      className={`w-4 h-4 transition-all ${
+                        isActive
+                          ? "text-primary opacity-100"
+                          : "text-muted-foreground/30 opacity-50"
+                      }`}
+                    />
+                  </div>
+                );
+              })}
             </div>
 
-            <div className="bg-accent/50 rounded-lg p-4 space-y-2">
-              <p className="text-sm font-medium flex items-center gap-2">
-                <Heart className="w-4 h-4" />
-                PIX direto ao cuidador
-              </p>
+            {/* Fee Explanation */}
+            <div className="bg-muted/50 rounded-xl p-4 flex items-start gap-3 border border-border/50">
+              <Info className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
               <p className="text-xs text-muted-foreground leading-relaxed">
+                <span className="font-medium text-foreground">
+                  100% Transparência:
+                </span>{" "}
+                Uma pequena taxa é cobrada apenas para cobrir custos do
+                processador de pagamento e manutenção da plataforma.{" "}
+                <span className="underline underline-offset-2">
+                  Não temos fins lucrativos.
+                </span>
+              </p>
+            </div>
+
+            {/* CTA Button */}
+            <div className="space-y-2 md:space-y-4">
+              <Button
+                size="lg"
+                className="w-full group"
+                onClick={handleDonation}
+              >
+                <span>
+                  {donationType === "monthly"
+                    ? "Confirmar Apoio Mensal"
+                    : "Fazer Doação Única"}
+                </span>
+                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+              </Button>
+
+              <div className="text-center">
+                <button className="text-xs text-muted-foreground hover:text-foreground font-medium transition-colors">
+                  Cancele ou gerencie a qualquer momento
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex flex-col space-y-2 md:space-y-0">
+              <h1 className="text-md font-semibold tracking-tight">
+                Chave Pix
+              </h1>
+              <p className="text-xs text-muted-foreground leading-relaxed max-w-xs">
+                Use a chave abaixo no app do seu banco para enviar qualquer
+                valor.
+              </p>
+            </div>
+
+            <div className="flex w-full max-w-sm items-start gap-2">
+              <div
+                className="flex-1"
+                role="button"
+                tabIndex={0}
+                onClick={handleCopyPix}
+              >
+                <Input
+                  type="text"
+                  placeholder="Chave PIX"
+                  readOnly
+                  value={pixKey}
+                  className={cn("transition-colors", {
+                    "border-primary": pixCopied,
+                  })}
+                />
+                <span className="sr-only">Chave PIX</span>
+                <span className="text-xs text-muted-foreground flex items-center mt-2 gap-1">
+                  <Info className="w-3 h-3" /> Clique para copiar
+                </span>
+              </div>
+
+              <Button
+                onClick={handleCopyPix}
+                variant="outline"
+                aria-label="Copiar chave PIX"
+                className={cn("transition-colors", {
+                  "border-primary": pixCopied,
+                })}
+              >
+                {pixCopied ? (
+                  <ClipboardCheck className="w-4 h-4" />
+                ) : (
+                  <Clipboard className="w-4 h-4" />
+                )}
+              </Button>
+            </div>
+
+            <div className="bg-muted/50 rounded-xl p-4 flex items-start gap-3 border border-border/50">
+              <Heart className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                <span className="font-medium text-foreground">
+                  PIX direto ao cuidador
+                </span>{" "}
                 Doações via PIX vão 100% direto para a conta do cuidador, sem
                 taxas. A plataforma não retém nenhum valor.
               </p>
             </div>
-          </div>
-
-          <Button
-            size="lg"
-            className="w-full"
-            onClick={handlePixDonation}
-            disabled={!pixAmount || parseFloat(pixAmount) <= 0}
-          >
-            Gerar QR Code PIX
-          </Button>
-        </TabsContent>
-      </Tabs>
+          </>
+        )}
+      </div>
     </Card>
   );
 }

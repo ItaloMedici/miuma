@@ -43,6 +43,7 @@ export const getProfile = async (
       monthlyGoal: formatCurrency(caregiverData.stats.goal.monthlyGoalAmount),
       percentAchieved: caregiverData.stats.goal.percentAchieved,
       supporters: caregiverData.monthlySupporters.length,
+      pixKey: caregiver.pixKey,
     },
     galleryImages: caregiverData.profile.galleryImages,
     descriptionMarkdown: caregiverData.profile.descriptionMarkdown,

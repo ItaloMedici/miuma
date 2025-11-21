@@ -25,6 +25,7 @@ export interface CaregiverProfileBillingInfo {
   currentMonthlySupport: string;
   supporters: number;
   percentAchieved: number;
+  pixKey: string;
 }
 
 export interface CaregiverProfile {

@@ -11,7 +11,7 @@ import { Heart } from "lucide-react";
 import { useState } from "react";
 import { DonationCard } from "./DonationCard";
 
-export function MobileDonationBar({ profileId }: { profileId: string }) {
+export function MobileDonationBar({ pixKey }: { pixKey: string }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -39,11 +39,11 @@ export function MobileDonationBar({ profileId }: { profileId: string }) {
       {/* Full screen donation modal */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="lg:hidden max-w-full w-full h-full max-h-screen p-0 m-0">
-          <DialogHeader className="px-6 pt-6 pb-4 border-b">
-            <DialogTitle className="text-2xl">Escolha como apoiar</DialogTitle>
+          <DialogHeader className="px-4 py-2 h-14 border-b flex items-center justify-center">
+            <DialogTitle className="text-xl">Escolha como apoiar</DialogTitle>
           </DialogHeader>
-          <div className="overflow-y-auto px-6 pb-6">
-            <DonationCard profileId={profileId} />
+          <div className="overflow-y-auto h-screen px-4 pb-6">
+            <DonationCard pixKey={pixKey} />
           </div>
         </DialogContent>
       </Dialog>
