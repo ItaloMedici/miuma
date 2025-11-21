@@ -274,6 +274,7 @@
   font-size: 0.875rem;
   margin-bottom: 0.75rem;
   text-align: justify;
+  font-weight: 300;
   color: var(--muted-foreground);
 }
 
