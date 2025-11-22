@@ -1,6 +1,6 @@
 import { buttonVariants } from "@/components/ui/button";
 import { LandingPageData } from "@/interfaces/marketing";
-import { cn } from "@/lib";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 

@@ -1,5 +1,5 @@
 import { LandingPageData } from "@/interfaces/marketing";
-import { cn } from "@/lib";
+import { cn } from "@/lib/utils";
 
 export const Impact = ({ metrics }: { metrics: LandingPageData["impact"] }) => {
   const data = [
