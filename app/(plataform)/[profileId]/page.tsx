@@ -14,6 +14,7 @@ import { ProfileNavHeader } from "./components/ProfileNavHeader";
 import { RecentUpdates } from "./components/RecentUpdates";
 import { SocialMedia } from "./components/SocialMedia";
 import { SocialProofSection } from "./components/SocialProofSection";
+import { CaregiverProfileProvider } from "./components/context";
 
 const cachedProfile = cache((id: string) => {
   return getProfile(id);
@@ -45,6 +46,9 @@ export const generateMetadata = async ({
       title,
       description,
     },
+    icons: {
+      icon: caregiver.profile.imageUrl || "/favicon.ico",
+    },
   };
 };
 
@@ -59,67 +63,56 @@ export default async function CaregiverProfile({
   const caregiver = await cachedProfile(id);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* <Navbar variant="full" /> */}
-      <ProfileNavHeader />
+    <CaregiverProfileProvider profile={caregiver}>
+      <div className="min-h-screen bg-background">
+        <ProfileNavHeader />
 
-      <main className="pt-6 md:pt-12 pb-24 lg:pb-20 px-6">
-        {/* Gallery Section */}
-        <section id="fotos" className="mb-8">
-          <div className="container mx-auto max-w-7xl">
-            <Gallery gallery={caregiver.galleryImages} />
-          </div>
-        </section>
+        <main className="pt-6 md:pt-12 pb-24 lg:pb-20 px-6">
+          <section id="fotos" className="mb-8">
+            <div className="container mx-auto max-w-7xl">
+              <Gallery />
+            </div>
+          </section>
 
-        {/* Main Content with Sidebar */}
-        <div>
-          <div className="container mx-auto max-w-7xl">
-            <div className="grid lg:grid-cols-3 gap-8 items-start">
-              {/* Left Content Column */}
-              <div className="lg:col-span-2 space-y-8 md:space-y-12">
-                <CaregiverHeader
-                  profile={caregiver.profile}
-                  socialMedia={caregiver.socialMedia}
-                />
+          <div>
+            <div className="container mx-auto max-w-7xl">
+              <div className="grid lg:grid-cols-3 gap-8 items-start">
+                <div className="lg:col-span-2 space-y-8 md:space-y-12">
+                  <CaregiverHeader />
 
-                <section id="sobre">
-                  <CaregiverDescription
-                    description={caregiver.descriptionMarkdown}
-                  />
-                </section>
+                  <section id="sobre">
+                    <CaregiverDescription />
+                  </section>
 
-                {/* <BillingProgress billingInfo={caregiver.billingInfo} /> */}
+                  <section id="animais">
+                    <PetsInCare />
+                  </section>
 
-                <section id="animais">
-                  <PetsInCare pets={caregiver.petsInCare} />
-                </section>
+                  <section id="casos">
+                    <OngoingCases />
+                  </section>
 
-                <section id="casos">
-                  <OngoingCases cases={caregiver.ongoingCases} />
-                </section>
+                  <section id="atualizacoes">
+                    <RecentUpdates />
+                  </section>
 
-                <section id="atualizacoes">
-                  <RecentUpdates updates={caregiver.recentUpdates} />
-                </section>
+                  <SocialProofSection />
 
-                <SocialProofSection socialProof={caregiver.socialProof} />
+                  <SocialMedia />
+                </div>
 
-                <SocialMedia socialMedia={caregiver.socialMedia} />
-              </div>
-
-              {/* Right Sticky Donation Card - Desktop only */}
-              <div className="hidden lg:block lg:sticky lg:top-18">
-                <DonationCard pixKey={caregiver.billingInfo.pixKey} />
+                <div className="hidden lg:block lg:sticky lg:top-18">
+                  <DonationCard />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
 
-      {/* Mobile Fixed Donation Bar */}
-      <MobileDonationBar pixKey={caregiver.billingInfo.pixKey} />
+        <MobileDonationBar />
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </CaregiverProfileProvider>
   );
 }

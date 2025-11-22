@@ -3,13 +3,9 @@
 import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 
-import { CaregiverGallery } from "@/interfaces/caregiver";
-import { cn } from "@/lib";
+import { cn } from "@/lib/utils";
 import { GalleryModal } from "./GalleryModal";
-
-type Props = {
-  gallery: CaregiverGallery;
-};
+import { useCaregiverProfile } from "./context";
 
 type GalleryImageProps = {
   url: string;
@@ -48,7 +44,9 @@ function GalleryImage({ url, alt, onClick, className }: GalleryImageProps) {
   );
 }
 
-export function Gallery({ gallery }: Props) {
+export function Gallery() {
+  const { galleryImages: gallery } = useCaregiverProfile();
+
   const images = useMemo(
     () => [gallery.cover, ...(gallery.photos || [])],
     [gallery.cover, gallery.photos]

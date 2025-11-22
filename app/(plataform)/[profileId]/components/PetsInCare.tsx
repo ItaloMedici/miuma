@@ -1,16 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { PetInCare } from "@/interfaces/caregiver";
-import { cn } from "@/lib";
+import { cn } from "@/lib/utils";
 import { PawPrint } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { GalleryModal } from "./GalleryModal";
+import { useCaregiverProfile } from "./context";
 
 const LIMIT = 6;
 
-export const PetsInCare = ({ pets }: { pets: PetInCare[] }) => {
+export const PetsInCare = () => {
+  const { petsInCare: pets } = useCaregiverProfile();
+
   const [modalOpen, setModalOpen] = useState(false);
   const [initialIndex, setInitialIndex] = useState(0);
 

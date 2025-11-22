@@ -2,16 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { SocialProof } from "@/interfaces/caregiver";
 import { ChevronDown, ChevronUp, HandHeart } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { useCaregiverProfile } from "./context";
 
-export const SocialProofSection = ({
-  socialProof,
-}: {
-  socialProof: SocialProof;
-}) => {
+export const SocialProofSection = () => {
+  const { socialProof } = useCaregiverProfile();
   const [showAll, setShowAll] = useState(false);
 
   if (!socialProof) return null;

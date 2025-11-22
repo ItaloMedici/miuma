@@ -1,23 +1,14 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
-import { CaregiverProfileInfo } from "@/interfaces/profile";
 import { Calendar, MapPin, PawPrint, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import { SocialMediaLink } from "./SocialMediaLink";
+import { useCaregiverProfile } from "./context";
 
-export function CaregiverHeader({
-  profile,
-  socialMedia,
-}: {
-  profile: CaregiverProfileInfo;
-  socialMedia?: {
-    instagram?: string;
-    facebook?: string;
-    whatsapp?: string;
-    youtube?: string;
-    tiktok?: string;
-    website?: string;
-  };
-}) {
+export function CaregiverHeader() {
+  const { profile, socialMedia } = useCaregiverProfile();
+
   return (
     <div className="flex flex-col gap-2 mb-8 md:mb-12">
       <div className="flex items-start gap-4">

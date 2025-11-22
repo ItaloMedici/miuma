@@ -1,9 +1,13 @@
+"use client";
+
 import { Card } from "@/components/ui/card";
-import { OngoingCase } from "@/interfaces/caregiver";
 import { HouseHeart } from "lucide-react";
 import Image from "next/image";
+import { useCaregiverProfile } from "./context";
 
-export const OngoingCases = ({ cases }: { cases: OngoingCase[] }) => {
+export const OngoingCases = () => {
+  const { ongoingCases: cases } = useCaregiverProfile();
+
   if (!cases || cases.length === 0) return null;
 
   const formatCurrency = (value: number) => {

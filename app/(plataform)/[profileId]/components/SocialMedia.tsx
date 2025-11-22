@@ -1,9 +1,7 @@
-import { CaregiverProfileData } from "@/interfaces/caregiver";
-import { SocialMediaLink } from "./SocialMediaLink";
+"use client";
 
-interface SocialMediaProps {
-  socialMedia?: CaregiverProfileData["socialMedia"];
-}
+import { SocialMediaLink } from "./SocialMediaLink";
+import { useCaregiverProfile } from "./context";
 
 type SocialPlatform =
   | "instagram"
@@ -13,7 +11,9 @@ type SocialPlatform =
   | "tiktok"
   | "website";
 
-export function SocialMedia({ socialMedia }: SocialMediaProps) {
+export function SocialMedia() {
+  const { socialMedia } = useCaregiverProfile();
+
   if (!socialMedia) return null;
 
   const socialLinks = Object.entries(socialMedia).filter(([, url]) => url) as [

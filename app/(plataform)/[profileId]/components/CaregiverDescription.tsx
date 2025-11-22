@@ -5,12 +5,10 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useCaregiverProfile } from "./context";
 
-export function CaregiverDescription({
-  description,
-}: {
-  description?: string;
-}) {
+export function CaregiverDescription() {
+  const { descriptionMarkdown: description } = useCaregiverProfile();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const descriptionAlreadyHasTitle = description?.includes("# ");

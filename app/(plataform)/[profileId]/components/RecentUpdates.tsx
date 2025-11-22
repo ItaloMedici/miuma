@@ -1,13 +1,15 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { RecentUpdate } from "@/interfaces/caregiver";
 import { Mailbox } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { GalleryModal } from "./GalleryModal";
+import { useCaregiverProfile } from "./context";
 
-export const RecentUpdates = ({ updates }: { updates: RecentUpdate[] }) => {
+export const RecentUpdates = () => {
+  const { recentUpdates: updates } = useCaregiverProfile();
+
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [initialIndex, setInitialIndex] = useState(0);

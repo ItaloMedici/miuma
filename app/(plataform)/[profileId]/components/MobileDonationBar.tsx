@@ -11,7 +11,7 @@ import { Heart } from "lucide-react";
 import { useState } from "react";
 import { DonationCard } from "./DonationCard";
 
-export function MobileDonationBar({ pixKey }: { pixKey: string }) {
+export function MobileDonationBar() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -43,7 +43,7 @@ export function MobileDonationBar({ pixKey }: { pixKey: string }) {
             <DialogTitle className="text-xl">Escolha como apoiar</DialogTitle>
           </DialogHeader>
           <div className="overflow-y-auto h-screen px-4 pb-6">
-            <DonationCard pixKey={pixKey} />
+            <DonationCard />
           </div>
         </DialogContent>
       </Dialog>
