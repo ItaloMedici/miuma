@@ -2,16 +2,21 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import {
   ArrowRight,
   BedDouble,
+  Check,
   CheckCircle2,
   Circle,
-  Clipboard,
-  ClipboardCheck,
+  Copy,
   HandHeart,
   Heart,
   Info,
@@ -21,6 +26,7 @@ import {
   Utensils,
 } from "lucide-react";
 import { useState } from "react";
+import { subscribeMonthlySupporter } from "../action";
 import { useCaregiverProfile } from "./context";
 
 export function DonationCard() {
@@ -110,11 +116,16 @@ const impactTiers = [
 ];
 
 export const MonthlyDonation = () => {
+  const { profile } = useCaregiverProfile();
   const [sliderIndex, setSliderIndex] = useState(4); // Default to 35 (index 3)
   const amount = DONATION_VALUES[sliderIndex];
 
-  const handleDonation = () => {
+  const handleDonation = async () => {
     // TODO: implement donation flow
+    await subscribeMonthlySupporter({
+      profileId: profile.id,
+      value: amount,
+    });
   };
 
   return (
@@ -253,58 +264,39 @@ export const OneTimeDonation = () => {
         </p>
       </div>
 
-      <div className="flex w-full max-w-sm items-start gap-2">
-        <div
-          className="flex-1"
-          role="button"
-          tabIndex={0}
-          onClick={handleCopyPix}
-        >
-          <Input
-            type="text"
-            placeholder="Chave PIX"
-            readOnly
-            value={pixKey}
-            className={cn("transition-colors", {
-              "border-primary": pixCopied,
-            })}
-          />
-          <span className="sr-only">Chave PIX</span>
-          <span
-            className={cn(
-              "text-xs text-muted-foreground flex items-center mt-2 gap-1",
-              {
-                "text-green-600": pixCopied,
-              }
-            )}
-          >
-            {pixCopied ? (
-              <>
-                <CheckCircle2 className="w-3 h-3" /> Chave PIX copiada com
-                sucesso!
-              </>
-            ) : (
-              <>
-                <Info className="w-3 h-3" /> Clique para copiar
-              </>
-            )}
-          </span>
-        </div>
-
-        <Button
-          onClick={handleCopyPix}
-          variant="outline"
-          aria-label="Copiar chave PIX"
-          className={cn("transition-colors cursor-pointer", {
-            "border-primary": pixCopied,
-          })}
+      <div>
+        <InputGroup onClick={handleCopyPix}>
+          <InputGroupInput value={pixKey} readOnly />
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton
+              aria-label="Copiar chave PIX"
+              title="Copiar chave PIX"
+              size="icon-xs"
+              onClick={handleCopyPix}
+            >
+              {pixCopied ? <Check /> : <Copy />}
+            </InputGroupButton>
+          </InputGroupAddon>
+        </InputGroup>
+        <span
+          className={cn(
+            "text-xs text-muted-foreground flex items-center mt-2 gap-1",
+            {
+              "text-green-600": pixCopied,
+            }
+          )}
         >
           {pixCopied ? (
-            <ClipboardCheck className="w-4 h-4" />
+            <>
+              <CheckCircle2 className="w-3 h-3" /> Chave PIX copiada com
+              sucesso!
+            </>
           ) : (
-            <Clipboard className="w-4 h-4" />
+            <>
+              <Info className="w-3 h-3" /> Clique para copiar
+            </>
           )}
-        </Button>
+        </span>
       </div>
 
       <div className="bg-muted/50 rounded-xl p-4 flex items-start gap-3 border border-border/50">

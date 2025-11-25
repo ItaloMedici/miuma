@@ -44,7 +44,7 @@ export const PetsInCare = () => {
           <button
             key={pet.id}
             onClick={() => openGallery(index)}
-            className="group relative w-full h-[100px] aspect-square rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+            className="group relative w-full h-[100px] aspect-square corner-squircle rounded-2xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
           >
             <Image
               src={pet.imageUrl}

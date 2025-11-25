@@ -103,7 +103,7 @@ export function SocialMediaLink({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm text-muted-foreground transition-colors hover:border-primary/50 ${config.color}`}
+      className={`flex items-center gap-2 px-4 py-2 corner-squircle rounded-2xl border border-border text-sm text-muted-foreground transition-colors hover:border-primary/50 ${config.color}`}
       aria-label={`Visitar ${config.label}`}
     >
       <Icon className={iconSize} />

@@ -39,7 +39,7 @@ export const OngoingCases = () => {
               <Image
                 src={caseItem.imageUrl}
                 alt={caseItem.title}
-                className="w-full aspect-3/1  md:aspect-4/2 object-cover rounded-md"
+                className="w-full aspect-3/1  md:aspect-4/2 object-cover  corner-squircle rounded-2xl"
                 width={400}
                 height={250}
               />

@@ -1,6 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { Mailbox } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -59,7 +60,11 @@ export const RecentUpdates = () => {
               </div>
 
               {/* Content */}
-              <div className="flex-1 md:pb-6">
+              <div
+                className={cn("flex-1", {
+                  "md:pb-6": index !== updates.length - 1,
+                })}
+              >
                 <div className="flex items-baseline gap-2 mb-2">
                   <time className="text-xs md:text-sm font-semibold text-muted-foreground">
                     {formatDate(update.date)}
@@ -76,7 +81,7 @@ export const RecentUpdates = () => {
                       <button
                         key={idx}
                         onClick={() => openGallery(update.images!, idx)}
-                        className="relative w-20 h-20 rounded-lg overflow-hidden hover:opacity-80 transition-opacity cursor-pointer"
+                        className="relative w-20 h-20 corner-squircle rounded-2xl overflow-hidden hover:opacity-80 transition-opacity cursor-pointer"
                         aria-label={`Ver foto ${idx + 1} da atualização`}
                       >
                         <Image

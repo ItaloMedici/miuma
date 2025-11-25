@@ -15,13 +15,29 @@ const allNavItems = [
 export function ProfileNavHeader() {
   const [isVisible, setIsVisible] = useState(false);
   const [activeSection, setActiveSection] = useState("");
-  const [availableSections] = useState<typeof allNavItems>(() => {
-    // Initialize state with available sections on first render (client-side only)
+
+  const [availableSections, setAvailableSections] = useState<
+    typeof allNavItems
+  >(() => {
     if (typeof window === "undefined") return allNavItems;
     return allNavItems.filter(
       (item) => document.getElementById(item.id) !== null
     );
   });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    let raf = 0;
+
+    const sections = allNavItems.filter(
+      (item) => document.getElementById(item.id) !== null
+    );
+
+    // Defer state update to avoid calling setState synchronously within the effect
+    raf = requestAnimationFrame(() => setAvailableSections(sections));
+
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   useEffect(() => {
     if (availableSections.length === 0) return;
@@ -30,10 +46,10 @@ export function ProfileNavHeader() {
       // Show header after scrolling 300px
       setIsVisible(window.scrollY > 300);
 
-      // Determine active section from available sections only
       const sections = availableSections.map((item) =>
         document.getElementById(item.id)
       );
+
       const scrollPosition = window.scrollY + 100;
 
       for (let i = sections.length - 1; i >= 0; i--) {
