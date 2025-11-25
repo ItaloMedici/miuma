@@ -44,7 +44,7 @@ const paymentFormSchema = z.object({
   cardNumber: z
     .string()
     .min(1, "Número do cartão é obrigatório")
-    .refine((value) => {
+    .refine((value: string) => {
       const cleaned = value.replace(/\s/g, "");
       return cleaned.length >= 13 && cleaned.length <= 19;
     }, "Número do cartão inválido")
@@ -53,7 +53,7 @@ const paymentFormSchema = z.object({
     .string()
     .min(1, "Data de validade é obrigatória")
     .regex(/^(0[1-9]|1[0-2])\s\/\s\d{2}$/, "Formato inválido (MM / AA)")
-    .refine((value) => {
+    .refine((value: string) => {
       const [month, year] = value.split(" / ");
       const currentYear = new Date().getFullYear() % 100;
       const currentMonth = new Date().getMonth() + 1;
@@ -90,8 +90,7 @@ interface PaymentFormProps {
 export function PaymentForm({ total }: PaymentFormProps) {
   const [cardBrand, setCardBrand] = useState<CardBrand>("unknown");
 
-  const form = useForm({
-    // @ts-expect-error - Zod version compatibility issue
+  const form = useForm<PaymentFormValues>({
     resolver: zodResolver(paymentFormSchema),
     defaultValues: {
       cardNumber: "",
