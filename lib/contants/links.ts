@@ -10,3 +10,8 @@ export const legalLinks = [
   { href: "#", label: "Política de cookies" },
   { href: "#", label: "Contato" },
 ];
+
+export const signUpLinks = {
+  supporter: "/cadastro?type=supporter",
+  caregiver: "/cadastro?type=caregiver",
+};
