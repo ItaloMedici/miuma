@@ -28,10 +28,10 @@ export const FeaturedCaregivers = ({ caregivers }: Props) => {
           {caregivers.map((caregiver, index) => (
             <div
               key={index}
-              className="p-4 md:p-6 rounded-3xl bg-card border border-border space-y-4 hover:shadow-lg transition-shadow"
+              className="p-4 md:p-6 corner-squircle rounded-5xl bg-card border border-border space-y-4 hover:shadow-lg transition-shadow"
             >
               {caregiver.imageUrl && (
-                <div className="rounded-xl aspect-video md:aspect-square bg-muted border border-border overflow-hidden">
+                <div className="corner-squircle rounded-4xl aspect-video md:aspect-square bg-muted border border-border overflow-hidden">
                   <Image
                     src={caregiver.imageUrl}
                     alt={caregiver.name}

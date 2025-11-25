@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@toolwind/corner-shape";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -87,6 +88,10 @@
 
   --color-fifth: var(--fifth);
   --color-fifth-foreground: var(--fifth-foreground);
+
+  --radius-5xl: 3rem;
+  --radius-6xl: 4rem;
+  --radius-7xl: 5rem;
 }
 
 :root {

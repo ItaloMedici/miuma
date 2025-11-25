@@ -37,7 +37,7 @@ export const Impact = ({ metrics }: { metrics: LandingPageData["impact"] }) => {
             <div
               key={index}
               className={cn(
-                "p-4 md:p-8 rounded-2xl bg-background border border-border text-center space-y-2"
+                "p-4 md:p-8 corner-squircle rounded-4xl bg-background border border-border text-center space-y-2"
               )}
             >
               <div className="text-4xl font-bold text-primary">

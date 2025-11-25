@@ -1,4 +1,5 @@
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { signUpLinks } from "@/lib/contants/links";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -26,9 +27,12 @@ export const Hero = () => {
               >
                 Quero ajudar um cuidador
               </Link>
-              <Button size="lg" variant="outline" className="text-base">
+              <Link
+                href={signUpLinks.caregiver}
+                className={buttonVariants({ size: "lg", variant: "outline" })}
+              >
                 Sou cuidador — criar meu perfil
-              </Button>
+              </Link>
             </div>
           </div>
 

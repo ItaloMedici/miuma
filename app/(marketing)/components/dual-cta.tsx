@@ -1,12 +1,15 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { signUpLinks } from "@/lib/contants/links";
+import { cn } from "@/lib/utils";
 import { Heart, UserPlus } from "lucide-react";
+import Link from "next/link";
 
 export const DualCTA = () => {
   return (
     <section className="py-14 md:py-20 px-6">
       <div className="container mx-auto max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-6">
-          <div className="p-4 md:p-12 rounded-2xl bg-primary/5 border border-primary/20 space-y-6">
+          <div className="p-4 md:p-12 corner-squircle rounded-4xl bg-primary/5 border border-primary/20 space-y-6">
             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
               <Heart className="w-6 h-6 text-primary" />
             </div>
@@ -19,12 +22,15 @@ export const DualCTA = () => {
                 recursos aos animais mais vulneráveis.
               </p>
             </div>
-            <Button size="lg" className="w-full sm:w-auto">
+            <Link
+              href={"#cuidadores"}
+              className={cn("w-full sm:w-auto", buttonVariants({ size: "lg" }))}
+            >
               Quero ajudar agora
-            </Button>
+            </Link>
           </div>
 
-          <div className="p-4 md:p-12  rounded-2xl bg-third/5 border border-third/20 space-y-6">
+          <div className="p-4 md:p-12 corner-squircle rounded-4xl bg-third/5 border border-third/20 space-y-6">
             <div className="w-12 h-12 rounded-xl bg-third/10 flex items-center justify-center">
               <UserPlus className="w-6 h-6 text-third" />
             </div>
@@ -37,9 +43,15 @@ export const DualCTA = () => {
                 reconhecido e apoiado de forma justa.
               </p>
             </div>
-            <Button size="lg" variant="third" className="w-full sm:w-auto">
+            <Link
+              href={signUpLinks.caregiver}
+              className={cn(
+                "w-full sm:w-auto",
+                buttonVariants({ size: "lg", variant: "third" })
+              )}
+            >
               Criar perfil de cuidador
-            </Button>
+            </Link>
           </div>
         </div>
       </div>

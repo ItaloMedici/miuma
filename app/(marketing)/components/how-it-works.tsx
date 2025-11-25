@@ -40,7 +40,7 @@ export const HowItWorksForDonors = () => {
             return (
               <div
                 key={index}
-                className="p-4 md:p-8 rounded-2xl bg-card border border-border space-y-4"
+                className="p-4 md:p-8 corner-squircle rounded-4xl bg-card border border-border space-y-4"
               >
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
                   <Icon className="w-6 h-6 text-primary" />

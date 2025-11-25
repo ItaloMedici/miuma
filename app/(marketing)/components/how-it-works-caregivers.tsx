@@ -1,5 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { signUpLinks } from "@/lib/contants/links";
+import { cn } from "@/lib/utils";
 import { DollarSign, Eye, UserPlus } from "lucide-react";
+import Link from "next/link";
 
 export const HowItWorksForCaregivers = () => {
   const steps = [
@@ -41,7 +44,7 @@ export const HowItWorksForCaregivers = () => {
             return (
               <div
                 key={index}
-                className="p-4 md:p-8 rounded-2xl bg-background border border-border space-y-4"
+                className="p-4 md:p-8 corner-squircle rounded-4xl bg-background border border-border space-y-4"
               >
                 <div className="w-12 h-12 rounded-xl bg-third/10 flex items-center justify-center">
                   <Icon className="w-6 h-6 text-third" />
@@ -58,7 +61,12 @@ export const HowItWorksForCaregivers = () => {
         </div>
 
         <div className="text-center">
-          <Button size="lg">Sou cuidador — criar meu perfil agora</Button>
+          <Link
+            href={signUpLinks.caregiver}
+            className={cn(buttonVariants({ size: "lg" }))}
+          >
+            Sou cuidador — criar meu perfil agora
+          </Link>
         </div>
       </div>
     </section>
