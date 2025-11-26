@@ -4,7 +4,7 @@ import { formatCurrency } from "@/lib/utils/currency";
 import { caregiverUseCases } from "@/use-cases/caregiver";
 import { formatDate } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export const getProfile = async (
   profileId: string
@@ -55,4 +55,16 @@ export const getProfile = async (
 
     expenses: caregiverData.profile.expenses,
   };
+};
+
+export const subscribeMonthlySupporter = async ({
+  profileId,
+  value,
+}: {
+  profileId: string;
+  value: number;
+}) => {
+  // TODO: implement subscription logic
+
+  redirect(`/${profileId}/checkout`);
 };
