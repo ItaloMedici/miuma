@@ -1,65 +1,79 @@
 import { CaregiverDataJson } from "@/interfaces/caregiver";
 import { CaregiverProfile } from "@/interfaces/profile";
 import { formatCurrency } from "@/lib/utils/currency";
+import { addressUseCases } from "@/use-cases/address";
 import { caregiverUseCases } from "@/use-cases/caregiver";
+import { userUseCases } from "@/use-cases/user";
 import { formatDate } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { notFound, redirect } from "next/navigation";
 
+// Phase 1: Updated to use new relational structure
 export const getProfile = async (
-  profileId: string
+  profileSlug: string
 ): Promise<CaregiverProfile> => {
-  const caregiver = await caregiverUseCases.getCaregiverByProfileId(profileId);
+  const caregiver = await caregiverUseCases.getCaregiverByProfileSlug(
+    profileSlug
+  );
 
   if (!caregiver) {
     notFound();
   }
 
+  const user = await userUseCases.getUser(caregiver.userId);
+  if (!user) {
+    notFound();
+  }
+
+  const address = await addressUseCases.getAddress(caregiver.addressId);
+  if (!address) {
+    notFound();
+  }
+
   const caregiverData = JSON.parse(caregiver.data) as CaregiverDataJson;
 
-  const location = `${caregiverData.profile.location.city}, ${caregiverData.profile.location.state}`;
+  const location = `${address.city}, ${address.state}`;
 
-  const joinedAtDate = new Date(caregiver.joinedAt);
+  const joinedAtDate = new Date(caregiver.createdAt);
   const memberSince = formatDate(joinedAtDate, "LLLL yyyy", { locale: ptBR });
   const shortMemberSince = formatDate(joinedAtDate, "LLL yy", { locale: ptBR });
 
   return {
     profile: {
-      animalsCount: caregiverData.profile.petsInCare.length,
-      id: caregiver.profileId,
-      imageUrl: caregiverData.profile.caregiverImageUrl,
+      animalsCount: caregiverData.petsInCare.length,
+      id: caregiver.profileSlug,
+      imageUrl: caregiver.caregiverImageUrl,
       location,
       memberSince,
       shortMemberSince,
-      name: caregiver.name,
+      name: caregiver.publicName ?? caregiver.name,
       verified: caregiver.accountVerified,
       active: caregiver.active,
-      shortBio: caregiverData.profile.shortBio,
+      shortBio: caregiverData.shortBio,
     },
     billingInfo: {
-      currentMonthlySupport: formatCurrency(
-        caregiverData.stats.goal.currentMonthAmount
-      ),
-      monthlyGoal: formatCurrency(caregiverData.stats.goal.monthlyGoalAmount),
-      percentAchieved: caregiverData.stats.goal.percentAchieved,
-      supporters: caregiverData.monthlySupporters.length,
+      // Phase 1: Mock values since stats are removed
+      // In Phase 2, these will come from TRANSACTIONS/SUBSCRIPTIONS tables
+      currentMonthlySupport: formatCurrency(0),
+      monthlyGoal: formatCurrency(2500),
+      percentAchieved: 0,
+      supporters: 0,
       pixKey: caregiver.pixKey,
+      subscriptionPaymentStatus: caregiver.subscriptionPaymentStatus,
     },
-    galleryImages: caregiverData.profile.galleryImages,
-    descriptionMarkdown: caregiverData.profile.descriptionMarkdown,
-    socialMedia: caregiverData.profile.socialMedia,
-    ongoingCases: caregiverData.profile.ongoingCases,
-    recentUpdates: caregiverData.profile.recentUpdates,
-    socialProof: caregiverData.profile.socialProof,
-    petsInCare: caregiverData.profile.petsInCare,
-
-    expenses: caregiverData.profile.expenses,
+    galleryImages: caregiverData.galleryImages,
+    descriptionMarkdown: caregiverData.descriptionMarkdown,
+    socialMedia: caregiverData.socialMedia,
+    ongoingCases: caregiverData.ongoingCases,
+    recentUpdates: caregiverData.recentUpdates,
+    socialProof: caregiverData.socialProof,
+    petsInCare: caregiverData.petsInCare,
+    expenses: caregiverData.expenses,
   };
 };
 
 export const subscribeMonthlySupporter = async ({
   profileId,
-  value,
 }: {
   profileId: string;
   value: number;

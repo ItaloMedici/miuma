@@ -1,12 +1,16 @@
 import { CaregiverDataJson, CaregiverEntity } from "@/interfaces/caregiver";
 import { caregivers } from "@/lib/mock/caregiver";
 
-async function getCaregiverByProfileId(profileId: string) {
-  return caregivers.find((caregiver) => caregiver.profileId === profileId);
+async function getCaregiverByProfileSlug(profileSlug: string) {
+  return caregivers.find((caregiver) => caregiver.profileSlug === profileSlug);
 }
 
-function parseDataJson(careguiver: CaregiverEntity) {
-  return JSON.parse(careguiver.data) as CaregiverDataJson;
+function parseDataJson(caregiver: CaregiverEntity) {
+  return JSON.parse(caregiver.data) as CaregiverDataJson;
 }
 
-export const caregiverUseCases = { getCaregiverByProfileId, parseDataJson };
+export const caregiverUseCases = {
+  getCaregiverByProfileSlug,
+  parseDataJson,
+  getCaregiverByProfileId: getCaregiverByProfileSlug,
+};

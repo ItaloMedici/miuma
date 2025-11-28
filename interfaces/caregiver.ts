@@ -1,98 +1,48 @@
+export type SubscriptionPaymentStatus =
+  | "DISABLED"
+  | "PENDING_PROVIDER_SETUP"
+  | "REJECTED"
+  | "READY";
+
 export interface CaregiverEntity {
   id: string;
 
+  // Relations
+  userId: string; // FK to USERS table
+  profileSlug: string; // Unique identifier for profile URL (was profileId)
+  addressId: string; // FK to ADDRESSES table
+
   // Account info
-  profileId: string;
-  name: string;
-  email: string;
-  emailVerified: boolean;
   accountVerified: boolean;
   active: boolean;
-  joinedAt: string;
-  inactiveAt?: string;
+  profileUrl: string;
 
   // Payment info
-  receiverId: string;
+  subscriptionPaymentStatus: SubscriptionPaymentStatus;
   pixKey: string;
+  providerReceiverId: string | null; // ID from payment provider (was receiverId)
 
-  // JSON field containing all profile and supporter data
+  // Profile image (moved from JSON)
+  caregiverImageUrl: string;
+  name: string;
+  publicName?: string;
+
+  // Location data (moved to ADDRESSES table via addressId)
+  // name, email, emailVerified (moved to USERS table via userId)
+
+  // JSON field containing only profile data (simplified)
   data: string; // CaregiverDataJson
+
+  // Timestamps
+  createdAt: string;
+  updatedAt: string;
+  inactiveAt?: string;
 }
 
 export interface CaregiverDataJson {
-  // Profile data for public page
-  profile: CaregiverProfileData;
-
-  // Statistics
-  stats: {
-    totalDonationsReceived: number;
-    totalSupporters: number;
-    totalMonthlySupporters: number;
-    monthlyRecurringDonations: number;
-
-    goal: {
-      monthlyGoalAmount: number;
-      currentMonthAmount: number;
-      percentAchieved: number;
-      totalSupportGoalAmount?: number;
-    };
-  };
-
-  // Newsletter subscribers
-  newsletterSubscribers: Array<{
-    supporterId: string;
-    email: string;
-  }>;
-
-  // Monthly supporters
-  monthlySupporters: Array<{
-    supporterId: string;
-    name: string;
-    email: string;
-    value: number;
-    location: {
-      city: string;
-      state: string;
-      country: string;
-    };
-    imageUrl?: string;
-  }>;
-
-  // Donation history
-  history: {
-    donationsReceived: Array<{
-      amount: number;
-      date: string;
-      supporterId: string;
-      supporterName: string;
-      location: {
-        city: string;
-        state: string;
-        country: string;
-      };
-      type: "one-time" | "monthly";
-    }>;
-  };
-
-  // Dashboard data
-  analytics: {
-    pageViews: number;
-    uniqueVisitors: number;
-  };
-}
-
-export interface CaregiverProfileData {
-  caregiverImageUrl: string;
   galleryImages: CaregiverGallery;
   descriptionMarkdown: string;
   shortBio: string;
-
-  location: {
-    city: string;
-    state: string;
-    country: string;
-  };
-
   socialMedia?: {
     instagram?: string;
     facebook?: string;
@@ -101,13 +51,11 @@ export interface CaregiverProfileData {
     tiktok?: string;
     website?: string;
   };
-
-  ongoingCases: Array<OngoingCase>;
-  recentUpdates: Array<RecentUpdate>;
+  ongoingCases: OngoingCase[];
+  recentUpdates: RecentUpdate[];
   socialProof: SocialProof;
-  petsInCare: Array<PetInCare>;
-
-  expenses: Array<Expenses>;
+  petsInCare: PetInCare[];
+  expenses: Expenses[];
 }
 
 export interface CaregiverGallery {

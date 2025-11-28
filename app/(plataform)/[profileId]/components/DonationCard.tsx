@@ -30,8 +30,12 @@ import { subscribeMonthlySupporter } from "../action";
 import { useCaregiverProfile } from "./context";
 
 export function DonationCard() {
+  const { billingInfo } = useCaregiverProfile();
+  const canAcceptSubscriptions =
+    billingInfo.subscriptionPaymentStatus === "READY";
+
   const [donationType, setDonationType] = useState<"monthly" | "once">(
-    "monthly"
+    canAcceptSubscriptions ? "monthly" : "once"
   );
 
   return (
@@ -48,31 +52,40 @@ export function DonationCard() {
           </h2>
         </div>
 
-        {/* Donation Type Toggle */}
-        <div className="bg-muted p-1 rounded-2xl flex relative">
-          <button
-            onClick={() => setDonationType("monthly")}
-            className={`flex-1 py-1 text-sm font-medium rounded-xl transition-all ${
-              donationType === "monthly"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            Mensal
-          </button>
-          <button
-            onClick={() => setDonationType("once")}
-            className={`flex-1 py-1 text-sm font-medium rounded-xl transition-all ${
-              donationType === "once"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            Única vez Pix
-          </button>
-        </div>
+        {canAcceptSubscriptions ? (
+          <>
+            <div className="bg-muted p-1 rounded-2xl flex relative">
+              <button
+                onClick={() => setDonationType("monthly")}
+                className={`flex-1 py-1 text-sm font-medium rounded-xl transition-all ${
+                  donationType === "monthly"
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Mensal
+              </button>
+              <button
+                onClick={() => setDonationType("once")}
+                className={`flex-1 py-1 text-sm font-medium rounded-xl transition-all ${
+                  donationType === "once"
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Única vez Pix
+              </button>
+            </div>
 
-        {donationType === "monthly" ? <MonthlyDonation /> : <OneTimeDonation />}
+            {donationType === "monthly" ? (
+              <MonthlyDonation />
+            ) : (
+              <OneTimeDonation />
+            )}
+          </>
+        ) : (
+          <OneTimeDonation />
+        )}
       </div>
     </Card>
   );

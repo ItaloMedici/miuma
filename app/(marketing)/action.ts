@@ -9,7 +9,7 @@ export const getLandingPageData = async (): Promise<LandingPageData> => {
     (cg) => {
       const data = JSON.parse(cg.data) as CaregiverDataJson;
 
-      const petsCount = data.profile.petsInCare.length;
+      const petsCount = data.petsInCare.length;
 
       const petsUnderCare = `${petsCount} ${
         petsCount === 1 ? "animal" : "animais"
@@ -17,11 +17,11 @@ export const getLandingPageData = async (): Promise<LandingPageData> => {
 
       return {
         id: cg.id,
-        profileId: cg.profileId,
-        name: cg.name,
+        profileId: cg.profileSlug,
+        name: cg.publicName ?? cg.name,
         petsUnderCare,
-        imageUrl: data.profile.caregiverImageUrl,
-        shortBio: data.profile.shortBio,
+        imageUrl: cg.caregiverImageUrl,
+        shortBio: data.shortBio,
       };
     }
   );

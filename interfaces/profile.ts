@@ -26,6 +26,11 @@ export interface CaregiverProfileBillingInfo {
   supporters: number;
   percentAchieved: number;
   pixKey: string;
+  subscriptionPaymentStatus:
+    | "DISABLED"
+    | "PENDING_PROVIDER_SETUP"
+    | "REJECTED"
+    | "READY"; // Phase 1: Added for subscription control
 }
 
 export interface CaregiverProfile {
