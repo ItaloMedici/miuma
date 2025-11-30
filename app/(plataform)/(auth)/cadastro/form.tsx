@@ -1,5 +1,6 @@
 "use client";
 
+import { PasswordField } from "@/components/password-field";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,7 +13,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UserRole } from "@/interfaces/users";
+import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -49,6 +54,10 @@ const signUpSchema = z
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 export const SignUpForm = ({ role }: { role: UserRole }) => {
+  const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -62,9 +71,37 @@ export const SignUpForm = ({ role }: { role: UserRole }) => {
     reValidateMode: "onBlur",
   });
 
-  const onSubmit = (data: SignUpFormValues) => {
-    console.log(data);
-    // Handle form submission here
+  const onSubmit = async ({ name, email, password }: SignUpFormValues) => {
+    const redirectURL = role === UserRole.Caregiver ? "/cuidador/perfil" : "/";
+    const url = searchParams.get("callbackURL") || redirectURL;
+
+    await authClient.signUp.email(
+      {
+        email,
+        password,
+        callbackURL: url,
+        name: name,
+      },
+      {
+        onRequest: () => {
+          setIsLoading(true);
+        },
+        onSuccess: () => {
+          router.push(url);
+        },
+        onError: (ctx) => {
+          console.log("Error signing up user", ctx);
+          setIsLoading(false);
+
+          if (ctx.error?.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
+            form.setError("email", {
+              type: "manual",
+              message: "Este email já está em uso. Use outro email.",
+            });
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -136,11 +173,7 @@ export const SignUpForm = ({ role }: { role: UserRole }) => {
             <FormItem>
               <FormLabel>Senha</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Crie uma senha forte"
-                  {...field}
-                />
+                <PasswordField placeholder="Crie uma senha forte" {...field} />
               </FormControl>
               <FormDescription className="text-[10px] text-stone-400 text-right">
                 Mínimo de 8 caracteres
@@ -160,8 +193,15 @@ export const SignUpForm = ({ role }: { role: UserRole }) => {
           )}
         />
 
-        <Button type="submit" className="mt-4 w-full">
-          Criar Conta
+        <Button type="submit" className="mt-4 w-full" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Criando conta...
+            </>
+          ) : (
+            "Criar Conta"
+          )}
         </Button>
       </form>
     </Form>

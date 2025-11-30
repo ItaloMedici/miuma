@@ -1,5 +1,6 @@
 "use client";
 
+import { PasswordField } from "@/components/password-field";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,7 +11,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -22,6 +27,9 @@ const signInSchema = z.object({
 type SignInFormValues = z.infer<typeof signInSchema>;
 
 export const SignInForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -31,9 +39,41 @@ export const SignInForm = () => {
     reValidateMode: "onBlur",
   });
 
-  const onSubmit = (data: SignInFormValues) => {
-    console.log(data);
-    // Handle form submission here
+  const onSubmit = ({ email, password }: SignInFormValues) => {
+    const callbackUrl = "/cuidador/dashboard";
+
+    authClient.signIn.email(
+      {
+        email,
+        password,
+        callbackURL: callbackUrl,
+      },
+      {
+        onRequest: () => {
+          setIsLoading(true);
+        },
+        onSuccess: () => {
+          // Redirect handled by better-auth
+          router.push(callbackUrl);
+          setIsLoading(false);
+        },
+        onError: (ctx) => {
+          console.log("Error signing in user", ctx);
+          setIsLoading(false);
+
+          if (ctx.error.code === "INVALID_EMAIL_OR_PASSWORD") {
+            form.setError("email", {
+              type: "manual",
+              message: "Email ou senha inválidos.",
+            });
+            form.setError("password", {
+              type: "manual",
+              message: "",
+            });
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -60,19 +100,22 @@ export const SignInForm = () => {
             <FormItem>
               <FormLabel>Senha</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Digite sua senha"
-                  {...field}
-                />
+                <PasswordField placeholder="Digite sua senha" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit" className="mt-4 w-full">
-          Entrar
+        <Button type="submit" className="mt-4 w-full" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Entrando...
+            </>
+          ) : (
+            "Entrar"
+          )}
         </Button>
       </form>
     </Form>

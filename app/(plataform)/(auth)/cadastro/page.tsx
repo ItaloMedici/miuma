@@ -1,4 +1,3 @@
-import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/nav-bar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { UserRole } from "@/interfaces/users";
@@ -94,7 +93,6 @@ export default async function SignUpPage({
           </Link>
         </p>
       </main>
-      <Footer />
     </div>
   );
 }

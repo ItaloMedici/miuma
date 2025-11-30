@@ -1,4 +1,3 @@
-import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/nav-bar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -23,7 +22,7 @@ export default async function SignInPage() {
       />
       <div className="hidden md:block absolute top-0 right-0 w-120 h-96 bg-primary/15 rounded-full blur-3xl pointer-events-none translate-x-1/3 -translate-y-1/3" />
 
-      <main className="max-w-md mx-auto w-full animate-fade-in mb-16">
+      <main className="max-w-md mx-auto w-full animate-fade-in mb-24 md:mb-32 md:mt-16">
         <div className="text-center mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold mb-2">Entrar</h1>
           <p className="text-sm sm:text-md text-muted-foreground">
@@ -65,7 +64,6 @@ export default async function SignInPage() {
           </Link>
         </p>
       </main>
-      <Footer />
     </div>
   );
 }
