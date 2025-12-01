@@ -20,6 +20,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { sendWelcomeEmail } from "./action";
 
 const signUpSchema = z
   .object({
@@ -86,11 +87,11 @@ export const SignUpForm = ({ role }: { role: UserRole }) => {
         onRequest: () => {
           setIsLoading(true);
         },
-        onSuccess: () => {
+        onSuccess: (ctx) => {
+          sendWelcomeEmail(ctx.data.user.id);
           router.push(url);
         },
         onError: (ctx) => {
-          console.log("Error signing up user", ctx);
           setIsLoading(false);
 
           if (ctx.error?.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
