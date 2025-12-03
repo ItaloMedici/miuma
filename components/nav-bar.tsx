@@ -1,4 +1,7 @@
+"use client";
+
 import { buttonVariants } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
 import { links } from "@/lib/contants/links";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -57,38 +60,57 @@ export const Navbar = ({
               ))}
           </div>
         </div>
-        {showLinks && (
-          <div className="flex items-center gap-3">
-            <Link
-              href="/entrar"
-              className={cn(
-                buttonVariants({ variant: "ghost" }),
-                "hidden sm:inline-flex"
-              )}
-            >
-              Entrar
-            </Link>
-            <Link
-              href="/cadastro?type=supporter"
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "hidden md:inline-flex"
-              )}
-            >
-              Ajudar agora
-            </Link>
-            <Link
-              href="/cadastro?type=caregiver"
-              className={cn(buttonVariants({}))}
-            >
-              Criar perfil de cuidador
-            </Link>
-          </div>
-        )}
+
+        <SideLinks showLinks={showLinks} />
+
         {sideLinks ? (
           <div className="flex items-center gap-3">{sideLinks}</div>
         ) : null}
       </div>
     </nav>
+  );
+};
+
+const SideLinks = ({ showLinks }: { showLinks: boolean }) => {
+  if (!showLinks) return null;
+
+  const { data: session } = authClient.useSession();
+
+  if (session) {
+    const isCaregiver = session.user.role === "CAREGIVER";
+    return (
+      <Link
+        href={isCaregiver ? "/cuidador/perfil" : "/perfil"}
+        className={cn(buttonVariants({ variant: "outline" }))}
+      >
+        Perfil
+      </Link>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      <Link
+        href="/entrar"
+        className={cn(
+          buttonVariants({ variant: "ghost" }),
+          "hidden sm:inline-flex"
+        )}
+      >
+        Entrar
+      </Link>
+      <Link
+        href="/cadastro?type=supporter"
+        className={cn(
+          buttonVariants({ variant: "outline" }),
+          "hidden md:inline-flex"
+        )}
+      >
+        Ajudar agora
+      </Link>
+      <Link href="/cadastro?type=caregiver" className={cn(buttonVariants({}))}>
+        Criar perfil de cuidador
+      </Link>
+    </div>
   );
 };
