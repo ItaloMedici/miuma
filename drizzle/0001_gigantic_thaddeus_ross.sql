@@ -1,0 +1,1 @@
+ALTER TABLE "caregivers" ADD COLUMN "public_name" varchar(255);

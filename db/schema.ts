@@ -14,6 +14,14 @@ import {
 
 export const rolesEnum = pgEnum("role", ["SUPPORTER", "CAREGIVER", "ADMIN"]);
 
+export type UserRole = (typeof rolesEnum.enumValues)[number];
+
+export const USER_ROLES = {
+  SUPPORTER: "SUPPORTER",
+  CAREGIVER: "CAREGIVER",
+  ADMIN: "ADMIN",
+} as const;
+
 export const addresses = pgTable("addresses", {
   id: uuid("id").defaultRandom().primaryKey(),
   city: varchar("city", { length: 100 }).notNull(),
@@ -21,6 +29,9 @@ export const addresses = pgTable("addresses", {
   country: varchar("country", { length: 100 }).notNull(),
   zipCode: varchar("zip_code", { length: 20 }).notNull(),
   street: varchar("street", { length: 255 }).notNull(),
+  neighborhood: varchar("neighborhood", { length: 100 }).notNull(),
+  number: varchar("number", { length: 20 }).notNull(),
+  complement: varchar("complement", { length: 255 }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -43,6 +54,16 @@ export const subscriptionStatusEnum = pgEnum("subscription_paxyment_status", [
   "READY",
 ]);
 
+export type SubscriptionStatus =
+  (typeof subscriptionStatusEnum.enumValues)[number];
+
+export const SUBSCRIPTION_STATUS = {
+  DISABLED: "DISABLED",
+  PENDING_PROVIDER_SETUP: "PENDING_PROVIDER_SETUP",
+  REJECTED: "REJECTED",
+  READY: "READY",
+} as const;
+
 export const caregiversTable = pgTable(
   "caregivers",
   {
@@ -58,6 +79,7 @@ export const caregiversTable = pgTable(
     accountVerified: boolean("account_verified").notNull().default(false),
     active: boolean("active").notNull().default(false),
     caregiverImageUrl: varchar("caregiver_image_url", { length: 255 }),
+    publicName: varchar("public_name", { length: 255 }),
 
     subscriptionPaymentStatus: subscriptionStatusEnum()
       .notNull()
@@ -75,10 +97,10 @@ export const caregiversTable = pgTable(
   (table) => [index("caregivers_profileSlug_idx").on(table.profileSlug)]
 );
 
-export const session = pgTable(
-  "session",
+export const sessions = pgTable(
+  "sessions",
   {
-    id: text("id").primaryKey(),
+    id: uuid("id").defaultRandom().primaryKey(),
     expiresAt: timestamp("expires_at").notNull(),
     token: text("token").notNull().unique(),
     ipAddress: text("ip_address"),
@@ -92,8 +114,8 @@ export const session = pgTable(
   (table) => [index("session_userId_idx").on(table.userId)]
 );
 
-export const account = pgTable(
-  "account",
+export const accounts = pgTable(
+  "accounts",
   {
     id: uuid("id").defaultRandom().primaryKey(),
     accountId: text("account_id").notNull(),
@@ -114,8 +136,8 @@ export const account = pgTable(
   (table) => [index("account_userId_idx").on(table.userId)]
 );
 
-export const verification = pgTable(
-  "verification",
+export const verifications = pgTable(
+  "verifications",
   {
     id: uuid("id").defaultRandom().primaryKey(),
     identifier: text("identifier").notNull(),
@@ -128,20 +150,26 @@ export const verification = pgTable(
 );
 
 export const userRelations = relations(users, ({ many }) => ({
-  sessions: many(session),
-  accounts: many(account),
+  sessions: many(sessions),
+  accounts: many(accounts),
 }));
 
-export const sessionRelations = relations(session, ({ one }) => ({
+export const sessionRelations = relations(sessions, ({ one }) => ({
   user: one(users, {
-    fields: [session.userId],
+    fields: [sessions.userId],
     references: [users.id],
   }),
 }));
 
-export const accountRelations = relations(account, ({ one }) => ({
+export const accountRelations = relations(accounts, ({ one }) => ({
   user: one(users, {
-    fields: [account.userId],
+    fields: [accounts.userId],
     references: [users.id],
   }),
 }));
+
+export type AddressEntity = typeof addresses.$inferSelect;
+
+export type CaregiverEntity = typeof caregiversTable.$inferSelect & {
+  address?: AddressEntity;
+};
