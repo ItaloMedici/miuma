@@ -2,11 +2,12 @@
 
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import {
   BillingAndExpenses,
-  LocationAndMedia,
+  Gallery,
+  Location,
   PetsInCare,
   ProfileEssentials,
   StoryAndSocial,
@@ -16,8 +17,10 @@ import { useFormPersistence } from "../hooks/useFormPersistence";
 import {
   BillingAndExpensesFormData,
   billingAndExpensesSchema,
-  LocationAndMediaFormData,
-  locationAndMediaSchema,
+  GalleryFormData,
+  gallerySchema,
+  LocationFormData,
+  locationSchema,
   PetsInCareFormData,
   petsInCareSchema,
   ProfileEssentialsFormData,
@@ -30,11 +33,7 @@ import { UnsavedChangesBanner } from "./UnsavedChangesBanner";
 
 import { OnboardingStepEnum } from "../constants";
 
-interface OnboardingFormProps {
-  profileId?: string;
-}
-
-export function OnboardingForm({ profileId }: OnboardingFormProps) {
+export function OnboardingForm() {
   const {
     currentStep,
     goToNextStep,
@@ -43,10 +42,10 @@ export function OnboardingForm({ profileId }: OnboardingFormProps) {
     markStepAsCompleted,
     completedSteps,
     setCompletedSteps,
+    isEditMode,
+    inititalCaregiver,
+    user,
   } = useOnboarding();
-
-  // Only show unsaved changes banner in edit mode (when profileId exists)
-  const isEditMode = Boolean(profileId);
 
   const {
     loadBackup,
@@ -57,15 +56,15 @@ export function OnboardingForm({ profileId }: OnboardingFormProps) {
     lastSaved,
   } = useFormPersistence();
 
-  // Separate forms for each step
+  const loadBackupRef = useRef(loadBackup);
+
   const profileForm = useForm<ProfileEssentialsFormData>({
     resolver: zodResolver(profileEssentialsSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      shortBio: "",
-      profilePhoto: "",
-      profileName: "",
+      name: user.name,
+      shortBio: inititalCaregiver?.data.shortBio ?? "",
+      profilePhoto: inititalCaregiver?.caregiverImageUrl ?? "",
+      profileName: inititalCaregiver?.publicName ?? "",
     },
     reValidateMode: "onBlur",
   });
@@ -73,23 +72,38 @@ export function OnboardingForm({ profileId }: OnboardingFormProps) {
   const storyForm = useForm<StoryAndSocialFormData>({
     resolver: zodResolver(storyAndSocialSchema),
     defaultValues: {
-      story: "",
-      instagram: "",
-      facebook: "",
-      youtube: "",
-      whatsapp: "",
+      story: inititalCaregiver?.data.descriptionMarkdown ?? "",
+      instagram: inititalCaregiver?.data.socialMedia?.instagram ?? "",
+      facebook: inititalCaregiver?.data.socialMedia?.facebook ?? "",
+      youtube: inititalCaregiver?.data.socialMedia?.youtube ?? "",
+      whatsapp: inititalCaregiver?.data.socialMedia?.whatsapp ?? "",
     },
     reValidateMode: "onBlur",
   });
 
-  const locationForm = useForm<LocationAndMediaFormData>({
-    resolver: zodResolver(locationAndMediaSchema),
+  const locationForm = useForm<LocationFormData>({
+    resolver: zodResolver(locationSchema),
     defaultValues: {
-      city: "",
-      state: "",
-      country: "Brasil",
-      coverImage: "",
-      galleryPhotos: [],
+      zipCode: inititalCaregiver?.address?.zipCode ?? "",
+      street: inititalCaregiver?.address?.street ?? "",
+      number: inititalCaregiver?.address?.number ?? "",
+      complement: inititalCaregiver?.address?.complement ?? "",
+      neighborhood: inititalCaregiver?.address?.neighborhood ?? "",
+      city: inititalCaregiver?.address?.city ?? "",
+      state: inititalCaregiver?.address?.state ?? "",
+      country: inititalCaregiver?.address?.country ?? "Brasil",
+    },
+    reValidateMode: "onBlur",
+  });
+
+  const galleryForm = useForm<GalleryFormData>({
+    resolver: zodResolver(gallerySchema),
+    defaultValues: {
+      coverImage: inititalCaregiver?.data?.galleryImages?.cover?.url ?? "",
+      galleryPhotos:
+        inititalCaregiver?.data?.galleryImages?.photos?.map(
+          (photo) => photo.url
+        ) ?? [],
     },
     reValidateMode: "onBlur",
   });
@@ -97,7 +111,7 @@ export function OnboardingForm({ profileId }: OnboardingFormProps) {
   const petsForm = useForm<PetsInCareFormData>({
     resolver: zodResolver(petsInCareSchema),
     defaultValues: {
-      pets: [],
+      pets: inititalCaregiver?.data.petsInCare ?? [],
     },
     reValidateMode: "onBlur",
   });
@@ -105,42 +119,47 @@ export function OnboardingForm({ profileId }: OnboardingFormProps) {
   const billingForm = useForm<BillingAndExpensesFormData>({
     resolver: zodResolver(billingAndExpensesSchema),
     defaultValues: {
-      pixKey: "",
-      expenses: [],
-      ongoingCases: [],
+      pixKey: inititalCaregiver?.pixKey ?? "",
+      expenses: inititalCaregiver?.data.expenses ?? [],
+      ongoingCases: inititalCaregiver?.data.ongoingCases ?? [],
     },
     reValidateMode: "onBlur",
   });
 
   // Load backup on mount
   useEffect(() => {
-    const backup = loadBackup();
-    if (backup) {
-      if (backup.profileEssentials) {
-        profileForm.reset(
-          backup.profileEssentials as ProfileEssentialsFormData
-        );
-      }
-      if (backup.storyAndSocial) {
-        storyForm.reset(backup.storyAndSocial as StoryAndSocialFormData);
-      }
-      if (backup.locationAndMedia) {
-        locationForm.reset(backup.locationAndMedia as LocationAndMediaFormData);
-      }
-      if (backup.petsInCare) {
-        petsForm.reset(backup.petsInCare as PetsInCareFormData);
-      }
-      if (backup.billingAndExpenses) {
-        billingForm.reset(
-          backup.billingAndExpenses as BillingAndExpensesFormData
-        );
-      }
-      // Restore completed steps
-      if (backup.completedSteps && Array.isArray(backup.completedSteps)) {
-        setCompletedSteps(
-          new Set(backup.completedSteps as OnboardingStepEnum[])
-        );
-      }
+    const backup = loadBackupRef.current();
+
+    if (!backup) return;
+
+    if (backup.profileEssentials) {
+      profileForm.reset(backup.profileEssentials as ProfileEssentialsFormData);
+    }
+
+    if (backup.storyAndSocial) {
+      storyForm.reset(backup.storyAndSocial as StoryAndSocialFormData);
+    }
+
+    if (backup.location) {
+      locationForm.reset(backup.location as LocationFormData);
+    }
+
+    if (backup.gallery) {
+      galleryForm.reset(backup.gallery as GalleryFormData);
+    }
+
+    if (backup.petsInCare) {
+      petsForm.reset(backup.petsInCare as PetsInCareFormData);
+    }
+
+    if (backup.billingAndExpenses) {
+      billingForm.reset(
+        backup.billingAndExpenses as BillingAndExpensesFormData
+      );
+    }
+
+    if (backup.completedSteps && Array.isArray(backup.completedSteps)) {
+      setCompletedSteps(new Set(backup.completedSteps as OnboardingStepEnum[]));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -150,7 +169,8 @@ export function OnboardingForm({ profileId }: OnboardingFormProps) {
     const forms = {
       profileEssentials: profileForm,
       storyAndSocial: storyForm,
-      locationAndMedia: locationForm,
+      location: locationForm,
+      gallery: galleryForm,
       petsInCare: petsForm,
       billingAndExpenses: billingForm,
     };
@@ -165,6 +185,7 @@ export function OnboardingForm({ profileId }: OnboardingFormProps) {
       profileForm.watch(() => markAsChanged()),
       storyForm.watch(() => markAsChanged()),
       locationForm.watch(() => markAsChanged()),
+      galleryForm.watch(() => markAsChanged()),
       petsForm.watch(() => markAsChanged()),
       billingForm.watch(() => markAsChanged()),
     ];
@@ -180,7 +201,8 @@ export function OnboardingForm({ profileId }: OnboardingFormProps) {
     const data = {
       profileEssentials: profileForm.getValues(),
       storyAndSocial: storyForm.getValues(),
-      locationAndMedia: locationForm.getValues(),
+      location: locationForm.getValues(),
+      gallery: galleryForm.getValues(),
       petsInCare: petsForm.getValues(),
       billingAndExpenses: billingForm.getValues(),
       completedSteps: Array.from(completedSteps),
@@ -194,8 +216,10 @@ export function OnboardingForm({ profileId }: OnboardingFormProps) {
         return profileForm;
       case OnboardingStepEnum.STORY_AND_SOCIAL:
         return storyForm;
-      case OnboardingStepEnum.LOCATION_AND_MEDIA:
+      case OnboardingStepEnum.LOCATION:
         return locationForm;
+      case OnboardingStepEnum.GALLERY:
+        return galleryForm;
       case OnboardingStepEnum.PETS_IN_CARE:
         return petsForm;
       case OnboardingStepEnum.BILLING_AND_EXPENSES:
@@ -233,9 +257,14 @@ export function OnboardingForm({ profileId }: OnboardingFormProps) {
         name: "Sua História",
       },
       {
-        step: OnboardingStepEnum.LOCATION_AND_MEDIA,
+        step: OnboardingStepEnum.LOCATION,
         form: locationForm,
-        name: "Localização e Mídia",
+        name: "Localização",
+      },
+      {
+        step: OnboardingStepEnum.GALLERY,
+        form: galleryForm,
+        name: "Galeria de Fotos",
       },
       {
         step: OnboardingStepEnum.PETS_IN_CARE,
@@ -267,7 +296,8 @@ export function OnboardingForm({ profileId }: OnboardingFormProps) {
     const completeData = {
       profileEssentials: profileForm.getValues(),
       storyAndSocial: storyForm.getValues(),
-      locationAndMedia: locationForm.getValues(),
+      location: locationForm.getValues(),
+      gallery: galleryForm.getValues(),
       petsInCare: petsForm.getValues(),
       billingAndExpenses: billingForm.getValues(),
     };
@@ -278,40 +308,40 @@ export function OnboardingForm({ profileId }: OnboardingFormProps) {
   };
 
   const renderStep = () => {
-    switch (currentStep) {
-      case OnboardingStepEnum.PROFILE_ESSENTIALS:
-        return (
-          <Form {...profileForm}>
-            <ProfileEssentials form={profileForm} />
-          </Form>
-        );
-      case OnboardingStepEnum.STORY_AND_SOCIAL:
-        return (
-          <Form {...storyForm}>
-            <StoryAndSocial form={storyForm} />
-          </Form>
-        );
-      case OnboardingStepEnum.LOCATION_AND_MEDIA:
-        return (
-          <Form {...locationForm}>
-            <LocationAndMedia form={locationForm} />
-          </Form>
-        );
-      case OnboardingStepEnum.PETS_IN_CARE:
-        return (
-          <Form {...petsForm}>
-            <PetsInCare form={petsForm} />
-          </Form>
-        );
-      case OnboardingStepEnum.BILLING_AND_EXPENSES:
-        return (
-          <Form {...billingForm}>
-            <BillingAndExpenses form={billingForm} />
-          </Form>
-        );
-      default:
-        return null;
-    }
+    const formMap = {
+      [OnboardingStepEnum.PROFILE_ESSENTIALS]: (
+        <Form {...profileForm}>
+          <ProfileEssentials />
+        </Form>
+      ),
+      [OnboardingStepEnum.STORY_AND_SOCIAL]: (
+        <Form {...storyForm}>
+          <StoryAndSocial />
+        </Form>
+      ),
+      [OnboardingStepEnum.LOCATION]: (
+        <Form {...locationForm}>
+          <Location />
+        </Form>
+      ),
+      [OnboardingStepEnum.GALLERY]: (
+        <Form {...galleryForm}>
+          <Gallery />
+        </Form>
+      ),
+      [OnboardingStepEnum.PETS_IN_CARE]: (
+        <Form {...petsForm}>
+          <PetsInCare />
+        </Form>
+      ),
+      [OnboardingStepEnum.BILLING_AND_EXPENSES]: (
+        <Form {...billingForm}>
+          <BillingAndExpenses />
+        </Form>
+      ),
+    };
+
+    return formMap[currentStep];
   };
 
   return (

@@ -14,15 +14,13 @@ import {
   InputGroupText,
 } from "@/components/ui/input-group";
 import { Facebook, Instagram, Phone, Youtube } from "lucide-react";
-import { UseFormReturn } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { StoryAndSocialFormData } from "../schemas";
 import { MarkdownEditor } from "./MarkdownEditor";
 
-interface StoryAndSocialProps {
-  form: UseFormReturn<StoryAndSocialFormData>;
-}
+export function StoryAndSocial() {
+  const form = useFormContext<StoryAndSocialFormData>();
 
-export function StoryAndSocial({ form }: StoryAndSocialProps) {
   return (
     <div>
       <div className="mb-8">
@@ -61,7 +59,8 @@ export function StoryAndSocial({ form }: StoryAndSocialProps) {
                     } catch {
                       return field.value?.length || 0;
                     }
-                  })()}/5000
+                  })()}
+                  /5000
                 </p>
               </div>
             </FormItem>

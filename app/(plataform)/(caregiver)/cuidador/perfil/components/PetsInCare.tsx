@@ -5,15 +5,13 @@ import { Card } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { PetFormData, PetsInCareFormData } from "../schemas";
 import { AddPetDialog } from "./AddPetDialog";
 
-interface PetsInCareProps {
-  form: UseFormReturn<PetsInCareFormData>;
-}
+export function PetsInCare() {
+  const form = useFormContext<PetsInCareFormData>();
 
-export function PetsInCare({ form }: PetsInCareProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingPet, setEditingPet] = useState<PetFormData | undefined>();
 

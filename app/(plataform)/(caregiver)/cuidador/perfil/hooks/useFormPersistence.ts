@@ -9,7 +9,9 @@ const LAST_SAVED_KEY = "onboarding_last_saved";
 interface FormBackup {
   profileEssentials?: unknown;
   storyAndSocial?: unknown;
-  locationAndMedia?: unknown;
+  location?: unknown;
+  gallery?: unknown;
+  locationAndMedia?: unknown; // Backward compatibility
   petsInCare?: unknown;
   billingAndExpenses?: unknown;
   completedSteps?: string[];
@@ -79,7 +81,9 @@ export function useFormPersistence() {
       const data: FormBackup = {
         profileEssentials: forms.profileEssentials?.getValues(),
         storyAndSocial: forms.storyAndSocial?.getValues(),
-        locationAndMedia: forms.locationAndMedia?.getValues(),
+        location: forms.location?.getValues(),
+        gallery: forms.gallery?.getValues(),
+        locationAndMedia: forms.locationAndMedia?.getValues(), // Backward compatibility
         petsInCare: forms.petsInCare?.getValues(),
         billingAndExpenses: forms.billingAndExpenses?.getValues(),
         completedSteps: Array.from(completedSteps),

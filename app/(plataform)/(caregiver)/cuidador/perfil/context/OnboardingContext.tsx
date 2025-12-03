@@ -1,5 +1,7 @@
 "use client";
 
+import { CaregiverEntity } from "@/db/schema";
+import { User } from "better-auth";
 import React, { createContext, useContext, useState } from "react";
 import {
   ONBOARDING_STEPS,
@@ -25,6 +27,9 @@ interface OnboardingContextValue {
   markStepAsCompleted: (step: OnboardingStepEnum) => void;
   isStepCompleted: (step: OnboardingStepEnum) => boolean;
   setCompletedSteps: (steps: Set<OnboardingStepEnum>) => void;
+  isEditMode: boolean;
+  inititalCaregiver?: CaregiverEntity;
+  user: User;
 }
 
 const OnboardingContext = createContext<OnboardingContextValue | undefined>(
@@ -34,11 +39,15 @@ const OnboardingContext = createContext<OnboardingContextValue | undefined>(
 interface OnboardingProviderProps {
   children: React.ReactNode;
   initialStep?: OnboardingStepEnum;
+  caregiver?: CaregiverEntity;
+  user: User;
 }
 
 export function OnboardingProvider({
   children,
   initialStep = OnboardingStepEnum.PROFILE_ESSENTIALS,
+  caregiver,
+  user,
 }: OnboardingProviderProps) {
   const [currentStep, setCurrentStep] =
     useState<OnboardingStepEnum>(initialStep);
@@ -101,6 +110,9 @@ export function OnboardingProvider({
     isStepCompleted,
     setCompletedSteps: (steps: Set<OnboardingStepEnum>) =>
       setCompletedSteps(steps),
+    isEditMode: Boolean(caregiver?.id),
+    inititalCaregiver: caregiver,
+    user,
   };
 
   return (

@@ -10,15 +10,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Info } from "lucide-react";
-import { UseFormReturn } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { ProfileEssentialsFormData } from "../schemas";
 import { ImageUploader } from "./ImageUploader";
 
-interface ProfileEssentialsProps {
-  form: UseFormReturn<ProfileEssentialsFormData>;
-}
-
-export function ProfileEssentials({ form }: ProfileEssentialsProps) {
+export function ProfileEssentials() {
+  const form = useFormContext<ProfileEssentialsFormData>();
   return (
     <div>
       <div className="mb-8">
@@ -61,35 +58,19 @@ export function ProfileEssentials({ form }: ProfileEssentialsProps) {
           )}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <FormField
-            control={form.control}
-            name="firstName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nome</FormLabel>
-                <FormControl>
-                  <Input placeholder="Seu nome" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="lastName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Sobrenome</FormLabel>
-                <FormControl>
-                  <Input placeholder="Seu sobrenome" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nome</FormLabel>
+              <FormControl>
+                <Input placeholder="Seu nome" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}

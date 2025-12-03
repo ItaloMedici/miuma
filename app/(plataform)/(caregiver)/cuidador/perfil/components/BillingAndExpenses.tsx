@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/input-group";
 import { formatCurrency } from "@/lib/utils/currency";
 import { QrCode, Trash2 } from "lucide-react";
-import { UseFormReturn } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import {
   BillingAndExpensesFormData,
   ExpenseFormData,
@@ -27,11 +27,9 @@ import {
 import { AddExpenseDialog } from "./AddExpenseDialog";
 import { AddOngoingCaseDialog } from "./AddOngoingCaseDialog";
 
-interface BillingAndExpensesProps {
-  form: UseFormReturn<BillingAndExpensesFormData>;
-}
+export function BillingAndExpenses() {
+  const form = useFormContext<BillingAndExpensesFormData>();
 
-export function BillingAndExpenses({ form }: BillingAndExpensesProps) {
   const expenses = form.watch("expenses") || [];
   const ongoingCases = form.watch("ongoingCases") || [];
 

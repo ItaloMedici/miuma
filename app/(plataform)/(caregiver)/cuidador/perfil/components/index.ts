@@ -1,7 +1,9 @@
 export { AddPetDialog } from "./AddPetDialog";
 export { BillingAndExpenses } from "./BillingAndExpenses";
 export { FooterNavigation } from "./FooterNavigation";
+export { Gallery } from "./Gallery";
 export { ImageUploader } from "./ImageUploader";
+export { Location } from "./Location";
 export { LocationAndMedia } from "./LocationAndMedia";
 export { MarkdownEditor } from "./MarkdownEditor";
 export { MobileHeader } from "./MobileHeader";

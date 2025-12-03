@@ -1,23 +1,34 @@
-import { OnboardingContainer, OnboardingSidebar } from "./components";
+import { USER_ROLES } from "@/db/schema";
+import { getServerSession } from "@/lib/auth-server";
+import { caregiverUseCases } from "@/use-cases/caregiver";
+import { redirect } from "next/navigation";
+import { MobileHeader, OnboardingForm, OnboardingSidebar } from "./components";
 import { OnboardingStepEnum } from "./constants";
 import { OnboardingProvider } from "./context";
 
 // Server component - can fetch user data here
 export default async function OnboardingPage() {
-  // TODO: Check if user has existing profile (if editing, profileId will be set)
-  const profileId: string | undefined = undefined; // Will be fetched from database
+  const session = await getServerSession();
 
-  // TODO: Check if user has existing onboarding data and resume from that step
+  if (!session || session?.user?.role !== USER_ROLES.CAREGIVER) {
+    redirect("/entrar");
+  }
+
+  const caregiver = await caregiverUseCases.getByUserId(session.user.id);
+
   const initialStep = OnboardingStepEnum.PROFILE_ESSENTIALS;
 
   return (
-    <OnboardingProvider initialStep={initialStep}>
+    <OnboardingProvider
+      initialStep={initialStep}
+      caregiver={caregiver}
+      user={session.user}
+    >
       <div className="bg-background min-h-screen flex flex-col md:flex-row overflow-hidden">
-        {/* Sidebar with context */}
         <OnboardingSidebar />
 
-        {/* Form container with context */}
-        <OnboardingContainer profileId={profileId} />
+        <MobileHeader />
+        <OnboardingForm />
       </div>
     </OnboardingProvider>
   );

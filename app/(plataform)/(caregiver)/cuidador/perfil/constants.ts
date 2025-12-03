@@ -1,7 +1,8 @@
 export enum OnboardingStepEnum {
   PROFILE_ESSENTIALS = "PROFILE_ESSENTIALS",
   STORY_AND_SOCIAL = "STORY_AND_SOCIAL",
-  LOCATION_AND_MEDIA = "LOCATION_AND_MEDIA",
+  LOCATION = "LOCATION",
+  GALLERY = "GALLERY",
   PETS_IN_CARE = "PETS_IN_CARE",
   BILLING_AND_EXPENSES = "BILLING_AND_EXPENSES",
 }
@@ -22,18 +23,23 @@ export const ONBOARDING_STEPS: Array<{
     label: "História e Redes",
   },
   {
-    id: OnboardingStepEnum.LOCATION_AND_MEDIA,
+    id: OnboardingStepEnum.LOCATION,
     number: 3,
-    label: "Localização e Mídia",
+    label: "Localização",
+  },
+  {
+    id: OnboardingStepEnum.GALLERY,
+    number: 4,
+    label: "Galeria de Fotos",
   },
   {
     id: OnboardingStepEnum.PETS_IN_CARE,
-    number: 4,
+    number: 5,
     label: "Pets sob Cuidado",
   },
   {
     id: OnboardingStepEnum.BILLING_AND_EXPENSES,
-    number: 5,
+    number: 6,
     label: "Cobrança e Despesas",
   },
 ];

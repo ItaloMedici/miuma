@@ -8,6 +8,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { BRAZILIAN_STATES } from "@/lib/constants/brazilian-states";
 import { UseFormReturn } from "react-hook-form";
 import { LocationAndMediaFormData } from "../schemas";
@@ -70,17 +77,18 @@ export function LocationAndMedia({ form }: LocationAndMediaProps) {
               <FormItem>
                 <FormLabel>Estado</FormLabel>
                 <FormControl>
-                  <select
-                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                    {...field}
-                  >
-                    <option value="">Selecione</option>
-                    {BRAZILIAN_STATES.map((state) => (
-                      <option key={state.code} value={state.code}>
-                        {state.code}
-                      </option>
-                    ))}
-                  </select>
+                  <Select {...field}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Selecione" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {BRAZILIAN_STATES.map((state) => (
+                        <SelectItem key={state.code} value={state.code}>
+                          {state.code}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
