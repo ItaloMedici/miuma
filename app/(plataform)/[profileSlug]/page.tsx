@@ -56,10 +56,10 @@ export const generateMetadata = async ({
 export default async function CaregiverProfile({
   params,
 }: {
-  params: Promise<{ profileId: string }>;
+  params: Promise<{ profileSlug: string }>;
 }) {
   const paramsList = await params;
-  const id = paramsList.profileId;
+  const id = paramsList.profileSlug;
 
   const caregiver = await cachedProfile(id);
 

@@ -16,7 +16,7 @@ export interface CaregiverProfileInfo {
   animalsCount: number;
   verified: boolean;
   active?: boolean;
-  imageUrl: string;
+  imageUrl?: string;
   shortBio: string;
 }
 
@@ -25,12 +25,13 @@ export interface CaregiverProfileBillingInfo {
   currentMonthlySupport: string;
   supporters: number;
   percentAchieved: number;
-  pixKey: string;
+  pixKey?: string;
   subscriptionPaymentStatus:
     | "DISABLED"
     | "PENDING_PROVIDER_SETUP"
     | "REJECTED"
     | "READY"; // Phase 1: Added for subscription control
+  isReadyForDonations: boolean;
 }
 
 export interface CaregiverProfile {

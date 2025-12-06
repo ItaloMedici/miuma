@@ -1,3 +1,4 @@
+import { env } from "@/lib/env";
 import type { Metadata } from "next";
 import { Stack_Sans_Text } from "next/font/google";
 import "./globals.css";
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
   },
   alternates: {
-    canonical: "https://miuma.app",
+    canonical: env.NEXT_PUBLIC_URL,
   },
 };
 
