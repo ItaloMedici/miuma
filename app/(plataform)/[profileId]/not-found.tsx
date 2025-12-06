@@ -4,16 +4,16 @@ import Link from "next/link";
 
 export default function ProfileNotFound() {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
-      <div className="max-w-md w-full text-center space-y-8">
+    <div className="bg-background flex min-h-screen items-center justify-center px-4">
+      <div className="w-full max-w-md space-y-8 text-center">
         <div className="flex justify-center">
-          <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center">
-            <SearchX className="w-12 h-12 text-muted-foreground" />
+          <div className="bg-muted flex h-24 w-24 items-center justify-center rounded-full">
+            <SearchX className="text-muted-foreground h-12 w-12" />
           </div>
         </div>
 
         <div className="space-y-3">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
             Perfil não encontrado
           </h1>
           <p className="text-muted-foreground text-base md:text-lg">
@@ -22,7 +22,7 @@ export default function ProfileNotFound() {
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col justify-center gap-3 sm:flex-row">
           <Button asChild size="lg">
             <Link href="/">Voltar para home</Link>
           </Button>
@@ -31,7 +31,7 @@ export default function ProfileNotFound() {
           </Button>
         </div>
 
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           Se você acredita que isso é um erro,{" "}
           <Link href="/contato" className="text-primary hover:underline">
             entre em contato conosco

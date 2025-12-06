@@ -64,10 +64,10 @@ export default async function CaregiverProfile({
 
   return (
     <CaregiverProfileProvider profile={caregiver}>
-      <div className="min-h-screen bg-background">
+      <div className="bg-background min-h-screen">
         <ProfileNavHeader />
 
-        <main className="pt-6 md:pt-12 pb-24 lg:pb-20 px-6">
+        <main className="px-6 pt-6 pb-24 md:pt-12 lg:pb-20">
           <section id="fotos" className="mb-8">
             <div className="container mx-auto max-w-7xl">
               <Gallery />
@@ -76,8 +76,8 @@ export default async function CaregiverProfile({
 
           <div>
             <div className="container mx-auto max-w-7xl">
-              <div className="grid lg:grid-cols-3 gap-8 items-start">
-                <div className="lg:col-span-2 space-y-8 md:space-y-12">
+              <div className="grid items-start gap-8 lg:grid-cols-3">
+                <div className="space-y-8 md:space-y-12 lg:col-span-2">
                   <CaregiverHeader />
 
                   <section id="sobre">
@@ -101,7 +101,7 @@ export default async function CaregiverProfile({
                   <SocialMedia />
                 </div>
 
-                <div className="hidden lg:block lg:sticky lg:top-18">
+                <div className="hidden lg:sticky lg:top-18 lg:block">
                   <DonationCard />
                 </div>
               </div>

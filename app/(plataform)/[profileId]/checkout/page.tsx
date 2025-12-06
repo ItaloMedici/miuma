@@ -20,36 +20,36 @@ export default async function CheckoutPage({ params }: PageProps) {
   return (
     <>
       {/* Main Full Page Wrapper */}
-      <div className="w-full h-screen flex flex-col md:flex-row relative overflow-hidden">
+      <div className="relative flex h-screen w-full flex-col overflow-hidden md:flex-row">
         {/* Left Panel: Order Summary (Drawer on Mobile, Sidebar on Desktop) */}
-        <div className="hidden md:flex md:w-5/12 lg:w-3/12 bg-muted/30 p-6 lg:p-12 border-r border-border flex-col justify-between overflow-hidden">
+        <div className="bg-muted/30 border-border hidden flex-col justify-between overflow-hidden border-r p-6 md:flex md:w-5/12 lg:w-3/12 lg:p-12">
           <OrderSummaryContent orderSummary={orderSummary} />
         </div>
 
         {/* Right Panel: Checkout Form */}
-        <div className="w-full md:w-7/12 lg:w-9/12 bg-background px-6 py-6 pb-28 sm:px-6 md:p-8 lg:p-12 flex items-start md:items-center justify-center relative">
+        <div className="bg-background relative flex w-full items-start justify-center px-6 py-6 pb-28 sm:px-6 md:w-7/12 md:items-center md:p-8 lg:w-9/12 lg:p-12">
           {/* Decorative blobs - hidden on mobile for performance */}
-          <div className="hidden md:block absolute top-0 -right-60 w-120 h-96 bg-primary/15 rounded-full blur-3xl pointer-events-none translate-x-1/3 -translate-y-1/3" />
+          <div className="bg-primary/15 pointer-events-none absolute top-0 -right-60 hidden h-96 w-120 translate-x-1/3 -translate-y-1/3 rounded-full blur-3xl md:block" />
 
-          <div className="w-full max-w-md relative z-10">
+          <div className="relative z-10 w-full max-w-md">
             {/* Back Button */}
-            <div className="absolute -top-16 md:-top-24 left-0 hidden md:block">
+            <div className="absolute -top-16 left-0 hidden md:-top-24 md:block">
               <Link
                 href={returnUrl || "/"}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group"
+                className="text-muted-foreground hover:text-foreground group flex items-center gap-1 text-xs transition-colors"
               >
-                <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-1" />
+                <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
                 Voltar às opções de doação
               </Link>
             </div>
 
             {/* Mobile Header Back */}
-            <div className="md:hidden mb-6">
+            <div className="mb-6 md:hidden">
               <Link
                 href={returnUrl || "/"}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1 group"
+                className="text-muted-foreground hover:text-foreground group inline-flex items-center gap-1 text-xs transition-colors"
               >
-                <ArrowLeft className="w-3 h-3" />
+                <ArrowLeft className="h-3 w-3" />
                 Voltar
               </Link>
             </div>
@@ -57,10 +57,10 @@ export default async function CheckoutPage({ params }: PageProps) {
             <StepsIndicator />
 
             <div className="mb-6 md:mb-8">
-              <h2 className="text-xl md:text-2xl font-medium tracking-tight text-foreground">
+              <h2 className="text-foreground text-xl font-medium tracking-tight md:text-2xl">
                 Método de Pagamento
               </h2>
-              <p className="text-sm md:text-base text-muted-foreground mt-1.5 md:mt-2">
+              <p className="text-muted-foreground mt-1.5 text-sm md:mt-2 md:text-base">
                 Complete sua doação com segurança.
               </p>
             </div>
