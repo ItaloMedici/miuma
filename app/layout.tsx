@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/sonner";
 import { env } from "@/lib/env";
 import type { Metadata } from "next";
 import { Stack_Sans_Text } from "next/font/google";
@@ -7,6 +8,8 @@ const stackSansText = Stack_Sans_Text({
   subsets: ["latin"],
   variable: "--font-stack-sans-text",
   weight: ["200", "300", "400", "700"],
+  fallback: ["system-ui", "arial"],
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
