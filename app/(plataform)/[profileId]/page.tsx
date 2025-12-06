@@ -1,4 +1,5 @@
 import { Footer } from "@/components/footer";
+import { cn } from "@/lib/utils";
 import { profile } from "console";
 import { Metadata } from "next";
 import { cache } from "react";
@@ -77,7 +78,12 @@ export default async function CaregiverProfile({
           <div>
             <div className="container mx-auto max-w-7xl">
               <div className="grid items-start gap-8 lg:grid-cols-3">
-                <div className="space-y-8 md:space-y-12 lg:col-span-2">
+                <div
+                  className={cn("space-y-8 md:space-y-12 lg:col-span-2", {
+                    "lg:col-span-3":
+                      !caregiver?.billingInfo.isReadyForDonations,
+                  })}
+                >
                   <CaregiverHeader />
 
                   <section id="sobre">
@@ -101,9 +107,11 @@ export default async function CaregiverProfile({
                   <SocialMedia />
                 </div>
 
-                <div className="hidden lg:sticky lg:top-18 lg:block">
-                  <DonationCard />
-                </div>
+                {caregiver?.billingInfo.isReadyForDonations && (
+                  <div className="hidden lg:sticky lg:top-18 lg:block">
+                    <DonationCard />
+                  </div>
+                )}
               </div>
             </div>
           </div>

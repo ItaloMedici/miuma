@@ -1,64 +1,64 @@
-import { CaregiverDataJson } from "@/interfaces/caregiver";
+"use server";
+
 import { CaregiverProfile } from "@/interfaces/profile";
+import { getServerSession } from "@/lib/auth-server";
 import { formatCurrency } from "@/lib/utils/currency";
-import { addressUseCases } from "@/use-cases/address";
 import { caregiverUseCases } from "@/use-cases/caregiver";
-import { userUseCases } from "@/use-cases/user";
 import { formatDate } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { notFound, redirect } from "next/navigation";
 
-// Phase 1: Updated to use new relational structure
 export const getProfile = async (
   profileSlug: string
 ): Promise<CaregiverProfile> => {
-  const caregiver = await caregiverUseCases.getCaregiverByProfileSlug(
-    profileSlug
-  );
+  const caregiver = await caregiverUseCases.getBySlug(profileSlug);
 
   if (!caregiver) {
     notFound();
   }
 
-  const user = await userUseCases.getUser(caregiver.userId);
-  if (!user) {
+  const session = await getServerSession();
+
+  // Allow the caregiver to view their own profile even if inactive/unverified
+  const isMyProfile =
+    session?.user && caregiver && caregiver.userId === session.user.id;
+
+  if (!isMyProfile && (!caregiver.active || !caregiver.accountVerified)) {
     notFound();
   }
 
-  const address = await addressUseCases.getAddress(caregiver.addressId);
-  if (!address) {
-    notFound();
-  }
+  const { address, data: caregiverData } = caregiver;
 
-  const caregiverData = JSON.parse(caregiver.data) as CaregiverDataJson;
-
-  const location = `${address.city}, ${address.state}`;
+  const location = `${address?.city}, ${address?.state}`;
 
   const joinedAtDate = new Date(caregiver.createdAt);
   const memberSince = formatDate(joinedAtDate, "LLLL yyyy", { locale: ptBR });
   const shortMemberSince = formatDate(joinedAtDate, "LLL yy", { locale: ptBR });
 
+  const isReadyForDonations =
+    caregiver.subscriptionPaymentStatus === "READY" ||
+    Boolean(caregiver.pixKey);
+
   return {
     profile: {
-      animalsCount: caregiverData.petsInCare.length,
+      animalsCount: caregiver.totalAnimalsCared,
       id: caregiver.profileSlug,
-      imageUrl: caregiver.caregiverImageUrl,
+      imageUrl: caregiver.caregiverImageUrl ?? undefined,
       location,
       memberSince,
       shortMemberSince,
-      name: caregiver.publicName ?? caregiver.name,
-      verified: caregiver.accountVerified,
+      name: caregiver.publicName,
+      verified: caregiver.accountVerified as boolean,
       active: caregiver.active,
-      shortBio: caregiverData.shortBio,
+      shortBio: caregiver.shortBio,
     },
     billingInfo: {
-      // Phase 1: Mock values since stats are removed
-      // In Phase 2, these will come from TRANSACTIONS/SUBSCRIPTIONS tables
       currentMonthlySupport: formatCurrency(0),
       monthlyGoal: formatCurrency(2500),
       percentAchieved: 0,
       supporters: 0,
-      pixKey: caregiver.pixKey,
+      pixKey: caregiver.pixKey ?? undefined,
+      isReadyForDonations,
       subscriptionPaymentStatus: caregiver.subscriptionPaymentStatus,
     },
     galleryImages: caregiverData.galleryImages,

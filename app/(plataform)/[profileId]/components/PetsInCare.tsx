@@ -42,7 +42,7 @@ export const PetsInCare = () => {
       >
         {limitedPets.map((pet, index) => (
           <button
-            key={pet.id}
+            key={`pet-in-care-${pet.name}`}
             onClick={() => openGallery(index)}
             className="group corner-squircle relative aspect-square h-[100px] w-full cursor-pointer overflow-hidden rounded-2xl transition-opacity hover:opacity-90"
           >

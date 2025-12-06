@@ -30,13 +30,18 @@ import { subscribeMonthlySupporter } from "../action";
 import { useCaregiverProfile } from "./context";
 
 export function DonationCard() {
-  const { billingInfo } = useCaregiverProfile();
-  const canAcceptSubscriptions =
-    billingInfo.subscriptionPaymentStatus === "READY";
+  const {
+    billingInfo: { subscriptionPaymentStatus, isReadyForDonations },
+  } = useCaregiverProfile();
+  const canAcceptSubscriptions = subscriptionPaymentStatus === "READY";
 
   const [donationType, setDonationType] = useState<"monthly" | "once">(
     canAcceptSubscriptions ? "monthly" : "once"
   );
+
+  if (!isReadyForDonations) {
+    return null;
+  }
 
   return (
     <Card className="sm:border-border relative overflow-hidden border-0 py-0 shadow-none sm:rounded-4xl sm:border">

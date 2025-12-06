@@ -10,9 +10,15 @@ import {
 import { Heart } from "lucide-react";
 import { useState } from "react";
 import { DonationCard } from "./DonationCard";
+import { useCaregiverProfile } from "./context";
 
 export function MobileDonationBar() {
   const [open, setOpen] = useState(false);
+  const { billingInfo } = useCaregiverProfile();
+
+  if (!billingInfo.isReadyForDonations) {
+    return null;
+  }
 
   return (
     <>
