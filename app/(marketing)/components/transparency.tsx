@@ -24,27 +24,27 @@ export const Transparency = () => {
   ];
 
   return (
-    <section id="transparencia" className="py-14 md:py-20 px-6">
+    <section id="transparencia" className="px-6 py-14 md:py-20">
       <div className="container mx-auto max-w-7xl">
-        <div className="text-center space-y-4 mb-16">
+        <div className="mb-16 space-y-4 text-center">
           <h2 className="text-4xl font-bold tracking-tight">
             Transparência que gera confiança.
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
             Construída sobre princípios de abertura e prestação de contas
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="mb-12 grid gap-6 md:grid-cols-3">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
               <div
                 key={index}
-                className="p-4 md:p-8 corner-squircle rounded-4xl bg-card border border-border space-y-4"
+                className="corner-squircle bg-card border-border space-y-4 rounded-4xl border p-4 md:p-8"
               >
-                <div className="w-12 h-12 rounded-xl bg-fifth/10 flex items-center justify-center">
-                  <Icon className="w-6 h-6 text-fifth" />
+                <div className="bg-fifth/10 flex h-12 w-12 items-center justify-center rounded-xl">
+                  <Icon className="text-fifth h-6 w-6" />
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-xl font-semibold">{feature.title}</h3>

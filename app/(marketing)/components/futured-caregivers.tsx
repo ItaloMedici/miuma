@@ -12,26 +12,26 @@ export const FeaturedCaregivers = ({ caregivers }: Props) => {
   if (!caregivers?.length) return null;
 
   return (
-    <section id="cuidadores" className="py-14 md:py-20 px-6 anchor-offset">
+    <section id="cuidadores" className="anchor-offset px-6 py-14 md:py-20">
       <div className="container mx-auto max-w-7xl">
-        <div className="text-center space-y-4 mb-16">
+        <div className="mb-16 space-y-4 text-center">
           <h2 className="text-4xl font-bold tracking-tight">
             Conheça quem transforma vidas todos os dias.
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
             Histórias reais de pessoas dedicadas ao cuidado e proteção dos
             animais.
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {caregivers.map((caregiver, index) => (
             <div
               key={index}
-              className="p-4 md:p-6 corner-squircle rounded-5xl bg-card border border-border space-y-4 hover:shadow-lg transition-shadow"
+              className="corner-squircle rounded-5xl bg-card border-border space-y-4 border p-4 transition-shadow hover:shadow-lg md:p-6"
             >
               {caregiver.imageUrl && (
-                <div className="corner-squircle rounded-4xl aspect-video md:aspect-square bg-muted border border-border overflow-hidden">
+                <div className="corner-squircle bg-muted border-border aspect-video overflow-hidden rounded-4xl border md:aspect-square">
                   <Image
                     src={caregiver.imageUrl}
                     alt={caregiver.name}
@@ -44,11 +44,11 @@ export const FeaturedCaregivers = ({ caregivers }: Props) => {
               <div className="space-y-3">
                 <div>
                   <h3 className="text-lg font-semibold">{caregiver.name}</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">
                     {caregiver.petsUnderCare}
                   </p>
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed italic">
+                <p className="text-muted-foreground text-sm leading-relaxed italic">
                   &quot;{caregiver.shortBio}&quot;
                 </p>
                 <Link

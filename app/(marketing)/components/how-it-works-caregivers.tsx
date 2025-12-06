@@ -27,27 +27,27 @@ export const HowItWorksForCaregivers = () => {
   ];
 
   return (
-    <section id="para-cuidadores" className="py-14 md:py-20 px-6">
+    <section id="para-cuidadores" className="px-6 py-14 md:py-20">
       <div className="container mx-auto max-w-7xl">
-        <div className="text-center space-y-4 mb-16">
+        <div className="mb-16 space-y-4 text-center">
           <h2 className="text-4xl font-bold tracking-tight">
             Cuidadores, a Miuma é feita para vocês.
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
             Receba o apoio que você merece de forma justa e transparente
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="mb-12 grid gap-6 md:grid-cols-3">
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
               <div
                 key={index}
-                className="p-4 md:p-8 corner-squircle rounded-4xl bg-background border border-border space-y-4"
+                className="corner-squircle bg-background border-border space-y-4 rounded-4xl border p-4 md:p-8"
               >
-                <div className="w-12 h-12 rounded-xl bg-third/10 flex items-center justify-center">
-                  <Icon className="w-6 h-6 text-third" />
+                <div className="bg-third/10 flex h-12 w-12 items-center justify-center rounded-xl">
+                  <Icon className="text-third h-6 w-6" />
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-xl font-semibold">{step.title}</h3>
