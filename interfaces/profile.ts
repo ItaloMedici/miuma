@@ -38,6 +38,8 @@ export interface CaregiverProfile {
   profile: CaregiverProfileInfo;
   galleryImages: CaregiverGallery;
 
+  isMyProfile: boolean;
+
   descriptionMarkdown: string;
 
   billingInfo: CaregiverProfileBillingInfo;

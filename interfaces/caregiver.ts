@@ -99,6 +99,7 @@ export interface PetInCare {
   rescueDate?: string;
   medicalNeeds?: string;
   age?: number;
+  id: string;
 }
 
 export interface Expenses {
