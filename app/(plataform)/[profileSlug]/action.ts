@@ -2,6 +2,7 @@
 
 import { CaregiverProfile } from "@/interfaces/profile";
 import { getServerSession } from "@/lib/auth-server";
+import { logger } from "@/lib/logger";
 import { formatCurrency } from "@/lib/utils/currency";
 import { caregiverUseCases } from "@/use-cases/caregiver";
 import { formatDate } from "date-fns";
@@ -14,14 +15,18 @@ export const getProfile = async (
   const caregiver = await caregiverUseCases.getBySlug(profileSlug);
 
   if (!caregiver) {
+    logger.info({
+      msg: "Caregiver profile not found",
+      profileSlug,
+    });
     notFound();
   }
 
   const session = await getServerSession();
 
-  // Allow the caregiver to view their own profile even if inactive/unverified
-  const isMyProfile =
-    session?.user && caregiver && caregiver.userId === session.user.id;
+  const isMyProfile = Boolean(
+    session?.user && caregiver && caregiver.userId === session.user.id
+  );
 
   if (!isMyProfile && (!caregiver.active || !caregiver.accountVerified)) {
     notFound();
@@ -35,9 +40,11 @@ export const getProfile = async (
   const memberSince = formatDate(joinedAtDate, "LLLL yyyy", { locale: ptBR });
   const shortMemberSince = formatDate(joinedAtDate, "LLL yy", { locale: ptBR });
 
+  const isSubscriptionReady = caregiver.subscriptionPaymentStatus === "READY";
   const isReadyForDonations =
-    caregiver.subscriptionPaymentStatus === "READY" ||
-    Boolean(caregiver.pixKey);
+    (isSubscriptionReady || Boolean(caregiver.pixKey)) &&
+    caregiver.active &&
+    caregiver.accountVerified;
 
   return {
     profile: {
@@ -52,6 +59,7 @@ export const getProfile = async (
       active: caregiver.active,
       shortBio: caregiver.shortBio,
     },
+    isMyProfile,
     billingInfo: {
       currentMonthlySupport: formatCurrency(0),
       monthlyGoal: formatCurrency(2500),

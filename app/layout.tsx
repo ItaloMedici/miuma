@@ -47,6 +47,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={`${stackSansText.className} antialiased`}>
         {children}
+        <Toaster richColors className="corner-squircle" />
       </body>
     </html>
   );

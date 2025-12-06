@@ -6,6 +6,7 @@ import { cache } from "react";
 import { getProfile } from "./action";
 import CaregiverDescription from "./components/CaregiverDescription";
 import { CaregiverHeader } from "./components/CaregiverHeader";
+import { CaregiverProfileProvider } from "./components/context";
 import { DonationCard } from "./components/DonationCard";
 import { Gallery } from "./components/Gallery";
 import { MobileDonationBar } from "./components/MobileDonationBar";
@@ -15,19 +16,23 @@ import { ProfileNavHeader } from "./components/ProfileNavHeader";
 import { RecentUpdates } from "./components/RecentUpdates";
 import { SocialMedia } from "./components/SocialMedia";
 import { SocialProofSection } from "./components/SocialProofSection";
-import { CaregiverProfileProvider } from "./components/context";
+import { MyProfileHeader } from "./components/MyProfileHeader";
 
-const cachedProfile = cache((id: string) => {
-  return getProfile(id);
+type Params = {
+  profileSlug: string;
+};
+
+const cachedProfile = cache((slug: string) => {
+  return getProfile(slug);
 });
 
 export const generateMetadata = async ({
   params,
 }: {
-  params: Promise<{ profileId: string }>;
+  params: Promise<Params>;
 }): Promise<Metadata> => {
   const paramsList = await params;
-  const id = paramsList.profileId;
+  const id = paramsList.profileSlug;
 
   const caregiver = await cachedProfile(id);
 
@@ -56,7 +61,7 @@ export const generateMetadata = async ({
 export default async function CaregiverProfile({
   params,
 }: {
-  params: Promise<{ profileSlug: string }>;
+  params: Promise<Params>;
 }) {
   const paramsList = await params;
   const id = paramsList.profileSlug;
@@ -65,6 +70,7 @@ export default async function CaregiverProfile({
 
   return (
     <CaregiverProfileProvider profile={caregiver}>
+      <MyProfileHeader />
       <div className="bg-background min-h-screen">
         <ProfileNavHeader />
 
