@@ -37,11 +37,11 @@ export const RecentUpdates = () => {
   return (
     <section id="atualizacoes" className="space-y-6">
       <div className="space-y-2">
-        <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center gap-2">
-          <Mailbox className="w-4 h-4 text-muted-foreground" />
+        <h2 className="flex items-center gap-2 text-xl font-bold tracking-tight md:text-2xl">
+          <Mailbox className="text-muted-foreground h-4 w-4" />
           Atualizações recentes
         </h2>
-        <p className="text-sm md:text-base text-muted-foreground">
+        <p className="text-muted-foreground text-sm md:text-base">
           Acompanhe o dia a dia dos nossos pequenos e veja como sua ajuda faz a
           diferença
         </p>
@@ -53,9 +53,9 @@ export const RecentUpdates = () => {
             <div key={update.id} className="flex gap-4">
               {/* Timeline Line */}
               <div className="flex flex-col items-center">
-                <div className="w-3 h-3 rounded-full bg-primary shrink-0" />
+                <div className="bg-primary h-3 w-3 shrink-0 rounded-full" />
                 {index !== updates.length - 1 && (
-                  <div className="w-0.5 flex-1 bg-border mt-2" />
+                  <div className="bg-border mt-2 w-0.5 flex-1" />
                 )}
               </div>
 
@@ -65,23 +65,23 @@ export const RecentUpdates = () => {
                   "md:pb-6": index !== updates.length - 1,
                 })}
               >
-                <div className="flex items-baseline gap-2 mb-2">
-                  <time className="text-xs md:text-sm font-semibold text-muted-foreground">
+                <div className="mb-2 flex items-baseline gap-2">
+                  <time className="text-muted-foreground text-xs font-semibold md:text-sm">
                     {formatDate(update.date)}
                   </time>
                 </div>
-                <p className="text-sm md:text-base leading-relaxed">
+                <p className="text-sm leading-relaxed md:text-base">
                   {update.message} {update.emoji}
                 </p>
 
                 {/* Images Thumbnails */}
                 {update.images && update.images.length > 0 && (
-                  <div className="flex gap-2 mt-3 flex-wrap">
+                  <div className="mt-3 flex flex-wrap gap-2">
                     {update.images.slice(0, 4).map((image, idx) => (
                       <button
                         key={idx}
                         onClick={() => openGallery(update.images!, idx)}
-                        className="relative w-20 h-20 corner-squircle rounded-2xl overflow-hidden hover:opacity-80 transition-opacity cursor-pointer"
+                        className="corner-squircle relative h-20 w-20 cursor-pointer overflow-hidden rounded-2xl transition-opacity hover:opacity-80"
                         aria-label={`Ver foto ${idx + 1} da atualização`}
                       >
                         <Image
@@ -95,7 +95,7 @@ export const RecentUpdates = () => {
                     {update.images.length > 4 && (
                       <button
                         onClick={() => openGallery(update.images!, 4)}
-                        className="relative w-20 h-20 rounded-lg overflow-hidden bg-muted hover:bg-muted/80 transition-colors cursor-pointer flex items-center justify-center"
+                        className="bg-muted hover:bg-muted/80 relative flex h-20 w-20 cursor-pointer items-center justify-center overflow-hidden rounded-lg transition-colors"
                         aria-label="Ver mais fotos"
                       >
                         <span className="text-sm font-semibold">

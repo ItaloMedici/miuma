@@ -137,7 +137,7 @@ function ToolbarPlugin() {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-1 p-2 border-b bg-muted/30">
+    <div className="bg-muted/30 flex flex-wrap items-center gap-1 border-b p-2">
       <Button
         type="button"
         variant="ghost"
@@ -146,7 +146,7 @@ function ToolbarPlugin() {
         className="h-8 w-8 p-0"
         title="Desfazer"
       >
-        <Undo className="w-4 h-4" />
+        <Undo className="h-4 w-4" />
       </Button>
       <Button
         type="button"
@@ -156,7 +156,7 @@ function ToolbarPlugin() {
         className="h-8 w-8 p-0"
         title="Refazer"
       >
-        <Redo className="w-4 h-4" />
+        <Redo className="h-4 w-4" />
       </Button>
 
       <Separator orientation="vertical" className="mx-1 h-6" />
@@ -170,7 +170,7 @@ function ToolbarPlugin() {
           else if (value === "h3") formatHeading("h3");
           else if (value === "quote") formatQuote();
         }}
-        className="h-8 px-2 text-xs rounded border bg-background"
+        className="bg-background h-8 rounded border px-2 text-xs"
       >
         <option value="paragraph">Parágrafo</option>
         <option value="h1">Título 1</option>
@@ -189,7 +189,7 @@ function ToolbarPlugin() {
         className="h-8 w-8 p-0"
         title="Negrito"
       >
-        <Bold className="w-4 h-4" />
+        <Bold className="h-4 w-4" />
       </Button>
       <Button
         type="button"
@@ -199,7 +199,7 @@ function ToolbarPlugin() {
         className="h-8 w-8 p-0"
         title="Itálico"
       >
-        <Italic className="w-4 h-4" />
+        <Italic className="h-4 w-4" />
       </Button>
       <Button
         type="button"
@@ -209,7 +209,7 @@ function ToolbarPlugin() {
         className="h-8 w-8 p-0"
         title="Sublinhado"
       >
-        <UnderlineIcon className="w-4 h-4" />
+        <UnderlineIcon className="h-4 w-4" />
       </Button>
 
       <Separator orientation="vertical" className="mx-1 h-6" />
@@ -222,7 +222,7 @@ function ToolbarPlugin() {
         className="h-8 w-8 p-0"
         title="Alinhar à esquerda"
       >
-        <AlignLeft className="w-4 h-4" />
+        <AlignLeft className="h-4 w-4" />
       </Button>
       <Button
         type="button"
@@ -232,7 +232,7 @@ function ToolbarPlugin() {
         className="h-8 w-8 p-0"
         title="Centralizar"
       >
-        <AlignCenter className="w-4 h-4" />
+        <AlignCenter className="h-4 w-4" />
       </Button>
       <Button
         type="button"
@@ -242,7 +242,7 @@ function ToolbarPlugin() {
         className="h-8 w-8 p-0"
         title="Alinhar à direita"
       >
-        <AlignRight className="w-4 h-4" />
+        <AlignRight className="h-4 w-4" />
       </Button>
       <Button
         type="button"
@@ -252,7 +252,7 @@ function ToolbarPlugin() {
         className="h-8 w-8 p-0"
         title="Justificar"
       >
-        <AlignJustify className="w-4 h-4" />
+        <AlignJustify className="h-4 w-4" />
       </Button>
 
       <Separator orientation="vertical" className="mx-1 h-6" />
@@ -265,7 +265,7 @@ function ToolbarPlugin() {
         className="h-8 w-8 p-0"
         title="Lista com marcadores"
       >
-        <List className="w-4 h-4" />
+        <List className="h-4 w-4" />
       </Button>
       <Button
         type="button"
@@ -275,15 +275,14 @@ function ToolbarPlugin() {
         className="h-8 w-8 p-0"
         title="Lista numerada"
       >
-        <ListOrdered className="w-4 h-4" />
+        <ListOrdered className="h-4 w-4" />
       </Button>
     </div>
   );
 }
 
 export function Plugins() {
-  const [floatingAnchorElem, setFloatingAnchorElem] =
-    useState<HTMLDivElement | null>(null);
+  const [, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
 
   const onRef = (_floatingAnchorElem: HTMLDivElement) => {
     if (_floatingAnchorElem !== null) {
@@ -297,7 +296,7 @@ export function Plugins() {
       <div className="relative">
         <RichTextPlugin
           contentEditable={
-            <div className="min-h-[200px] markdown-content">
+            <div className="markdown-content min-h-[200px]">
               <div className="p-4" ref={onRef}>
                 <ContentEditable placeholder="Comece a escrever sua história..." />
               </div>

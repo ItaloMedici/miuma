@@ -17,19 +17,19 @@ export function MobileDonationBar() {
   return (
     <>
       {/* Fixed bottom bar - visible only on mobile/tablet */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border shadow-lg">
+      <div className="bg-background border-border fixed right-0 bottom-0 left-0 z-50 border-t shadow-lg lg:hidden">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between gap-4">
-            <div className="flex-1 min-w-0">
-              <p className="text-sm text-muted-foreground">Faça a diferença</p>
-              <p className="text-lg font-bold truncate">Apoie este projeto</p>
+            <div className="min-w-0 flex-1">
+              <p className="text-muted-foreground text-sm">Faça a diferença</p>
+              <p className="truncate text-lg font-bold">Apoie este projeto</p>
             </div>
             <Button
               size="lg"
               onClick={() => setOpen(true)}
               className="shrink-0"
             >
-              <Heart className="w-4 h-4 mr-2" />
+              <Heart className="mr-2 h-4 w-4" />
               Doar
             </Button>
           </div>
@@ -38,11 +38,11 @@ export function MobileDonationBar() {
 
       {/* Full screen donation modal */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="lg:hidden max-w-full w-full h-full max-h-screen p-0 m-0">
-          <DialogHeader className="px-4 py-2 h-14 border-b flex items-center justify-center">
+        <DialogContent className="m-0 h-full max-h-screen w-full max-w-full p-0 lg:hidden">
+          <DialogHeader className="flex h-14 items-center justify-center border-b px-4 py-2">
             <DialogTitle className="text-xl">Escolha como apoiar</DialogTitle>
           </DialogHeader>
-          <div className="overflow-y-auto h-screen px-4 pb-6">
+          <div className="h-screen overflow-y-auto px-4 pb-6">
             <DonationCard />
           </div>
         </DialogContent>

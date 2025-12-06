@@ -31,11 +31,11 @@ export const SocialProofSection = () => {
   return (
     <section id="depoimentos" className="space-y-6">
       <div className="space-y-2">
-        <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center gap-2">
-          <HandHeart className="w-4 h-4 text-muted-foreground" />
+        <h2 className="flex items-center gap-2 text-xl font-bold tracking-tight md:text-2xl">
+          <HandHeart className="text-muted-foreground h-4 w-4" />
           Quem já faz parte dessa história
         </h2>
-        <p className="text-sm md:text-base text-muted-foreground">
+        <p className="text-muted-foreground text-sm md:text-base">
           Veja o que dizem as pessoas que já apoiaram este projeto
         </p>
       </div>
@@ -45,39 +45,39 @@ export const SocialProofSection = () => {
         <div className="space-y-4">
           <div className="grid gap-4">
             {displayedTestimonials.map((testimonial) => (
-              <Card key={testimonial.id} className="p-4 md:p-6 space-y-3">
+              <Card key={testimonial.id} className="space-y-3 p-4 md:p-6">
                 <div className="flex flex-col gap-2">
-                  <div className="flex items-center md:items-start gap-4">
-                    <div className="w-4 h-4 md:w-6 md:h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 overflow-hidden">
+                  <div className="flex items-center gap-4 md:items-start">
+                    <div className="bg-primary/10 flex h-4 w-4 shrink-0 items-center justify-center overflow-hidden rounded-full md:h-6 md:w-6">
                       {testimonial.avatar ? (
                         <Image
                           src={testimonial.avatar}
                           alt={testimonial.name}
                           width={48}
                           height={48}
-                          className="w-4 h-4 md:w-6 md:h-6 rounded-full object-cover"
+                          className="h-4 w-4 rounded-full object-cover md:h-6 md:w-6"
                         />
                       ) : (
-                        <span className="text-xs md:text-sm font-semibold text-primary">
+                        <span className="text-primary text-xs font-semibold md:text-sm">
                           {testimonial.name.charAt(0).toUpperCase()}
                         </span>
                       )}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-baseline justify-between gap-2">
-                        <p className="text-sm md:text-base font-semibold">
+                        <p className="text-sm font-semibold md:text-base">
                           {testimonial.name}
                         </p>
-                        <time className="hidden md:text-sm text-muted-foreground">
+                        <time className="text-muted-foreground hidden md:text-sm">
                           {formatDate(testimonial.date)}
                         </time>
                       </div>
-                      <p className="hidden md:block md:mt-2 text-sm leading-relaxed text-foreground/90">
+                      <p className="text-foreground/90 hidden text-sm leading-relaxed md:mt-2 md:block">
                         {testimonial.message}
                       </p>
                     </div>
                   </div>
-                  <p className="text-xs md:hidden leading-relaxed text-foreground/90">
+                  <p className="text-foreground/90 text-xs leading-relaxed md:hidden">
                     {testimonial.message}
                   </p>
                 </div>
@@ -95,12 +95,12 @@ export const SocialProofSection = () => {
                 {showAll ? (
                   <>
                     Ver menos
-                    <ChevronUp className="w-4 h-4" />
+                    <ChevronUp className="h-4 w-4" />
                   </>
                 ) : (
                   <>
                     Ver todos os depoimentos ({testimonials.length})
-                    <ChevronDown className="w-4 h-4" />
+                    <ChevronDown className="h-4 w-4" />
                   </>
                 )}
               </Button>

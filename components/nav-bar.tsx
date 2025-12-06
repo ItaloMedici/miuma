@@ -23,9 +23,9 @@ export const Navbar = ({
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-md border border-border",
+        "bg-background/60 border-border fixed top-0 right-0 left-0 z-50 border backdrop-blur-md",
         {
-          "rounded-4xl m-4 shadow-sm corner-squircle": variant === "rounded",
+          "corner-squircle m-4 rounded-4xl shadow-sm": variant === "rounded",
           "px-4 py-2": size === "sm",
           "p-4": size === "md",
         }
@@ -47,13 +47,13 @@ export const Navbar = ({
               />
             </Link>
           </div>
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden items-center gap-8 lg:flex">
             {showLinks &&
               links.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors"
                 >
                   {link.label}
                 </Link>

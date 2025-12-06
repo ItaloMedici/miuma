@@ -21,12 +21,12 @@ export function CardBrandIcons({ brand, className = "" }: CardBrandIconsProps) {
   // Custom Mastercard with overlapping circles
   if (brand === "mastercard") {
     return (
-      <div className={`w-12 h-8 flex items-center justify-center ${className}`}>
+      <div className={`flex h-8 w-12 items-center justify-center ${className}`}>
         <svg
           role="img"
           viewBox="0 0 48 32"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full"
+          className="h-full w-full"
         >
           <title>Mastercard</title>
           <rect width="48" height="32" rx="4" fill="transparent" />
@@ -63,12 +63,12 @@ export function CardBrandIcons({ brand, className = "" }: CardBrandIconsProps) {
   }
 
   return (
-    <div className={`w-12 h-8 flex items-center justify-center ${className}`}>
+    <div className={`flex h-8 w-12 items-center justify-center ${className}`}>
       <svg
         role="img"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full"
+        className="h-full w-full"
         fill={`#${icon.hex}`}
       >
         <title>{icon.title}</title>

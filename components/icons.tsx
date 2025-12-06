@@ -1,3 +1,11 @@
+import {
+  siFacebook,
+  siInstagram,
+  siTiktok,
+  siWhatsapp,
+  siYoutube,
+} from "simple-icons";
+
 const Pix = (props: React.SVGProps<SVGSVGElement>) => (
   <span aria-hidden="true">
     <svg
@@ -13,6 +21,32 @@ const Pix = (props: React.SVGProps<SVGSVGElement>) => (
   </span>
 );
 
+const buildIconComponent = (path: string) => {
+  return function BsseIcon(props: React.SVGProps<SVGSVGElement>) {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+        {...props}
+      >
+        <path d={path} />
+      </svg>
+    );
+  };
+};
+
+const siInstagramIcon = buildIconComponent(siInstagram.path);
+const siFacebookIcon = buildIconComponent(siFacebook.path);
+const siWhatsappIcon = buildIconComponent(siWhatsapp.path);
+const siYoutubeIcon = buildIconComponent(siYoutube.path);
+const siTiktokIcon = buildIconComponent(siTiktok.path);
+
 export const Icons = {
   Pix,
+  Instagram: siInstagramIcon,
+  Facebook: siFacebookIcon,
+  Whatsapp: siWhatsappIcon,
+  Youtube: siYoutubeIcon,
+  Tiktok: siTiktokIcon,
 };

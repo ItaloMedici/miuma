@@ -136,19 +136,19 @@ export function PaymentForm({ total }: PaymentFormProps) {
                 Número do Cartão
               </FormLabel>
               <FormControl>
-                <div className="relative group">
-                  <div className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors">
-                    <CreditCard className="w-4 h-4" />
+                <div className="group relative">
+                  <div className="text-muted-foreground group-focus-within:text-primary absolute top-1/2 left-3 -translate-y-1/2 transition-colors md:left-4">
+                    <CreditCard className="h-4 w-4" />
                   </div>
                   <Input
                     {...field}
                     placeholder="0000 0000 0000 0000"
-                    className="pl-10 md:pl-11 pr-20 h-11 md:h-12 text-sm md:text-base"
+                    className="h-11 pr-20 pl-10 text-sm md:h-12 md:pl-11 md:text-base"
                     maxLength={19}
                     onChange={handleCardNumberChange}
                   />
                   {cardBrand !== "unknown" && (
-                    <div className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2">
+                    <div className="absolute top-1/2 right-3 -translate-y-1/2 md:right-4">
                       <CardBrandIcons brand={cardBrand} />
                     </div>
                   )}
@@ -168,14 +168,14 @@ export function PaymentForm({ total }: PaymentFormProps) {
               <FormItem>
                 <FormLabel className="text-xs md:text-sm">Validade</FormLabel>
                 <FormControl>
-                  <div className="relative group">
-                    <div className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors">
-                      <Calendar className="w-4 h-4" />
+                  <div className="group relative">
+                    <div className="text-muted-foreground group-focus-within:text-primary absolute top-1/2 left-3 -translate-y-1/2 transition-colors md:left-4">
+                      <Calendar className="h-4 w-4" />
                     </div>
                     <Input
                       {...field}
                       placeholder="MM / AA"
-                      className="pl-10 md:pl-11 h-11 md:h-12 text-sm md:text-base"
+                      className="h-11 pl-10 text-sm md:h-12 md:pl-11 md:text-base"
                       maxLength={7}
                       onChange={handleExpirationChange}
                     />
@@ -197,17 +197,17 @@ export function PaymentForm({ total }: PaymentFormProps) {
                 <FormItem>
                   <FormLabel className="flex items-center gap-1 text-xs md:text-sm">
                     CVC
-                    <HelpCircle className="w-3 h-3 text-muted-foreground cursor-help" />
+                    <HelpCircle className="text-muted-foreground h-3 w-3 cursor-help" />
                   </FormLabel>
                   <FormControl>
-                    <div className="relative group">
-                      <div className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors">
-                        <Lock className="w-4 h-4" />
+                    <div className="group relative">
+                      <div className="text-muted-foreground group-focus-within:text-primary absolute top-1/2 left-3 -translate-y-1/2 transition-colors md:left-4">
+                        <Lock className="h-4 w-4" />
                       </div>
                       <Input
                         {...field}
                         placeholder={cardBrand === "amex" ? "1234" : "123"}
-                        className="pl-10 md:pl-11 h-11 md:h-12 text-sm md:text-base"
+                        className="h-11 pl-10 text-sm md:h-12 md:pl-11 md:text-base"
                         maxLength={cvcLength}
                         onChange={(e) => {
                           const value = e.target.value.replace(/\D/g, "");
@@ -233,14 +233,14 @@ export function PaymentForm({ total }: PaymentFormProps) {
                 Nome do Titular
               </FormLabel>
               <FormControl>
-                <div className="relative group">
-                  <div className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors">
-                    <User className="w-4 h-4" />
+                <div className="group relative">
+                  <div className="text-muted-foreground group-focus-within:text-primary absolute top-1/2 left-3 -translate-y-1/2 transition-colors md:left-4">
+                    <User className="h-4 w-4" />
                   </div>
                   <Input
                     {...field}
                     placeholder="Nome completo no cartão"
-                    className="pl-10 md:pl-11 h-11 md:h-12 text-sm md:text-base"
+                    className="h-11 pl-10 text-sm md:h-12 md:pl-11 md:text-base"
                   />
                 </div>
               </FormControl>
@@ -257,14 +257,14 @@ export function PaymentForm({ total }: PaymentFormProps) {
             <FormItem>
               <FormLabel className="text-xs md:text-sm">CPF ou CNPJ</FormLabel>
               <FormControl>
-                <div className="relative group">
-                  <div className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors">
-                    <FileText className="w-4 h-4" />
+                <div className="group relative">
+                  <div className="text-muted-foreground group-focus-within:text-primary absolute top-1/2 left-3 -translate-y-1/2 transition-colors md:left-4">
+                    <FileText className="h-4 w-4" />
                   </div>
                   <Input
                     {...field}
                     placeholder="000.000.000-00"
-                    className="pl-10 md:pl-11 h-11 md:h-12 text-sm md:text-base"
+                    className="h-11 pl-10 text-sm md:h-12 md:pl-11 md:text-base"
                     maxLength={18}
                     onChange={(e) => {
                       const formatted = formatDocument(e.target.value);
@@ -292,7 +292,7 @@ export function PaymentForm({ total }: PaymentFormProps) {
                 />
                 <Label
                   htmlFor="save-card"
-                  className="text-[11px] md:text-xs text-muted-foreground select-none cursor-pointer leading-tight"
+                  className="text-muted-foreground cursor-pointer text-[11px] leading-tight select-none md:text-xs"
                 >
                   Salvar este cartão para doações futuras
                 </Label>
@@ -304,15 +304,15 @@ export function PaymentForm({ total }: PaymentFormProps) {
         <Button
           type="submit"
           size={"lg"}
-          className="w-full transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group transform active:scale-[0.99]"
+          className="shadow-primary/20 group flex w-full transform items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.99]"
         >
           <span>Assinar {formatCurrency(total)}</span>
-          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Button>
 
-        <div className="flex items-center justify-center gap-1.5 md:gap-2 text-muted-foreground mt-3 md:mt-4">
-          <ShieldCheck className="w-3 h-3" />
-          <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-wider">
+        <div className="text-muted-foreground mt-3 flex items-center justify-center gap-1.5 md:mt-4 md:gap-2">
+          <ShieldCheck className="h-3 w-3" />
+          <span className="text-[9px] font-medium tracking-wider uppercase md:text-[10px]">
             Pagamento Seguro e Criptografado
           </span>
         </div>

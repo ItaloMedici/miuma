@@ -176,7 +176,7 @@ export const SignUpForm = ({ role }: { role: UserRole }) => {
               <FormControl>
                 <PasswordField placeholder="Crie uma senha forte" {...field} />
               </FormControl>
-              <FormDescription className="text-[10px] text-stone-400 text-right">
+              <FormDescription className="text-right text-[10px] text-stone-400">
                 Mínimo de 8 caracteres
               </FormDescription>
               <FormMessage />

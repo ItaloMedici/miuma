@@ -14,17 +14,17 @@ export function TransparencyCards({
 }) {
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-6">
+      <h2 className="mb-6 text-2xl font-bold">
         Transparência e prestação de contas
       </h2>
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="p-6 space-y-4">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-            <FileText className="w-6 h-6 text-primary" />
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card className="space-y-4 p-6">
+          <div className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-xl">
+            <FileText className="text-primary h-6 w-6" />
           </div>
           <div>
-            <h3 className="font-semibold mb-2">Relatórios mensais</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <h3 className="mb-2 font-semibold">Relatórios mensais</h3>
+            <p className="text-muted-foreground text-sm leading-relaxed">
               {transparency?.reportMarkdown}
             </p>
           </div>
@@ -33,13 +33,13 @@ export function TransparencyCards({
           </Button>
         </Card>
 
-        <Card className="p-6 space-y-4">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-            <Receipt className="w-6 h-6 text-primary" />
+        <Card className="space-y-4 p-6">
+          <div className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-xl">
+            <Receipt className="text-primary h-6 w-6" />
           </div>
           <div>
-            <h3 className="font-semibold mb-2">Comprovantes</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <h3 className="mb-2 font-semibold">Comprovantes</h3>
+            <p className="text-muted-foreground text-sm leading-relaxed">
               Todos os apoiadores recebem comprovantes detalhados das despesas
               realizadas mensalmente.
             </p>

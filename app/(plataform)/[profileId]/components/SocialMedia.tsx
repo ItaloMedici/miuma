@@ -18,14 +18,14 @@ export function SocialMedia() {
 
   const socialLinks = Object.entries(socialMedia).filter(([, url]) => url) as [
     SocialPlatform,
-    string
+    string,
   ][];
 
   if (socialLinks.length === 0) return null;
 
   return (
     <section className="pt-4 md:pt-8">
-      <h2 className="text-lg font-semibold mb-4">Redes Sociais</h2>
+      <h2 className="mb-4 text-lg font-semibold">Redes Sociais</h2>
       <div className="flex flex-wrap gap-3">
         {socialLinks.map(([platform, url]) => (
           <SocialMediaLink

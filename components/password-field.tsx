@@ -14,12 +14,12 @@ export function PasswordField(props: React.ComponentProps<"input">) {
           size="icon"
           type="button"
           variant="ghost"
-          className="bg-none hover:bg-transparent focus:bg-none foucus:outline-none"
+          className="foucus:outline-none bg-none hover:bg-transparent focus:bg-none"
         >
           {showPassword ? (
-            <EyeClosed className="h-4 w-4 text-muted-foreground" />
+            <EyeClosed className="text-muted-foreground h-4 w-4" />
           ) : (
-            <Eye className="h-4 w-4 text-muted-foreground" />
+            <Eye className="text-muted-foreground h-4 w-4" />
           )}
         </Button>
       </InputGroupAddon>

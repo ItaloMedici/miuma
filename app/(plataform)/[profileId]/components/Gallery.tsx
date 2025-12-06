@@ -32,7 +32,7 @@ function GalleryImage({ url, alt, onClick, className }: GalleryImageProps) {
       role="button"
       tabIndex={0}
       className={cn(
-        "rounded-2xl overflow-hidden relative cursor-pointer aspect-video",
+        "relative aspect-video cursor-pointer overflow-hidden rounded-2xl",
         className
       )}
       onClick={handleClick}
@@ -116,14 +116,14 @@ export function Gallery() {
           url={additionalPhotos[0].url}
           alt={additionalPhotos[0].alt || "Foto da galeria 1"}
           onClick={() => openByUrl(additionalPhotos[0].url)}
-          className="h-full aspect-auto"
+          className="aspect-auto h-full"
         />
       );
     }
 
     if (photoCount === 2) {
       return (
-        <div className="grid grid-rows-2 gap-2 h-full">
+        <div className="grid h-full grid-rows-2 gap-2">
           {additionalPhotos.slice(0, 2).map((img, idx) => (
             <GalleryImage
               key={img.url || idx}
@@ -138,7 +138,7 @@ export function Gallery() {
     }
 
     return (
-      <div className="grid grid-cols-2 grid-rows-2 gap-2 h-full">
+      <div className="grid h-full grid-cols-2 grid-rows-2 gap-2">
         {additionalPhotos.slice(0, 4).map((img, idx) => (
           <GalleryImage
             key={img.url || idx}
@@ -155,7 +155,7 @@ export function Gallery() {
   return (
     <>
       {renderMobileCover()}
-      <div className="hidden lg:grid lg:grid-cols-[2fr_1fr] gap-2">
+      <div className="hidden gap-2 lg:grid lg:grid-cols-[2fr_1fr]">
         {renderDesktopCover()}
         {renderAdditionalPhotos()}
       </div>

@@ -16,7 +16,7 @@ export function CaregiverDescription() {
   return (
     <section>
       {!descriptionAlreadyHasTitle && (
-        <h2 className="text-xl md:text-2xl font-bold mb-6">Sobre mim</h2>
+        <h2 className="mb-6 text-xl font-bold md:text-2xl">Sobre mim</h2>
       )}
       <div className="relative">
         <div
@@ -32,11 +32,11 @@ export function CaregiverDescription() {
         </div>
 
         {!isExpanded && (
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-background to-transparent pointer-events-none" />
+          <div className="from-background pointer-events-none absolute right-0 bottom-0 left-0 h-24 bg-linear-to-t to-transparent" />
         )}
       </div>
 
-      <div className="md:mt-4 flex justify-start">
+      <div className="flex justify-start md:mt-4">
         <Button
           variant="link"
           onClick={() => setIsExpanded(!isExpanded)}

@@ -6,7 +6,7 @@ import { SignInForm } from "./form";
 
 export default async function SignInPage() {
   return (
-    <div className="p-6 pt-20 md:pt-24 relative w-screen overflow-hidden">
+    <div className="relative w-screen overflow-hidden p-6 pt-20 md:pt-24">
       <Navbar
         variant="full"
         size="sm"
@@ -20,12 +20,12 @@ export default async function SignInPage() {
           </Link>
         }
       />
-      <div className="hidden md:block absolute top-0 right-0 w-120 h-96 bg-primary/15 rounded-full blur-3xl pointer-events-none translate-x-1/3 -translate-y-1/3" />
+      <div className="bg-primary/15 pointer-events-none absolute top-0 right-0 hidden h-96 w-120 translate-x-1/3 -translate-y-1/3 rounded-full blur-3xl md:block" />
 
-      <main className="max-w-md mx-auto w-full animate-fade-in mb-24 md:mb-32 md:mt-16">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Entrar</h1>
-          <p className="text-sm sm:text-md text-muted-foreground">
+      <main className="animate-fade-in mx-auto mb-24 w-full max-w-md md:mt-16 md:mb-32">
+        <div className="mb-8 text-center">
+          <h1 className="mb-2 text-2xl font-bold sm:text-3xl">Entrar</h1>
+          <p className="sm:text-md text-muted-foreground text-sm">
             Bem-vindo de volta! Acesse sua conta.
           </p>
         </div>
@@ -39,26 +39,26 @@ export default async function SignInPage() {
             <div className="w-full border-t border-stone-200"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-[#FFFDF7] text-stone-400">
+            <span className="bg-[#FFFDF7] px-4 text-stone-400">
               Ou continue com
             </span>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <Button variant="outline" className="justify-center flex-1">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row">
+          <Button variant="outline" className="flex-1 justify-center">
             <GoogleIcon /> Google
           </Button>
-          <Button variant="outline" className="justify-center flex-1">
+          <Button variant="outline" className="flex-1 justify-center">
             <FacebookIcon /> Facebook
           </Button>
         </div>
 
-        <p className="text-center text-sm text-muted-foreground mt-8">
+        <p className="text-muted-foreground mt-8 text-center text-sm">
           Não tem uma conta?{" "}
           <Link
             href="/cadastro"
-            className="font-medium underline text-secondary underline-offset-2"
+            className="text-secondary font-medium underline underline-offset-2"
           >
             Cadastre-se
           </Link>
@@ -71,7 +71,7 @@ export default async function SignInPage() {
 // --- Icons for Social Media ---
 const GoogleIcon = () => (
   <svg
-    className="w-5 h-5"
+    className="h-5 w-5"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ const GoogleIcon = () => (
 
 const FacebookIcon = () => (
   <svg
-    className="w-5 h-5"
+    className="h-5 w-5"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

@@ -75,14 +75,14 @@ export function GalleryModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogTitle className="hidden">Galeria de fotos</DialogTitle>
-      <DialogContent className="max-w-none sm:max-w-none w-screen h-screen p-0 bg-background/95 backdrop-blur-sm">
-        <div className="flex -m-12 items-center justify-center h-full px-2 sm:px-20 py-16 sm:py-32">
-          <div className="relative w-full h-full flex items-center justify-center">
+      <DialogContent className="bg-background/95 h-screen w-screen max-w-none p-0 backdrop-blur-sm sm:max-w-none">
+        <div className="-m-12 flex h-full items-center justify-center px-2 py-16 sm:px-20 sm:py-32">
+          <div className="relative flex h-full w-full items-center justify-center">
             <div
               className={cn(
-                "relative w-full flex items-center justify-center",
+                "relative flex w-full items-center justify-center",
                 hasMetadata
-                  ? "h-auto sm:h-[calc(100vh-240px)] flex-col gap-3 sm:gap-6"
+                  ? "h-auto flex-col gap-3 sm:h-[calc(100vh-240px)] sm:gap-6"
                   : "h-[calc(100vh-160px)]"
               )}
             >
@@ -101,23 +101,23 @@ export function GalleryModal({
                   }
                   fill
                   sizes="90vw"
-                  className="object-contain rounded-lg"
+                  className="rounded-lg object-contain"
                 />
 
-                <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 bg-background/90 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
+                <div className="bg-background/90 absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full px-3 py-1.5 text-xs font-medium sm:bottom-4 sm:px-4 sm:py-2 sm:text-sm">
                   {currentIndex + 1} / {images.length}
                 </div>
               </div>
 
               {hasMetadata && (
-                <div className="max-w-[90vw] md:max-w-[50vw] rounded-lg p-3">
+                <div className="max-w-[90vw] rounded-lg p-3 md:max-w-[50vw]">
                   {currentImage.title && (
-                    <h3 className="text-base sm:text-2xl font-bold leading-tight">
+                    <h3 className="text-base leading-tight font-bold sm:text-2xl">
                       {currentImage.title}
                     </h3>
                   )}
                   {currentImage.description && (
-                    <p className="text-xs sm:text-base text-muted-foreground leading-relaxed">
+                    <p className="text-muted-foreground text-xs leading-relaxed sm:text-base">
                       {currentImage.description}
                     </p>
                   )}
@@ -130,7 +130,7 @@ export function GalleryModal({
                 variant="ghost"
                 size="icon"
                 onClick={goToPrevious}
-                className="absolute left-10 sm:left-2 top-1/2 -translate-y-1/2 rounded-full bg-background/80 hover:bg-background w-10 h-10 sm:w-12 sm:h-12"
+                className="bg-background/80 hover:bg-background absolute top-1/2 left-10 h-10 w-10 -translate-y-1/2 rounded-full sm:left-2 sm:h-12 sm:w-12"
               >
                 <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
               </Button>
@@ -141,7 +141,7 @@ export function GalleryModal({
                 variant="ghost"
                 size="icon"
                 onClick={goToNext}
-                className="absolute right-10 sm:right-2 top-1/2 -translate-y-1/2 rounded-full bg-background/80 hover:bg-background w-10 h-10 sm:w-12 sm:h-12"
+                className="bg-background/80 hover:bg-background absolute top-1/2 right-10 h-10 w-10 -translate-y-1/2 rounded-full sm:right-2 sm:h-12 sm:w-12"
               >
                 <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
               </Button>
@@ -149,9 +149,9 @@ export function GalleryModal({
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0">
-          <div className="px-2 sm:px-4 py-3 sm:py-4 overflow-x-auto">
-            <div className="flex gap-1.5 sm:gap-2 justify-center min-w-max mx-auto">
+        <div className="absolute right-0 bottom-0 left-0">
+          <div className="overflow-x-auto px-2 py-3 sm:px-4 sm:py-4">
+            <div className="mx-auto flex min-w-max justify-center gap-1.5 sm:gap-2">
               {images.map((image, index) => {
                 const imgData = getImageData(image);
                 return (
@@ -162,9 +162,9 @@ export function GalleryModal({
                     }}
                     onClick={() => setCurrentIndex(index)}
                     className={cn(
-                      "w-20 h-20 rounded-lg overflow-hidden shrink-0 transition-all",
+                      "h-20 w-20 shrink-0 overflow-hidden rounded-lg transition-all",
                       currentIndex === index
-                        ? "ring-2 ring-primary ring-offset-2 ring-offset-background opacity-100"
+                        ? "ring-primary ring-offset-background opacity-100 ring-2 ring-offset-2"
                         : "opacity-60 hover:opacity-100"
                     )}
                   >
@@ -175,7 +175,7 @@ export function GalleryModal({
                       }
                       width={80}
                       height={80}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover"
                     />
                   </button>
                 );

@@ -24,7 +24,7 @@ export const MobileOrderDrawer = ({
   return (
     <>
       {isDrawerOpen && (
-        <div className="fixed inset-0 bg-background/20 backdrop-blur-[2px] z-40 md:hidden" />
+        <div className="bg-background/20 fixed inset-0 z-40 backdrop-blur-[2px] md:hidden" />
       )}
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
         <DrawerContent>
@@ -32,21 +32,21 @@ export const MobileOrderDrawer = ({
             <DrawerHeader>
               <DrawerTitle>Detalhes do Pedido</DrawerTitle>
             </DrawerHeader>
-            <div className="pb-8 px-4">
+            <div className="px-4 pb-8">
               <OrderSummaryContent orderSummary={orderSummary} />
             </div>
           </div>
         </DrawerContent>
 
-        <div className="fixed bottom-0 left-0 right-0 w-full bg-background/95 backdrop-blur-sm border-t border-border p-3 sm:p-4 md:hidden z-40 shadow-lg">
-          <div className="flex items-center justify-between max-w-md mx-auto gap-3">
-            <div className="flex flex-col min-w-0">
-              <span className="text-[9px] uppercase tracking-wider font-medium text-muted-foreground">
+        <div className="bg-background/95 border-border fixed right-0 bottom-0 left-0 z-40 w-full border-t p-3 shadow-lg backdrop-blur-sm sm:p-4 md:hidden">
+          <div className="mx-auto flex max-w-md items-center justify-between gap-3">
+            <div className="flex min-w-0 flex-col">
+              <span className="text-muted-foreground text-[9px] font-medium tracking-wider uppercase">
                 Total
               </span>
-              <span className="text-base sm:text-lg font-bold text-foreground leading-none mt-0.5">
+              <span className="text-foreground mt-0.5 text-base leading-none font-bold sm:text-lg">
                 {formatCurrency(orderSummary.total)}{" "}
-                <span className="text-xs font-light text-muted-foreground">
+                <span className="text-muted-foreground text-xs font-light">
                   /mês
                 </span>
               </span>
@@ -56,11 +56,11 @@ export const MobileOrderDrawer = ({
               <Button
                 variant="outline"
                 size="sm"
-                className="text-xs font-medium shrink-0 h-9"
+                className="h-9 shrink-0 text-xs font-medium"
               >
-                <Info className="w-3 h-3 mr-1.5" />
+                <Info className="mr-1.5 h-3 w-3" />
                 Ver Pedido
-                <ChevronUp className="w-3 h-3 ml-1.5" />
+                <ChevronUp className="ml-1.5 h-3 w-3" />
               </Button>
             </DrawerTrigger>
           </div>

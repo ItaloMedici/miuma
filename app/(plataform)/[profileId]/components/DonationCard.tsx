@@ -39,14 +39,14 @@ export function DonationCard() {
   );
 
   return (
-    <Card className="relative overflow-hidden border-0 sm:border sm:border-border shadow-none py-0 sm:rounded-4xl">
+    <Card className="sm:border-border relative overflow-hidden border-0 py-0 shadow-none sm:rounded-4xl sm:border">
       {/* Decorative blobs */}
-      <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/10 rounded-full blur-3xl opacity-60 pointer-events-none" />
-      <div className="absolute -top-8 -left-8 w-24 h-24 bg-fourth/10 rounded-full blur-2xl opacity-60 pointer-events-none" />
+      <div className="bg-primary/10 pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full opacity-60 blur-3xl" />
+      <div className="bg-fourth/10 pointer-events-none absolute -top-8 -left-8 h-24 w-24 rounded-full opacity-60 blur-2xl" />
 
       {/* Content */}
-      <div className="relative z-10 p-0 sm:p-6 space-y-6">
-        <div className="hidden sm:flex justify-center">
+      <div className="relative z-10 space-y-6 p-0 sm:p-6">
+        <div className="hidden justify-center sm:flex">
           <h2 className="text-lg font-semibold tracking-tight">
             Apoie este projeto
           </h2>
@@ -54,10 +54,10 @@ export function DonationCard() {
 
         {canAcceptSubscriptions ? (
           <>
-            <div className="bg-muted p-1 rounded-2xl flex relative">
+            <div className="bg-muted relative flex rounded-2xl p-1">
               <button
                 onClick={() => setDonationType("monthly")}
-                className={`flex-1 py-1 text-sm font-medium rounded-xl transition-all ${
+                className={`flex-1 rounded-xl py-1 text-sm font-medium transition-all ${
                   donationType === "monthly"
                     ? "bg-background text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -67,7 +67,7 @@ export function DonationCard() {
               </button>
               <button
                 onClick={() => setDonationType("once")}
-                className={`flex-1 py-1 text-sm font-medium rounded-xl transition-all ${
+                className={`flex-1 rounded-xl py-1 text-sm font-medium transition-all ${
                   donationType === "once"
                     ? "bg-background text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -144,9 +144,9 @@ export const MonthlyDonation = () => {
   return (
     <>
       <div>
-        <div className="flex flex-col items-center mb-4 sm:mb-6">
+        <div className="mb-4 flex flex-col items-center sm:mb-6">
           <div className="flex items-baseline space-x-1">
-            <span className="text-md sm:text-xl font-light text-muted-foreground tracking-tight">
+            <span className="text-md text-muted-foreground font-light tracking-tight sm:text-xl">
               R$
             </span>
             <span className="text-4xl font-medium tracking-tighter">
@@ -155,7 +155,7 @@ export const MonthlyDonation = () => {
           </div>
         </div>
 
-        <div className="relative w-full flex items-center px-1">
+        <div className="relative flex w-full items-center px-1">
           <Slider
             value={[sliderIndex]}
             onValueChange={(value) => setSliderIndex(value[0])}
@@ -165,14 +165,14 @@ export const MonthlyDonation = () => {
             className="w-full"
           />
         </div>
-        <div className="flex justify-between mt-2 text-xs text-muted-foreground font-medium px-1">
+        <div className="text-muted-foreground mt-2 flex justify-between px-1 text-xs font-medium">
           <span>R$ {MIN_VALUE}</span>
           <span>R$ {MAX_VALUE}+</span>
         </div>
       </div>
       {/* Impact Scale */}
       <div className="space-y-2">
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-2 pl-1">
+        <p className="text-muted-foreground mb-2 pl-1 text-xs font-semibold tracking-widest uppercase">
           Seu Impacto
         </p>
 
@@ -184,7 +184,7 @@ export const MonthlyDonation = () => {
           return (
             <div
               key={tier.label}
-              className={`flex items-center justify-between p-2 rounded-md border transition-all ${
+              className={`flex items-center justify-between rounded-md border p-2 transition-all ${
                 isActive
                   ? "bg-primary/5 border-primary/30"
                   : "border-transparent"
@@ -192,14 +192,14 @@ export const MonthlyDonation = () => {
             >
               <div className="flex items-center gap-3">
                 <Icon
-                  className={`w-4 h-4 transition-all ${
+                  className={`h-4 w-4 transition-all ${
                     isActive
                       ? "text-primary opacity-100"
                       : "text-muted-foreground/30 opacity-50"
                   }`}
                 />
                 <span
-                  className={`text-xs sm:text-sm font-medium transition-colors ${
+                  className={`text-xs font-medium transition-colors sm:text-sm ${
                     isActive ? "text-foreground" : "text-muted-foreground/50"
                   }`}
                 >
@@ -207,7 +207,7 @@ export const MonthlyDonation = () => {
                 </span>
               </div>
               <CheckIcon
-                className={`w-4 h-4 transition-all ${
+                className={`h-4 w-4 transition-all ${
                   isActive
                     ? "text-primary opacity-100"
                     : "text-muted-foreground/30 opacity-50"
@@ -219,10 +219,10 @@ export const MonthlyDonation = () => {
       </div>
 
       {/* Fee Explanation */}
-      <div className="bg-muted/50 rounded-xl p-4 flex items-start gap-3 border border-border/50">
-        <Info className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
-        <p className="text-xs text-muted-foreground leading-relaxed">
-          <span className="font-medium text-foreground">
+      <div className="bg-muted/50 border-border/50 flex items-start gap-3 rounded-xl border p-4">
+        <Info className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+        <p className="text-muted-foreground text-xs leading-relaxed">
+          <span className="text-foreground font-medium">
             100% Transparência:
           </span>{" "}
           Uma pequena taxa é cobrada apenas para cobrir custos do processador de
@@ -237,15 +237,15 @@ export const MonthlyDonation = () => {
       <div className="space-y-2 md:space-y-4">
         <Button
           size="lg"
-          className="w-full group cursor-pointer"
+          className="group w-full cursor-pointer"
           onClick={handleDonation}
         >
           <span>Confirmar Apoio Mensal</span>
-          <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Button>
 
         <div className="text-center">
-          <button className="text-xs text-muted-foreground hover:text-foreground font-medium transition-colors">
+          <button className="text-muted-foreground hover:text-foreground text-xs font-medium transition-colors">
             Cancele ou gerencie a qualquer momento
           </button>
         </div>
@@ -272,7 +272,7 @@ export const OneTimeDonation = () => {
     <>
       <div className="flex flex-col space-y-2 md:space-y-0">
         <h1 className="text-md font-semibold tracking-tight">Chave Pix</h1>
-        <p className="text-xs text-muted-foreground leading-relaxed max-w-xs">
+        <p className="text-muted-foreground max-w-xs text-xs leading-relaxed">
           Use a chave abaixo no app do seu banco para enviar qualquer valor.
         </p>
       </div>
@@ -293,7 +293,7 @@ export const OneTimeDonation = () => {
         </InputGroup>
         <span
           className={cn(
-            "text-xs text-muted-foreground flex items-center mt-2 gap-1",
+            "text-muted-foreground mt-2 flex items-center gap-1 text-xs",
             {
               "text-green-600": pixCopied,
             }
@@ -301,21 +301,21 @@ export const OneTimeDonation = () => {
         >
           {pixCopied ? (
             <>
-              <CheckCircle2 className="w-3 h-3" /> Chave PIX copiada com
+              <CheckCircle2 className="h-3 w-3" /> Chave PIX copiada com
               sucesso!
             </>
           ) : (
             <>
-              <Info className="w-3 h-3" /> Clique para copiar
+              <Info className="h-3 w-3" /> Clique para copiar
             </>
           )}
         </span>
       </div>
 
-      <div className="bg-muted/50 rounded-xl p-4 flex items-start gap-3 border border-border/50">
-        <Heart className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
-        <p className="text-xs text-muted-foreground leading-relaxed">
-          <span className="font-medium text-foreground">
+      <div className="bg-muted/50 border-border/50 flex items-start gap-3 rounded-xl border p-4">
+        <Heart className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+        <p className="text-muted-foreground text-xs leading-relaxed">
+          <span className="text-foreground font-medium">
             PIX direto ao cuidador
           </span>{" "}
           Doações via PIX vão 100% direto para a conta do cuidador, sem taxas. A

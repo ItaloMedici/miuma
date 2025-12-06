@@ -84,18 +84,18 @@ export function ProfileNavHeader() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border transition-transform duration-300",
+        "bg-background/95 border-border fixed top-0 right-0 left-0 z-40 border-b backdrop-blur-sm transition-transform duration-300",
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
     >
       <div className="container mx-auto max-w-7xl px-2 md:px-4">
-        <nav className="flex items-center justify-center gap-0.5 md:gap-1 py-2 overflow-x-auto scrollbar-hide">
+        <nav className="scrollbar-hide flex items-center justify-center gap-0.5 overflow-x-auto py-2 md:gap-1">
           {availableSections.map((item) => (
             <button
               key={item.id}
               onClick={() => scrollToSection(item.id)}
               className={cn(
-                "px-2 md:px-3 py-1.5 text-[11px] md:text-xs font-medium rounded-md transition-colors whitespace-nowrap shrink-0",
+                "shrink-0 rounded-md px-2 py-1.5 text-[11px] font-medium whitespace-nowrap transition-colors md:px-3 md:text-xs",
                 activeSection === item.id
                   ? "text-foreground bg-muted/60"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"

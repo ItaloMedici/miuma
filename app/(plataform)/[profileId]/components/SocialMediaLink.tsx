@@ -90,7 +90,7 @@ export function SocialMediaLink({
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className={`transition-colors text-muted-foreground ${config.color}`}
+        className={`text-muted-foreground transition-colors ${config.color}`}
         aria-label={`Visitar ${config.label}`}
       >
         <Icon className={iconSize} />
@@ -103,7 +103,7 @@ export function SocialMediaLink({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`flex items-center gap-2 px-4 py-2 corner-squircle rounded-2xl border border-border text-sm text-muted-foreground transition-colors hover:border-primary/50 ${config.color}`}
+      className={`corner-squircle border-border text-muted-foreground hover:border-primary/50 flex items-center gap-2 rounded-2xl border px-4 py-2 text-sm transition-colors ${config.color}`}
       aria-label={`Visitar ${config.label}`}
     >
       <Icon className={iconSize} />

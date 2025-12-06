@@ -29,14 +29,14 @@ export const PetsInCare = () => {
   return (
     <section id="pets" className="space-y-6">
       <div className="space-y-2">
-        <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center gap-2">
-          <PawPrint className="w-4 h-4 text-muted-foreground" />
+        <h2 className="flex items-center gap-2 text-xl font-bold tracking-tight md:text-2xl">
+          <PawPrint className="text-muted-foreground h-4 w-4" />
           Pets sob cuidado
         </h2>
       </div>
 
       <div
-        className={cn("grid grid-cols-2 sm:grid-cols-3 gap-2", {
+        className={cn("grid grid-cols-2 gap-2 sm:grid-cols-3", {
           "lg:grid-cols-4": limitedPets.length > 3,
         })}
       >
@@ -44,19 +44,19 @@ export const PetsInCare = () => {
           <button
             key={pet.id}
             onClick={() => openGallery(index)}
-            className="group relative w-full h-[100px] aspect-square corner-squircle rounded-2xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+            className="group corner-squircle relative aspect-square h-[100px] w-full cursor-pointer overflow-hidden rounded-2xl transition-opacity hover:opacity-90"
           >
             <Image
               src={pet.imageUrl}
               alt={pet.name}
               width={150}
               height={100}
-              className="object-cover h-full w-full"
+              className="h-full w-full object-cover"
             />
             {/* Overlay with pet name */}
-            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-              <div className="absolute bottom-0 left-0 right-0 p-3">
-                <p className="text-white font-semibold text-sm truncate">
+            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
+              <div className="absolute right-0 bottom-0 left-0 p-3">
+                <p className="truncate text-sm font-semibold text-white">
                   {pet.name}
                 </p>
               </div>
