@@ -1,0 +1,1 @@
+ALTER TABLE "caregivers" ALTER COLUMN "short_bio" SET NOT NULL;

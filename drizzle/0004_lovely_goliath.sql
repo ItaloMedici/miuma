@@ -1,0 +1,1 @@
+ALTER TABLE "caregivers" ALTER COLUMN "public_name" SET NOT NULL;
