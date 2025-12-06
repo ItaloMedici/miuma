@@ -79,7 +79,8 @@ export const caregiversTable = pgTable(
     accountVerified: boolean("account_verified").notNull().default(false),
     active: boolean("active").notNull().default(false),
     caregiverImageUrl: varchar("caregiver_image_url", { length: 255 }),
-    publicName: varchar("public_name", { length: 255 }),
+    publicName: varchar("public_name", { length: 255 }).notNull(),
+    shortBio: varchar("short_bio", { length: 160 }).notNull(),
 
     subscriptionPaymentStatus: subscriptionStatusEnum()
       .notNull()

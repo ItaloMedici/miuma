@@ -15,11 +15,11 @@ export const DualCTA = () => {
             </div>
             <div className="space-y-4">
               <h3 className="text-3xl font-bold">
-                Comece a apoiar um cuidador hoje.
+                Doe diretamente para um cuidador.
               </h3>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Sua contribuição pode mudar a vida de quem dedica seu tempo e
-                recursos aos animais mais vulneráveis.
+                Escolha um perfil e doe via PIX o valor que desejar. Sua
+                contribuição chega 100% ao cuidador, sem taxas.
               </p>
             </div>
             <Link
@@ -36,11 +36,11 @@ export const DualCTA = () => {
             </div>
             <div className="space-y-4">
               <h3 className="text-3xl font-bold">
-                Crie seu perfil e receba apoio recorrente.
+                Ganhe visibilidade com um perfil gratuito.
               </h3>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Se você é cuidador, a Miuma é o lugar onde seu trabalho será
-                reconhecido e apoiado de forma justa.
+                Crie sua página pessoal, compartilhe sua chave PIX e aumente
+                suas chances de receber doações.
               </p>
             </div>
             <Link

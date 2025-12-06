@@ -6,19 +6,19 @@ export const HowItWorksForDonors = () => {
       icon: Search,
       title: "Escolha um cuidador",
       description:
-        "Navegue pelos perfis verificados e conheça as histórias de quem dedica sua vida aos animais.",
+        "Navegue pelos perfis e conheça as histórias de quem dedica sua vida aos animais.",
     },
     {
       icon: Heart,
-      title: "Doe uma vez ou mensalmente",
+      title: "Doe diretamente via PIX",
       description:
-        "Escolha o valor que faz sentido para você e decida se quer fazer uma doação única ou recorrente.",
+        "Cada perfil tem uma chave PIX para você doar o valor que desejar, de forma direta e sem intermediários.",
     },
     {
       icon: BarChart3,
-      title: "Acompanhe o impacto real",
+      title: "Assinaturas em breve",
       description:
-        "Receba atualizações e relatórios sobre como sua contribuição está fazendo a diferença.",
+        "Em breve você poderá criar doações recorrentes automáticas para apoiar continuamente os cuidadores.",
     },
   ];
 

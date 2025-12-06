@@ -1,7 +1,11 @@
-import { Button } from "@/components/ui/button";
+import { FEATURE_FLAGS } from "@/lib/constants/feature-flags";
 import { FileCheck, Lock, Receipt } from "lucide-react";
 
 export const Transparency = () => {
+  // Feature escondida no MVP Fase 1 - será habilitada quando houver dashboard de transparência
+  if (!FEATURE_FLAGS.ENABLE_TRANSPARENCY_DASHBOARD) {
+    return null;
+  }
   const features = [
     {
       icon: FileCheck,
@@ -55,12 +59,6 @@ export const Transparency = () => {
               </div>
             );
           })}
-        </div>
-
-        <div className="text-center">
-          <Button size="lg" variant="outline">
-            Acessar painel de transparência
-          </Button>
         </div>
       </div>
     </section>

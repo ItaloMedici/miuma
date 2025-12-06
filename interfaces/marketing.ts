@@ -1,7 +1,7 @@
 export interface LandingPageData {
   caregivers: Array<{
     id: string;
-    profileId: string;
+    profileSlug: string;
     name: string;
     petsUnderCare: string;
     imageUrl?: string;

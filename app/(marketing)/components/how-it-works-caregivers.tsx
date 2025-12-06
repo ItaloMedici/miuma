@@ -8,21 +8,21 @@ export const HowItWorksForCaregivers = () => {
   const steps = [
     {
       icon: UserPlus,
-      title: "Crie seu perfil",
+      title: "Crie seu perfil gratuitamente",
       description:
-        "Conte sua história, mostre os animais que você cuida e compartilhe sua jornada.",
+        "Conte sua história, mostre os animais que você cuida e compartilhe sua jornada. É totalmente grátis.",
     },
     {
       icon: DollarSign,
-      title: "Receba apoio mensal",
+      title: "Compartilhe sua chave PIX",
       description:
-        "Pessoas conectadas à sua missão contribuem diretamente para você, sem intermediários.",
+        "Adicione sua chave PIX ao perfil e receba doações diretas de pessoas que querem apoiar seu trabalho.",
     },
     {
       icon: Eye,
-      title: "Transparência simples",
+      title: "Ganhe visibilidade",
       description:
-        "Compartilhe relatórios e mantenha seus apoiadores informados sobre o uso dos recursos.",
+        "Sua página pessoal aumenta suas chances de ser descoberto por novos doadores que se identificam com sua causa.",
     },
   ];
 
@@ -34,7 +34,8 @@ export const HowItWorksForCaregivers = () => {
             Cuidadores, a Miuma é feita para vocês.
           </h2>
           <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-            Receba o apoio que você merece de forma justa e transparente
+            Divulgue seu trabalho, compartilhe sua chave PIX e aumente suas
+            chances de receber apoio
           </p>
         </div>
 

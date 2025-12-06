@@ -1,37 +1,54 @@
-import { CaregiverDataJson } from "@/interfaces/caregiver";
 import { LandingPageData } from "@/interfaces/marketing";
-import { caregivers } from "@/lib/mock/caregiver";
+import { logger } from "@/lib/logger";
+import { caregiverUseCases } from "@/use-cases/caregiver";
 
 export const getLandingPageData = async (): Promise<LandingPageData> => {
-  const caregiversList = caregivers;
+  const allCaregivers = await caregiverUseCases.getAll({ limit: 16 });
 
-  const summaryCaregivers: LandingPageData["caregivers"] = caregiversList.map(
-    (cg) => {
-      const data = JSON.parse(cg.data) as CaregiverDataJson;
+  if (!allCaregivers) {
+    logger.error({
+      msg: "Failed to fetch caregivers for landing page",
+    });
 
-      const petsCount = data.petsInCare.length;
+    return {
+      caregivers: [],
+      impact: {
+        totalCaregivers: "0",
+        totalPetsHelped: "0",
+        totalDonations: "0",
+      },
+    };
+  }
 
-      const petsUnderCare = `${petsCount} ${
-        petsCount === 1 ? "animal" : "animais"
-      } sob cuidado${petsCount === 1 ? "" : "s"}`;
+  const summaryCaregivers = allCaregivers.map<
+    LandingPageData["caregivers"][number]
+  >((caregiver) => {
+    const petsCount = caregiver.data.petsInCare.length;
 
-      return {
-        id: cg.id,
-        profileId: cg.profileSlug,
-        name: cg.publicName ?? cg.name,
-        petsUnderCare,
-        imageUrl: cg.caregiverImageUrl,
-        shortBio: data.shortBio,
-      };
-    }
-  );
+    const petsUnderCare = `${petsCount} ${
+      petsCount === 1 ? "animal" : "animais"
+    } sob cuidado${petsCount === 1 ? "" : "s"}`;
+
+    return {
+      id: caregiver.id,
+      profileSlug: caregiver.profileSlug,
+      name: caregiver.publicName,
+      petsUnderCare,
+      imageUrl: caregiver.caregiverImageUrl ?? undefined,
+      shortBio: caregiver.shortBio,
+    };
+  });
+
+  const totalPetsHelped = allCaregivers.reduce((acc, caregiver) => {
+    return acc + caregiver.data.petsInCare.length;
+  }, 0);
 
   return {
     caregivers: summaryCaregivers,
     impact: {
-      totalCaregivers: "3",
-      totalPetsHelped: "20",
-      totalDonations: "18k",
+      totalCaregivers: allCaregivers.length.toString(),
+      totalPetsHelped: totalPetsHelped.toString(),
+      totalDonations: "0",
     },
   };
 };

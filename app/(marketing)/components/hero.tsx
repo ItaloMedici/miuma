@@ -11,12 +11,13 @@ export const Hero = () => {
           <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-5xl leading-tight font-bold tracking-tight lg:text-6xl">
-                Conectamos quem cuida com quem quer ajudar.
+                Divulgue seu trabalho e receba apoio direto.
               </h1>
               <p className="text-muted-foreground max-w-xl text-lg leading-relaxed">
-                A Miuma permite que cuidadores independentes recebam apoio
-                recorrente e transparente, garantindo que animais resgatados
-                tenham uma vida digna e com amor.
+                A Miuma é um portal gratuito para cuidadores de animais criarem
+                seu perfil, compartilharem sua história e receberem doações via
+                PIX. Aumente sua visibilidade e conecte-se com pessoas que
+                querem ajudar.
               </p>
             </div>
 

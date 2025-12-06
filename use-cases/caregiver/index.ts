@@ -52,7 +52,7 @@ function parseFormDataToJson(
       },
       photos: [],
     },
-    descriptionMarkdown: data.storyAndSocial.story,
+    descriptionMarkdown: data.story.story,
     ongoingCases: [],
     recentUpdates: [],
     socialProof: {
@@ -69,12 +69,12 @@ function parseFormDataToJson(
     })),
     expenses: [],
     socialMedia: {
-      instagram: data.storyAndSocial.instagram,
-      facebook: data.storyAndSocial.facebook,
-      whatsapp: data.storyAndSocial.whatsapp,
-      youtube: data.storyAndSocial.youtube,
-      tiktok: data.storyAndSocial.tiktok,
-      website: data.storyAndSocial.website,
+      instagram: data.socialMedia.instagram,
+      facebook: data.socialMedia.facebook,
+      whatsapp: data.socialMedia.whatsapp,
+      youtube: data.socialMedia.youtube,
+      tiktok: data.socialMedia.tiktok,
+      website: data.socialMedia.website,
     },
   };
 }
@@ -134,12 +134,30 @@ async function updateProfile(userId: string, data: CaregiverProfileFormData) {
   return caregiverResult[0];
 }
 
+async function getAll({ limit }: { limit?: number } = {}) {
+  const query = db
+    .select()
+    .from(caregiversTable)
+    .where(eq(caregiversTable.active, true));
+
+  if (limit) {
+    query.limit(limit);
+  }
+
+  const result = await query;
+
+  return result;
+}
+
 export const caregiverUseCases = {
+  // Legacy support - will be removed
   getCaregiverByProfileSlug,
-  getBySlug: getCaregiverBySlug,
   parseDataJson,
+  getCaregiverByProfileId: getCaregiverByProfileSlug,
+
+  // Using real DB
+  getBySlug: getCaregiverBySlug,
   getByUserId: getCaregiverByUserId,
   updateProfile,
-  // Legacy support - will be removed
-  getCaregiverByProfileId: getCaregiverByProfileSlug,
+  getAll,
 };

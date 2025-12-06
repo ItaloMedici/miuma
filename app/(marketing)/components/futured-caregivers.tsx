@@ -56,9 +56,9 @@ export const FeaturedCaregivers = ({ caregivers }: Props) => {
                     buttonVariants({ variant: "outline", size: "sm" }),
                     "w-full"
                   )}
-                  href={`/${caregiver.profileId}`}
+                  href={`/${caregiver.profileSlug}`}
                 >
-                  Ajudar este cuidador
+                  Ver perfil e doar
                 </Link>
               </div>
             </div>
