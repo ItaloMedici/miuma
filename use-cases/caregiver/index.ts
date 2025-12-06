@@ -42,10 +42,13 @@ function parseFormDataToJson(
   return {
     galleryImages: {
       cover: {
-        url: "TODO",
-        alt: "TODO",
+        url: data.gallery.coverImage ?? "",
+        alt: data.gallery.coverImageDescription ?? "",
       },
-      photos: [],
+      photos: data.gallery.galleryPhotos.map((photo) => ({
+        url: photo.url,
+        alt: photo.description ?? "",
+      })),
     },
     descriptionMarkdown: data.story.story,
     ongoingCases: [],

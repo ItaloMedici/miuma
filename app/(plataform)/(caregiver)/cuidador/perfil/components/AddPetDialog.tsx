@@ -1,5 +1,6 @@
 "use client";
 
+import { DatePicker } from "@/components/date-picker";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -41,12 +42,12 @@ export function AddPetDialog({
     resolver: zodResolver(petSchema),
     defaultValues: editingPet || {
       name: "",
-      species: "dog",
-      age: 0,
+      age: undefined,
       description: "",
       photo: "",
       rescueDate: "",
       medicalNeeds: "",
+      id: crypto.randomUUID(),
     },
   });
 
@@ -54,6 +55,10 @@ export function AddPetDialog({
     onSubmit(data);
     form.reset();
     onOpenChange(false);
+  };
+
+  const handleAgeChange = (value: string) => {
+    return value === "" ? undefined : parseInt(value);
   };
 
   return (
@@ -94,45 +99,19 @@ export function AddPetDialog({
             />
 
             {/* Name and Species */}
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nome do Pet</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Ex: Luna" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="species"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Espécie{" "}
-                      <span className="text-muted-foreground">(Opcional)</span>
-                    </FormLabel>
-                    <FormControl>
-                      <select
-                        className="border-input bg-background focus-visible:ring-ring flex h-9 w-full rounded-md border px-3 py-1 text-sm transition-colors focus-visible:ring-1 focus-visible:outline-none"
-                        {...field}
-                      >
-                        <option value="dog">Cachorro</option>
-                        <option value="cat">Gato</option>
-                        <option value="other">Outro</option>
-                      </select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome do Pet</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Ex: Luna" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             {/* Age and Rescue Date */}
             <div className="grid grid-cols-2 gap-4">
@@ -142,18 +121,21 @@ export function AddPetDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Idade (anos){" "}
-                      <span className="text-muted-foreground">(Opcional)</span>
+                      Idade{" "}
+                      <span className="text-muted-foreground text-xs">
+                        (Opcional)
+                      </span>
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
                         min={0}
                         max={30}
-                        placeholder="0"
+                        placeholder="Ex: 3"
                         {...field}
+                        value={field.value ?? ""}
                         onChange={(e) =>
-                          field.onChange(parseInt(e.target.value) || 0)
+                          field.onChange(handleAgeChange(e.target.value))
                         }
                       />
                     </FormControl>
@@ -166,13 +148,19 @@ export function AddPetDialog({
                 control={form.control}
                 name="rescueDate"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Data de Resgate (opcional)</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <DatePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    label={
+                      <>
+                        Data de Resgate{" "}
+                        <span className="text-muted-foreground text-xs">
+                          (Opcional)
+                        </span>
+                      </>
+                    }
+                    placeholder="DD/MM/AAAA"
+                  />
                 )}
               />
             </div>
@@ -208,7 +196,12 @@ export function AddPetDialog({
               name="medicalNeeds"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Necessidades Médicas (opcional)</FormLabel>
+                  <FormLabel>
+                    Necessidades Médicas{" "}
+                    <span className="text-muted-foreground text-xs">
+                      (Opcional)
+                    </span>
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Descreva condições médicas, medicamentos, tratamentos..."

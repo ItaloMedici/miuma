@@ -7,6 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { useFormContext } from "react-hook-form";
 import { GalleryFormData } from "../schemas";
 import { ImageUploader } from "./ImageUploader";
@@ -16,10 +17,10 @@ export function Gallery() {
 
   const galleryPhotos = form.watch("galleryPhotos") || [];
 
-  const handleAddGalleryPhoto = (photo: string) => {
+  const handleAddGalleryPhoto = (url: string) => {
     const current = form.getValues("galleryPhotos") || [];
     if (current.length < 20) {
-      form.setValue("galleryPhotos", [...current, photo]);
+      form.setValue("galleryPhotos", [...current, { url, description: "" }]);
     }
   };
 
@@ -29,6 +30,13 @@ export function Gallery() {
       "galleryPhotos",
       current.filter((_, i) => i !== index)
     );
+  };
+
+  const handleUpdatePhotoDescription = (index: number, description: string) => {
+    const current = form.getValues("galleryPhotos") || [];
+    const updated = [...current];
+    updated[index] = { ...updated[index], description };
+    form.setValue("galleryPhotos", updated);
   };
 
   return (
@@ -43,60 +51,98 @@ export function Gallery() {
         </p>
       </div>
 
-      <div className="space-y-6">
-        {/* Cover Image */}
-        <FormField
-          control={form.control}
-          name="coverImage"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Imagem de Capa</FormLabel>
-              <FormControl>
-                <ImageUploader
-                  variant="cover"
-                  aspectRatio="video"
-                  value={field.value}
-                  onChange={field.onChange}
-                  onRemove={() => field.onChange(undefined)}
-                />
-              </FormControl>
-              <FormMessage />
-              <p className="text-muted-foreground mt-1 text-xs">
-                Esta será a imagem principal do seu perfil. Recomendamos uma
-                foto que mostre seu espaço de cuidado.
-              </p>
-            </FormItem>
-          )}
-        />
+      <div className="space-y-12">
+        {/* Cover Image Section */}
+        <div className="bg-card space-y-6">
+          <div>
+            <h2 className="text-lg font-semibold">Imagem de Capa</h2>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Esta será a imagem principal do seu perfil
+            </p>
+          </div>
 
-        {/* Gallery Photos */}
-        <div className="space-y-3">
-          <FormLabel>Fotos da Galeria</FormLabel>
-          <p className="text-muted-foreground text-xs">
-            Adicione fotos do ambiente, dos pets sob seus cuidados, e do dia a
-            dia no abrigo.
-          </p>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+          <FormField
+            control={form.control}
+            name="coverImage"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Upload da Imagem</FormLabel>
+                <FormControl>
+                  <ImageUploader
+                    variant="cover"
+                    aspectRatio="video"
+                    value={field.value}
+                    onChange={field.onChange}
+                    onRemove={() => field.onChange(undefined)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="coverImageDescription"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Descrição (Alt Text)</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="Ex: Sala de estar do abrigo com cachorros descansando"
+                  />
+                </FormControl>
+                <FormMessage />
+                <p className="text-muted-foreground mt-1 text-xs">
+                  Opcional. Descreva a imagem para acessibilidade e SEO.
+                </p>
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Gallery Photos Section */}
+        <div className="bg-card space-y-4">
+          <div>
+            <h2 className="text-lg font-semibold">Galeria de Fotos</h2>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Adicione fotos do ambiente, dos pets sob seus cuidados, e do dia a
+              dia no abrigo
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {galleryPhotos.map((photo, index) => (
-              <div key={index} className="group relative">
+              <div key={index} className="space-y-2">
                 <ImageUploader
                   variant="gallery"
-                  value={photo}
-                  onChange={(newPhoto) => {
+                  value={photo.url}
+                  onChange={(newUrl) => {
                     const current = [...galleryPhotos];
-                    current[index] = newPhoto;
+                    current[index] = { ...current[index], url: newUrl };
                     form.setValue("galleryPhotos", current);
                   }}
                   onRemove={() => handleRemoveGalleryPhoto(index)}
                 />
+                <Input
+                  placeholder="Descrição da foto (opcional)"
+                  value={photo.description || ""}
+                  onChange={(e) =>
+                    handleUpdatePhotoDescription(index, e.target.value)
+                  }
+                  className="text-sm"
+                />
               </div>
             ))}
             {galleryPhotos.length < 20 && (
-              <ImageUploader
-                variant="gallery"
-                onChange={handleAddGalleryPhoto}
-                className="border-2 border-dashed"
-              />
+              <div className="space-y-2">
+                <ImageUploader
+                  variant="gallery"
+                  onChange={handleAddGalleryPhoto}
+                  className="border-2 border-dashed"
+                />
+              </div>
             )}
           </div>
           <div className="text-muted-foreground flex items-center justify-between text-xs">

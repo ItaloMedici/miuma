@@ -2,12 +2,17 @@
 
 import { CaregiverEntity } from "@/db/schema";
 import { User } from "better-auth";
+import { PartyPopper } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useState } from "react";
+import { toast } from "sonner";
+import { saveCaregiverProfile } from "../action";
 import {
   ONBOARDING_STEPS,
   OnboardingStepEnum,
   TOTAL_STEPS,
 } from "../constants";
+import { OnboardingFormsMap } from "../schemas";
 
 interface OnboardingContextValue {
   currentStep: OnboardingStepEnum;
@@ -30,6 +35,11 @@ interface OnboardingContextValue {
   isEditMode: boolean;
   inititalCaregiver?: CaregiverEntity;
   user: User;
+  handleSaveFormData: (
+    data: OnboardingFormsMap,
+    onSuccess?: () => void
+  ) => Promise<void>;
+  isSubmitting: boolean;
 }
 
 const OnboardingContext = createContext<OnboardingContextValue | undefined>(
@@ -54,6 +64,8 @@ export function OnboardingProvider({
   const [completedSteps, setCompletedSteps] = useState<Set<OnboardingStepEnum>>(
     new Set()
   );
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const getCurrentStepNumber = () => {
     return (
@@ -95,6 +107,35 @@ export function OnboardingProvider({
     return completedSteps.has(step);
   };
 
+  const handleSaveFormData = async (
+    data: OnboardingFormsMap,
+    onSuccess?: () => void
+  ) => {
+    setIsSubmitting(true);
+    try {
+      const result = await saveCaregiverProfile(data);
+
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+
+      toast.success("Perfil salvo com sucesso!", {
+        icon: <PartyPopper />,
+      });
+      onSuccess?.();
+      router.push(`/${data.profileEssentials.slug}`);
+    } catch (error) {
+      console.error("Error saving caregiver profile:", error);
+
+      toast.error("Erro ao salvar perfil, tente novamente mais tarde.", {
+        description: "Fique tranquilo, seus dados não foram perdidos.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const value: OnboardingContextValue = {
     currentStep,
     setCurrentStep,
@@ -113,6 +154,8 @@ export function OnboardingProvider({
     isEditMode: Boolean(caregiver?.id),
     inititalCaregiver: caregiver,
     user,
+    handleSaveFormData,
+    isSubmitting,
   };
 
   return (

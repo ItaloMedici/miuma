@@ -47,17 +47,6 @@ export function PetsInCare() {
     );
   };
 
-  const getSpeciesLabel = (species: string) => {
-    switch (species) {
-      case "dog":
-        return "Cachorro";
-      case "cat":
-        return "Gato";
-      default:
-        return "Outro";
-    }
-  };
-
   return (
     <div>
       <div className="mb-8 flex items-center justify-between">
@@ -128,12 +117,6 @@ export function PetsInCare() {
                   <h4 className="text-foreground text-sm font-medium">
                     {pet.name}
                   </h4>
-                  <p className="text-muted-foreground text-xs">
-                    {pet.species && getSpeciesLabel(pet.species)}
-                    {pet.species && pet.age !== undefined && " • "}
-                    {pet.age !== undefined &&
-                      `${pet.age} ${pet.age === 1 ? "ano" : "anos"}`}
-                  </p>
                   <p className="text-muted-foreground mt-1 line-clamp-2 text-xs">
                     {pet.description}
                   </p>

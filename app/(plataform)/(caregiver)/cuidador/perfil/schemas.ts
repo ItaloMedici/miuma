@@ -54,20 +54,43 @@ export const locationSchema = z.object({
 // Step 4: Gallery
 export const gallerySchema = z.object({
   coverImage: z.string().optional(),
-  galleryPhotos: z.array(z.string()).max(20, "Máximo de 20 fotos na galeria"),
+  coverImageDescription: z.string().optional(),
+  galleryPhotos: z
+    .array(
+      z.object({
+        url: z.string(),
+        description: z.string().optional(),
+      })
+    )
+    .max(20, "Máximo de 20 fotos na galeria"),
 });
 
 // Step 5: Pet Schema
 export const petSchema = z.object({
   name: z.string().min(2, "Nome do pet é obrigatório"),
-  age: z.number().min(0, "Idade inválida").max(30, "Idade inválida").optional(),
+  age: z
+    .number()
+    .min(0, "Idade não pode ser negativa")
+    .max(30, "Idade máxima é 30 anos")
+    .optional(),
   description: z
     .string()
     .min(10, "Descrição deve ter pelo menos 10 caracteres")
     .max(500, "Descrição muito longa"),
   photo: z.string().optional(),
-  rescueDate: z.string().optional(),
+  rescueDate: z
+    .string()
+    .optional()
+    .refine(
+      (date) => {
+        if (!date) return true;
+        const parsedDate = new Date(date);
+        return !isNaN(parsedDate.getTime()) && parsedDate <= new Date();
+      },
+      { message: "Data de resgate inválida ou no futuro" }
+    ),
   medicalNeeds: z.string().optional(),
+  id: z.string(),
 });
 
 export const petsInCareSchema = z.object({

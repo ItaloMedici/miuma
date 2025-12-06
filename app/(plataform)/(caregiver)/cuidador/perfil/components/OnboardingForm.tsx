@@ -37,6 +37,7 @@ export function OnboardingForm() {
     isEditMode,
     inititalCaregiver,
     user,
+    handleSaveFormData,
   } = useOnboarding();
 
   const profileForm = useForm<
@@ -99,10 +100,13 @@ export function OnboardingForm() {
     resolver: zodResolver(STEP_SCHEMA_MAP[OnboardingStepEnum.GALLERY]),
     defaultValues: {
       coverImage: inititalCaregiver?.data?.galleryImages?.cover?.url ?? "",
+      coverImageDescription:
+        inititalCaregiver?.data?.galleryImages?.cover?.alt ?? "",
       galleryPhotos:
-        inititalCaregiver?.data?.galleryImages?.photos?.map(
-          (photo) => photo.url
-        ) ?? [],
+        inititalCaregiver?.data?.galleryImages?.photos?.map((photo) => ({
+          url: photo.url,
+          description: photo.alt ?? "",
+        })) ?? [],
     },
     reValidateMode: "onBlur",
   });
@@ -129,19 +133,20 @@ export function OnboardingForm() {
     reValidateMode: "onBlur",
   });
 
-  const { saveBackup, hasUnsavedChanges, lastSaved } = useFormPersistence({
-    forms: {
-      profileEssentials: profileForm,
-      story: storyForm,
-      socialMedia: socialMediaForm,
-      location: locationForm,
-      gallery: galleryForm,
-      petsInCare: petsForm,
-      billingAndExpenses: billingForm,
-    },
-    completedSteps,
-    setCompletedSteps,
-  });
+  const { saveBackup, hasUnsavedChanges, lastSaved, clearBackup } =
+    useFormPersistence({
+      forms: {
+        profileEssentials: profileForm,
+        story: storyForm,
+        socialMedia: socialMediaForm,
+        location: locationForm,
+        gallery: galleryForm,
+        petsInCare: petsForm,
+        billingAndExpenses: billingForm,
+      },
+      completedSteps,
+      setCompletedSteps,
+    });
 
   useBeforeUnload(hasUnsavedChanges);
 
@@ -221,9 +226,11 @@ export function OnboardingForm() {
       billingAndExpenses: billingForm.getValues(),
     };
 
-    console.log("Complete onboarding data:", completeData);
-    sessionStorage.setItem("onboardingData", JSON.stringify(completeData));
-    // TODO: Submit to API
+    saveBackup();
+
+    handleSaveFormData(completeData, () => {
+      clearBackup();
+    });
   };
 
   const renderStep = () => {
