@@ -64,6 +64,7 @@ function parseFormDataToJson(
       age: pet.age,
       rescueDate: pet.rescueDate,
       medicalNeeds: pet.medicalNeeds,
+      id: pet.id ?? crypto.randomUUID(),
     })),
     expenses: [],
     socialMedia: {
@@ -115,6 +116,8 @@ async function updateProfile(userId: string, data: CaregiverProfileFormData) {
   }
 
   const updatedDataJson = parseFormDataToJson(data);
+
+  console.log(JSON.stringify(updatedDataJson, null, 2));
 
   const caregiverResult = await db
     .update(caregiversTable)
