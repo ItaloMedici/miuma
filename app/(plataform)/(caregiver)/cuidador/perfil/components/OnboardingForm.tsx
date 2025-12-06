@@ -49,7 +49,7 @@ export function OnboardingForm() {
       name: user.name,
       shortBio: inititalCaregiver?.shortBio ?? "",
       profilePhoto: inititalCaregiver?.caregiverImageUrl ?? "",
-      profileName: inititalCaregiver?.publicName ?? "",
+      profileName: inititalCaregiver?.publicName ?? user.name,
       slug:
         inititalCaregiver?.profileSlug ??
         user.name.toLowerCase().replace(/\s+/g, "-"),

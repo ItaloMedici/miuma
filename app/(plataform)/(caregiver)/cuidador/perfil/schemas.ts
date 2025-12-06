@@ -4,11 +4,11 @@ import { OnboardingStepEnum } from "./constants";
 // Step 1: Profile Essentials
 export const profileEssentialsSchema = z.object({
   profilePhoto: z.string().optional(),
-  name: z
+  name: z.string(),
+  profileName: z
     .string()
-    .min(2, "Nome deve ter pelo menos 2 caracteres")
-    .max(50, "Nome muito longo"),
-  profileName: z.string().max(101, "Nome de perfil muito longo").optional(),
+    .max(50, "Nome de perfil muito longo")
+    .min(2, "Nome de perfil deve ter pelo menos 2 caracteres"),
   shortBio: z
     .string()
     .min(20, "Bio deve ter pelo menos 20 caracteres")
