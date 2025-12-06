@@ -2,6 +2,7 @@
 
 import { getServerSession } from "@/lib/auth-server";
 import { caregiverUseCases } from "@/use-cases/caregiver";
+import { redirect } from "next/navigation";
 import {
   CaregiverProfileFormData,
   caregiverProfileFormSchema,
@@ -88,7 +89,10 @@ export async function checkSlugAvailability(slug: string) {
   try {
     const session = await getServerSession();
 
-    // Normalize slug: lowercase, trim
+    if (!session) {
+      redirect("/entrar");
+    }
+
     const normalizedSlug = slug.toLowerCase().trim();
 
     if (normalizedSlug.length < 3) {
@@ -98,28 +102,21 @@ export async function checkSlugAvailability(slug: string) {
       };
     }
 
-    // Check if slug is already in use by another user
-    const existingCaregiver = await caregiverUseCases.getBySlug(normalizedSlug);
+    const existingCaregiver = await caregiverUseCases.checkSlugAvailability(
+      normalizedSlug,
+      session.user.id
+    );
 
-    // If slug exists and belongs to another user
-    if (existingCaregiver) {
-      // If user is authenticated and it's their own slug, it's available
-      if (session?.user?.id && existingCaregiver.userId === session.user.id) {
-        return {
-          available: true,
-          message: "Este é seu slug atual",
-        };
-      }
-
+    if (!existingCaregiver) {
       return {
-        available: false,
-        message: "Este slug já está em uso",
+        available: true,
+        message: "Slug disponível",
       };
     }
 
     return {
-      available: true,
-      message: "Slug disponível",
+      available: false,
+      message: "Este slug já está em uso",
     };
   } catch (error) {
     console.error("Error checking slug availability:", error);
