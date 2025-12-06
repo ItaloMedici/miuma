@@ -51,6 +51,7 @@ interface OnboardingProviderProps {
   initialStep?: OnboardingStepEnum;
   caregiver?: CaregiverEntity;
   user: User;
+  initalCompletedSteps?: Set<OnboardingStepEnum>;
 }
 
 export function OnboardingProvider({
@@ -58,12 +59,13 @@ export function OnboardingProvider({
   initialStep = OnboardingStepEnum.PROFILE_ESSENTIALS,
   caregiver,
   user,
+  initalCompletedSteps = new Set(),
 }: OnboardingProviderProps) {
   const [currentStep, setCurrentStep] =
     useState<OnboardingStepEnum>(initialStep);
-  const [completedSteps, setCompletedSteps] = useState<Set<OnboardingStepEnum>>(
-    new Set()
-  );
+  const [completedSteps, setCompletedSteps] =
+    useState<Set<OnboardingStepEnum>>(initalCompletedSteps);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 

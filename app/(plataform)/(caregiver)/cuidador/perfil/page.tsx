@@ -7,6 +7,7 @@ import { cache } from "react";
 import { MobileHeader, OnboardingForm, OnboardingSidebar } from "./components";
 import { OnboardingStepEnum } from "./constants";
 import { OnboardingProvider } from "./context";
+import { checkCompletedSteps } from "./form-utils";
 
 const cachedData = cache(async () => {
   const session = await getServerSession();
@@ -32,13 +33,21 @@ export const generateMetadata = async (): Promise<Metadata> => {
 export default async function ProfilePage() {
   const { session, caregiver } = await cachedData();
 
-  const initialStep = OnboardingStepEnum.PROFILE_ESSENTIALS;
+  let initialStep = OnboardingStepEnum.PROFILE_ESSENTIALS;
+
+  let completedSteps = new Set<OnboardingStepEnum>();
+  if (caregiver) {
+    const result = checkCompletedSteps(caregiver);
+    initialStep ??= result.missingSteps[0];
+    completedSteps = result.completedSteps;
+  }
 
   return (
     <OnboardingProvider
       initialStep={initialStep}
       caregiver={caregiver}
       user={session.user}
+      initalCompletedSteps={completedSteps}
     >
       <div className="bg-background flex min-h-screen flex-col overflow-hidden md:flex-row">
         <OnboardingSidebar />

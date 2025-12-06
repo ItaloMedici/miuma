@@ -1,13 +1,4 @@
-/**
- * Form Utilities - Type-safe helpers for working with onboarding forms
- *
- * This file provides utilities that leverage the single source of truth
- * (OnboardingStepEnum) to ensure type safety across the application.
- *
- * If you rename a step in OnboardingStepEnum, TypeScript will enforce
- * updates everywhere these utilities are used.
- */
-
+import { CaregiverEntity } from "@/db/schema";
 import { UseFormReturn } from "react-hook-form";
 import { OnboardingStepEnum } from "./constants";
 import {
@@ -40,12 +31,6 @@ export function stepToFormKey<T extends OnboardingStepEnum>(
   return mapping[step] as StepToFormKey<T>;
 }
 
-/**
- * Get a specific form from the forms object using type-safe step enum
- * @example
- * const form = getFormForStep(forms, OnboardingStepEnum.PROFILE_ESSENTIALS);
- * // form is typed as UseFormReturn<ProfileEssentialsFormData>
- */
 export function getFormForStep<T extends OnboardingStepEnum>(
   forms: {
     [K in keyof OnboardingFormsMap]: UseFormReturn<OnboardingFormsMap[K]>;
@@ -95,3 +80,102 @@ export function normalizeSlug(value: string): string {
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9-_]/g, "");
 }
+
+export const checkCompletedSteps = (caregiver: Partial<CaregiverEntity>) => {
+  const completedSteps = new Set<OnboardingStepEnum>();
+
+  const completedProfileEssentials = STEP_SCHEMA_MAP[
+    OnboardingStepEnum.PROFILE_ESSENTIALS
+  ].safeParse({
+    name: caregiver.publicName,
+    shortBio: caregiver.shortBio,
+    profileName: caregiver.publicName,
+    profilePhoto: caregiver.caregiverImageUrl,
+    slug: caregiver.profileSlug,
+  }).success;
+
+  if (completedProfileEssentials) {
+    completedSteps.add(OnboardingStepEnum.PROFILE_ESSENTIALS);
+  }
+
+  const completedStory = STEP_SCHEMA_MAP[OnboardingStepEnum.STORY].safeParse({
+    story: caregiver.data?.descriptionMarkdown,
+  }).success;
+
+  if (completedStory) {
+    completedSteps.add(OnboardingStepEnum.STORY);
+  }
+
+  const completedSocialMedia = STEP_SCHEMA_MAP[
+    OnboardingStepEnum.SOCIAL_MEDIA
+  ].safeParse({
+    ...caregiver.data?.socialMedia,
+  }).success;
+
+  if (completedSocialMedia) {
+    completedSteps.add(OnboardingStepEnum.SOCIAL_MEDIA);
+  }
+
+  const completedLocation = STEP_SCHEMA_MAP[
+    OnboardingStepEnum.LOCATION
+  ].safeParse({
+    ...caregiver.address,
+  }).success;
+
+  if (completedLocation) {
+    completedSteps.add(OnboardingStepEnum.LOCATION);
+  }
+
+  const completedGallery = STEP_SCHEMA_MAP[
+    OnboardingStepEnum.GALLERY
+  ].safeParse({
+    coverImage: caregiver.data?.galleryImages?.cover?.url,
+    coverImageDescription: caregiver.data?.galleryImages?.cover?.alt,
+    galleryPhotos: caregiver.data?.galleryImages?.photos.map((photo) => ({
+      url: photo.url,
+      description: photo.alt,
+    })),
+  }).success;
+
+  if (completedGallery) {
+    completedSteps.add(OnboardingStepEnum.GALLERY);
+  }
+
+  const completedPetsInCare = STEP_SCHEMA_MAP[
+    OnboardingStepEnum.PETS_IN_CARE
+  ].safeParse({
+    pets: caregiver.data?.petsInCare.map((pet) => ({
+      name: pet.name,
+      description: pet.description,
+      age: pet.age,
+      photo: pet.imageUrl,
+      rescueDate: pet.rescueDate,
+      medicalNeeds: pet.medicalNeeds,
+      id: pet.id,
+    })),
+  }).success;
+
+  if (completedPetsInCare) {
+    completedSteps.add(OnboardingStepEnum.PETS_IN_CARE);
+  }
+
+  const completedBillingAndExpenses = STEP_SCHEMA_MAP[
+    OnboardingStepEnum.BILLING_AND_EXPENSES
+  ].safeParse({
+    billingAndExpenses: caregiver.data?.expenses,
+  }).success;
+
+  if (completedBillingAndExpenses) {
+    completedSteps.add(OnboardingStepEnum.BILLING_AND_EXPENSES);
+  }
+
+  const missingSteps = Object.values(OnboardingStepEnum).filter(
+    (step) => !completedSteps.has(step)
+  );
+
+  return {
+    completedSteps: completedSteps,
+    totalCompleted: completedSteps.size,
+    missingSteps,
+  };
+};
