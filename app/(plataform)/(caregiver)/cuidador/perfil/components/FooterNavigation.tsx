@@ -18,7 +18,7 @@ export function FooterNavigation({
   const { isFirstStep, isLastStep } = useOnboarding();
 
   return (
-    <div className="fixed md:relative bottom-0 left-0 right-0 bg-background border-t border-border p-4 md:px-12 flex justify-between items-center z-30">
+    <div className="bg-background border-border fixed right-0 bottom-0 left-0 z-30 flex items-center justify-between border-t p-4 md:relative md:px-12">
       {!isFirstStep ? (
         <Button
           type="button"
@@ -26,7 +26,7 @@ export function FooterNavigation({
           onClick={onPrevious}
           className="gap-2"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="h-4 w-4" />
           Voltar
         </Button>
       ) : (
@@ -35,18 +35,18 @@ export function FooterNavigation({
 
       <div className="ml-auto">
         {!isLastStep ? (
-          <Button type="button" onClick={onNext} className="gap-2 group">
+          <Button type="button" onClick={onNext} className="group gap-2">
             <span>Continuar</span>
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         ) : (
           <Button
             type="button"
             onClick={onSubmit}
-            className="gap-2 bg-primary hover:bg-primary/90"
+            className="bg-primary hover:bg-primary/90 gap-2"
           >
             <span>Salvar Perfil</span>
-            <Check className="w-4 h-4" />
+            <Check className="h-4 w-4" />
           </Button>
         )}
       </div>

@@ -25,20 +25,20 @@ export function StepIndicator({
             type="button"
             onClick={() => onStepClick?.(step.number)}
             className={cn(
-              "w-full flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors group",
+              "group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
               isActive
-                ? "text-stone-900 bg-stone-50"
+                ? "bg-stone-50 text-stone-900"
                 : "text-stone-500 hover:bg-stone-50"
             )}
           >
             <div
               className={cn(
-                "w-6 h-6 rounded-full flex items-center justify-center text-[10px] transition-colors",
+                "flex h-6 w-6 items-center justify-center rounded-full text-[10px] transition-colors",
                 isActive
                   ? "bg-stone-900 text-white"
                   : isCompleted
-                  ? "bg-primary text-primary-foreground"
-                  : "border border-stone-200 text-stone-400 group-hover:border-stone-300"
+                    ? "bg-primary text-primary-foreground"
+                    : "border border-stone-200 text-stone-400 group-hover:border-stone-300"
               )}
             >
               {step.number}

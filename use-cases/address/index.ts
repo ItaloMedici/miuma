@@ -1,9 +1,12 @@
+import { db } from "@/db";
+import { addresses } from "@/db/schema";
 import { Address, AddressSummary, formatAddress } from "@/interfaces/address";
 import {
   getAddressById,
   getAddressesByCity,
   getAddressesByState,
 } from "@/lib/mock/addresses";
+import { eq } from "drizzle-orm";
 
 async function getAddress(addressId: string): Promise<Address | undefined> {
   return getAddressById(addressId);
@@ -46,13 +49,32 @@ async function getFormattedAddress(
   return formatAddress(address, format);
 }
 
+async function createAddress(input: typeof addresses.$inferInsert) {
+  const addressResult = await db.insert(addresses).values(input).returning();
+
+  return addressResult[0];
+}
+
+async function updateAddress(
+  addressId: string,
+  input: Partial<typeof addresses.$inferInsert>
+) {
+  const addressResult = await db
+    .update(addresses)
+    .set(input)
+    .where(eq(addresses.id, addressId))
+    .returning();
+
+  return addressResult[0];
+}
+
 export const addressUseCases = {
   getAddress,
   getAddressesByCityName,
   getAddressesByStateName,
   getAddressSummary,
   getFormattedAddress,
-  createAddress: () => {},
-  updateAddress: () => {},
+  create: createAddress,
+  update: updateAddress,
   deleteAddress: () => {},
 };

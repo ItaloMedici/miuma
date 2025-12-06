@@ -8,14 +8,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { BRAZILIAN_STATES } from "@/lib/constants/brazilian-states";
 import { useMask } from "@react-input/mask";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -48,7 +40,7 @@ export function Location() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+        <h1 className="text-foreground text-2xl font-semibold tracking-tight">
           Localização
         </h1>
         <p className="text-muted-foreground mt-2 text-sm">
@@ -76,12 +68,12 @@ export function Location() {
                     }}
                   />
                   {isLoadingCep && (
-                    <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-muted-foreground" />
+                    <Loader2 className="text-muted-foreground absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 animate-spin" />
                   )}
                 </div>
               </FormControl>
               <FormMessage />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-muted-foreground mt-1 text-xs">
                 Digite o CEP para preencher automaticamente o endereço
               </p>
             </FormItem>
@@ -89,7 +81,7 @@ export function Location() {
         />
 
         {/* Street and Number */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormField
             control={form.control}
             name="street"
@@ -97,7 +89,12 @@ export function Location() {
               <FormItem className="md:col-span-2">
                 <FormLabel>Rua/Avenida</FormLabel>
                 <FormControl>
-                  <Input placeholder="Nome da rua" {...field} />
+                  <Input
+                    placeholder="Nome da rua"
+                    {...field}
+                    readOnly
+                    className="bg-muted"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -120,7 +117,7 @@ export function Location() {
         </div>
 
         {/* Complement and Neighborhood */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
             name="complement"
@@ -142,7 +139,12 @@ export function Location() {
               <FormItem>
                 <FormLabel>Bairro</FormLabel>
                 <FormControl>
-                  <Input placeholder="Nome do bairro" {...field} />
+                  <Input
+                    placeholder="Nome do bairro"
+                    {...field}
+                    readOnly
+                    className="bg-muted"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -151,7 +153,7 @@ export function Location() {
         </div>
 
         {/* City, State, and Country */}
-        <div className="grid grid-cols-1 md:grid-cols-[3fr_1fr] gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-[3fr_1fr]">
           <div className="flex gap-4">
             <FormField
               control={form.control}
@@ -160,7 +162,12 @@ export function Location() {
                 <FormItem className="flex-1">
                   <FormLabel>Cidade</FormLabel>
                   <FormControl>
-                    <Input placeholder="Sua cidade" {...field} />
+                    <Input
+                      placeholder="Sua cidade"
+                      {...field}
+                      readOnly
+                      className="bg-muted"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -174,21 +181,12 @@ export function Location() {
                 <FormItem>
                   <FormLabel>Estado</FormLabel>
                   <FormControl>
-                    <Select
+                    <Input
+                      readOnly
                       {...field}
-                      onValueChange={(value) => form.setValue("state", value)}
-                    >
-                      <SelectTrigger className={"w-[120px]"}>
-                        <SelectValue placeholder="Selecione" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {BRAZILIAN_STATES.map((state) => (
-                          <SelectItem key={state.code} value={state.code}>
-                            {state.code}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      placeholder="Seu estado"
+                      className="bg-muted"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -60,9 +60,9 @@ export function PetsInCare() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+          <h1 className="text-foreground text-2xl font-semibold tracking-tight">
             Pets sob Cuidado
           </h1>
           <p className="text-muted-foreground mt-2 text-sm">
@@ -77,19 +77,19 @@ export function PetsInCare() {
           }}
           className="gap-2"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="h-4 w-4" />
           Adicionar Pet
         </Button>
       </div>
 
       {pets.length === 0 ? (
         <Card className="p-12 text-center">
-          <div className="max-w-sm mx-auto">
-            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-              <Plus className="w-8 h-8 text-muted-foreground" />
+          <div className="mx-auto max-w-sm">
+            <div className="bg-muted mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+              <Plus className="text-muted-foreground h-8 w-8" />
             </div>
-            <h3 className="text-lg font-medium mb-2">Nenhum pet adicionado</h3>
-            <p className="text-sm text-muted-foreground mb-4">
+            <h3 className="mb-2 text-lg font-medium">Nenhum pet adicionado</h3>
+            <p className="text-muted-foreground mb-4 text-sm">
               Adicione os pets que estão sob seus cuidados para que os
               apoiadores possam conhecê-los.
             </p>
@@ -103,14 +103,14 @@ export function PetsInCare() {
           </div>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {pets.map((pet) => (
             <Card
               key={pet.id}
-              className="p-4 group hover:border-primary transition-all flex flex-col"
+              className="group hover:border-primary flex flex-col p-4 transition-all"
             >
               <div className="flex gap-4">
-                <div className="w-20 h-20 rounded-lg bg-muted shrink-0 overflow-hidden relative">
+                <div className="bg-muted relative h-20 w-20 shrink-0 overflow-hidden rounded-lg">
                   {pet.photo ? (
                     <Image
                       src={pet.photo}
@@ -119,22 +119,22 @@ export function PetsInCare() {
                       className="object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                    <div className="text-muted-foreground flex h-full w-full items-center justify-center">
                       <span className="text-xs">Sem foto</span>
                     </div>
                   )}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-medium text-foreground text-sm">
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-foreground text-sm font-medium">
                     {pet.name}
                   </h4>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     {pet.species && getSpeciesLabel(pet.species)}
                     {pet.species && pet.age !== undefined && " • "}
                     {pet.age !== undefined &&
                       `${pet.age} ${pet.age === 1 ? "ano" : "anos"}`}
                   </p>
-                  <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
+                  <p className="text-muted-foreground mt-1 line-clamp-2 text-xs">
                     {pet.description}
                   </p>
                 </div>
@@ -145,7 +145,7 @@ export function PetsInCare() {
                   variant="outline"
                   size="sm"
                   onClick={() => handleEditPet(pet)}
-                  className="text-xs h-8 flex-1"
+                  className="h-8 flex-1 text-xs"
                 >
                   Editar
                 </Button>
@@ -154,7 +154,7 @@ export function PetsInCare() {
                   variant="destructive"
                   size="sm"
                   onClick={() => handleRemovePet(pet.id!)}
-                  className="text-xs h-8 flex-1"
+                  className="h-8 flex-1 text-xs"
                 >
                   Remover
                 </Button>

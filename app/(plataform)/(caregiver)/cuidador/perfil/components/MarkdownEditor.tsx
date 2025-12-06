@@ -12,7 +12,6 @@ interface MarkdownEditorProps {
   minHeight?: string;
 }
 
-// Initial empty state
 const emptyEditorState = {
   root: {
     children: [
@@ -33,7 +32,6 @@ const emptyEditorState = {
   },
 } as unknown as SerializedEditorState;
 
-// Function to extract plain text from editor state
 function extractTextFromEditorState(state: SerializedEditorState): string {
   let text = "";
 
@@ -62,30 +60,24 @@ export function MarkdownEditor({
   onChange,
   minHeight = "300px",
 }: MarkdownEditorProps) {
-  // Initialize editor state from value
   const [editorState, setEditorState] = useState<SerializedEditorState>(() => {
     if (!value || typeof value !== "string" || !value.trim()) {
       return emptyEditorState;
     }
 
     try {
-      // If value is JSON, parse it
       const parsed = JSON.parse(value);
 
-      // If it has editorState property, use that
       if (parsed.editorState) {
         return parsed.editorState as SerializedEditorState;
       }
 
-      // If it's already a valid editor state structure, use it
       if (parsed.root && Array.isArray(parsed.root.children)) {
         return parsed as SerializedEditorState;
       }
 
-      // Otherwise treat as empty
       return emptyEditorState;
     } catch {
-      // If value is plain text, create a simple editor state
       return {
         root: {
           children: [
@@ -120,7 +112,6 @@ export function MarkdownEditor({
 
   const handleChange = (state: SerializedEditorState) => {
     setEditorState(state);
-    // Convert editor state to JSON string and pass plain text count
     const plainText = extractTextFromEditorState(state);
     const jsonWithMetadata = JSON.stringify({
       editorState: state,
@@ -140,15 +131,16 @@ export function MarkdownEditor({
   );
 }
 
-// Helper function to get character count from stored value
 export function getCharacterCount(value: string): number {
   if (!value) return 0;
 
   try {
     const parsed = JSON.parse(value);
+
     if (parsed.characterCount !== undefined) {
       return parsed.characterCount;
     }
+
     if (parsed.editorState) {
       return extractTextFromEditorState(parsed.editorState).length;
     }

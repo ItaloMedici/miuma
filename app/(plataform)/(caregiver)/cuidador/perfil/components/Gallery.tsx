@@ -34,7 +34,7 @@ export function Gallery() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+        <h1 className="text-foreground text-2xl font-semibold tracking-tight">
           Galeria de Fotos
         </h1>
         <p className="text-muted-foreground mt-2 text-sm">
@@ -61,7 +61,7 @@ export function Gallery() {
                 />
               </FormControl>
               <FormMessage />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-muted-foreground mt-1 text-xs">
                 Esta será a imagem principal do seu perfil. Recomendamos uma
                 foto que mostre seu espaço de cuidado.
               </p>
@@ -72,13 +72,13 @@ export function Gallery() {
         {/* Gallery Photos */}
         <div className="space-y-3">
           <FormLabel>Fotos da Galeria</FormLabel>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             Adicione fotos do ambiente, dos pets sob seus cuidados, e do dia a
             dia no abrigo.
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
             {galleryPhotos.map((photo, index) => (
-              <div key={index} className="relative group">
+              <div key={index} className="group relative">
                 <ImageUploader
                   variant="gallery"
                   value={photo}
@@ -99,7 +99,7 @@ export function Gallery() {
               />
             )}
           </div>
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="text-muted-foreground flex items-center justify-between text-xs">
             <span>{galleryPhotos.length} de 20 fotos adicionadas</span>
             {galleryPhotos.length >= 20 && (
               <span className="text-amber-600">Limite máximo atingido</span>

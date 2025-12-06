@@ -8,9 +8,9 @@ export function OnboardingSidebar() {
     useOnboarding();
 
   return (
-    <div className="hidden md:flex w-64 lg:w-72 bg-background border-r border-border flex-col h-screen sticky top-0 z-40">
+    <div className="bg-background border-border sticky top-0 z-40 hidden h-screen w-64 flex-col border-r md:flex lg:w-72">
       <div className="p-8 pb-4">
-        <div className="flex items-center gap-2 text-primary mb-8">
+        <div className="text-primary mb-8 flex items-center gap-2">
           <Image
             src="/logo-horizontal.svg"
             alt="Miuma"
@@ -30,19 +30,19 @@ export function OnboardingSidebar() {
                 key={step.id}
                 type="button"
                 onClick={() => setCurrentStep(step.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
+                className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   isActive
-                    ? "text-stone-900 bg-stone-50"
+                    ? "bg-stone-50 text-stone-900"
                     : "text-stone-500 hover:bg-stone-50"
                 }`}
               >
                 <div
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-semibold transition-colors shrink-0 ${
+                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold transition-colors ${
                     isActive
                       ? "bg-stone-900 text-white"
                       : isCompleted
-                      ? "bg-primary text-primary-foreground"
-                      : "border border-stone-200 text-stone-400"
+                        ? "bg-primary text-primary-foreground"
+                        : "border border-stone-200 text-stone-400"
                   }`}
                 >
                   {step.number}

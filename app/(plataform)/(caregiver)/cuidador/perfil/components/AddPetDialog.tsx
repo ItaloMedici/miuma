@@ -58,7 +58,7 @@ export function AddPetDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-screen max-w-[100vw] h-screen md:h-[90vh] md:max-w-2xl overflow-y-auto">
+      <DialogContent className="h-screen w-screen max-w-[100vw] overflow-y-auto md:h-[90vh] md:max-w-2xl">
         <DialogHeader>
           <DialogTitle>
             {editingPet ? "Editar Pet" : "Adicionar Novo Pet"}
@@ -120,7 +120,7 @@ export function AddPetDialog({
                     </FormLabel>
                     <FormControl>
                       <select
-                        className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        className="border-input bg-background focus-visible:ring-ring flex h-9 w-full rounded-md border px-3 py-1 text-sm transition-colors focus-visible:ring-1 focus-visible:outline-none"
                         {...field}
                       >
                         <option value="dog">Cachorro</option>
@@ -187,14 +187,14 @@ export function AddPetDialog({
                   <FormControl>
                     <Textarea
                       placeholder="Conte sobre o pet, sua história, personalidade..."
-                      className="resize-none h-24"
+                      className="h-24 resize-none"
                       maxLength={500}
                       {...field}
                     />
                   </FormControl>
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center justify-between">
                     <FormMessage />
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-muted-foreground text-xs">
                       {field.value?.length || 0}/500
                     </p>
                   </div>
@@ -212,7 +212,7 @@ export function AddPetDialog({
                   <FormControl>
                     <Textarea
                       placeholder="Descreva condições médicas, medicamentos, tratamentos..."
-                      className="resize-none h-20"
+                      className="h-20 resize-none"
                       {...field}
                     />
                   </FormControl>

@@ -62,9 +62,9 @@ export function AddOngoingCaseDialog({ onAdd }: AddOngoingCaseDialogProps) {
           type="button"
           variant="ghost"
           size="sm"
-          className="gap-1 text-primary hover:text-primary"
+          className="text-primary hover:text-primary gap-1"
         >
-          <Plus className="w-3 h-3" />
+          <Plus className="h-3 w-3" />
           Adicionar Caso
         </Button>
       </DialogTrigger>
@@ -119,7 +119,7 @@ export function AddOngoingCaseDialog({ onAdd }: AddOngoingCaseDialogProps) {
                       <InputGroup>
                         <InputGroupAddon>
                           <InputGroupText>
-                            <DollarSign className="w-4 h-4" />
+                            <DollarSign className="h-4 w-4" />
                           </InputGroupText>
                         </InputGroupAddon>
                         <InputGroupInput
@@ -149,7 +149,7 @@ export function AddOngoingCaseDialog({ onAdd }: AddOngoingCaseDialogProps) {
                       <InputGroup>
                         <InputGroupAddon>
                           <InputGroupText>
-                            <DollarSign className="w-4 h-4" />
+                            <DollarSign className="h-4 w-4" />
                           </InputGroupText>
                         </InputGroupAddon>
                         <InputGroupInput
@@ -189,7 +189,7 @@ export function AddOngoingCaseDialog({ onAdd }: AddOngoingCaseDialogProps) {
                         size="icon"
                         className="shrink-0"
                       >
-                        <Upload className="w-4 h-4" />
+                        <Upload className="h-4 w-4" />
                       </Button>
                     </div>
                   </FormControl>

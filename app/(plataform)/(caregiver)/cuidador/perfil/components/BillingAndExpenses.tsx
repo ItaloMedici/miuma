@@ -62,7 +62,7 @@ export function BillingAndExpenses() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+        <h1 className="text-foreground text-2xl font-semibold tracking-tight">
           Informações Financeiras
         </h1>
         <p className="text-muted-foreground mt-2 text-sm">
@@ -75,10 +75,10 @@ export function BillingAndExpenses() {
         {/* Pix Key */}
         <Card className="p-6">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-primary/10 rounded-lg text-primary w-9 h-9">
+            <div className="bg-primary/10 text-primary h-9 w-9 rounded-lg p-2">
               <Icons.Pix className="text-primary" />
             </div>
-            <h3 className="font-medium text-foreground">
+            <h3 className="text-foreground font-medium">
               Sua Chave Pix (Recebedor)
             </h3>
           </div>
@@ -93,7 +93,7 @@ export function BillingAndExpenses() {
                   <InputGroup>
                     <InputGroupAddon>
                       <InputGroupText>
-                        <QrCode className="w-4 h-4" />
+                        <QrCode className="h-4 w-4" />
                       </InputGroupText>
                     </InputGroupAddon>
                     <InputGroupInput
@@ -102,7 +102,7 @@ export function BillingAndExpenses() {
                     />
                   </InputGroup>
                 </FormControl>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-muted-foreground mt-1 text-xs">
                   Esta chave será mostrada aos doadores para transferências
                   diretas.
                 </p>
@@ -114,8 +114,8 @@ export function BillingAndExpenses() {
 
         {/* Monthly Expenses */}
         <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-foreground">
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="text-foreground text-sm font-medium">
               Despesas Mensais
             </h3>
             <AddExpenseDialog onAdd={handleAddExpense} />
@@ -124,9 +124,9 @@ export function BillingAndExpenses() {
           {expenses.length === 0 ? (
             <Card className="p-8 text-center">
               <div className="flex flex-col items-center gap-2">
-                <div className="p-3 bg-muted rounded-full text-muted-foreground">
+                <div className="bg-muted text-muted-foreground rounded-full p-3">
                   <svg
-                    className="w-6 h-6"
+                    className="h-6 w-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -139,10 +139,10 @@ export function BillingAndExpenses() {
                     />
                   </svg>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Nenhuma despesa adicionada ainda
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   Clique em &quot;Adicionar Despesa&quot; para começar
                 </p>
               </div>
@@ -152,9 +152,9 @@ export function BillingAndExpenses() {
               {expenses.map((expense) => (
                 <Card key={expense.id} className="p-4">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-muted rounded text-muted-foreground">
+                    <div className="bg-muted text-muted-foreground rounded p-2">
                       <svg
-                        className="w-5 h-5"
+                        className="h-5 w-5"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -167,29 +167,29 @@ export function BillingAndExpenses() {
                         />
                       </svg>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-foreground text-sm font-medium">
                         {expense.category}
                       </p>
-                      <p className="text-xs text-muted-foreground mt-1 truncate">
+                      <p className="text-muted-foreground mt-1 truncate text-xs">
                         {expense.description}
                       </p>
                     </div>
-                    <div className="text-right shrink-0 flex items-center gap-2">
+                    <div className="flex shrink-0 items-center gap-2 text-right">
                       <div>
-                        <p className="text-sm font-semibold text-foreground">
+                        <p className="text-foreground text-sm font-semibold">
                           {formatCurrency(expense.amount)}
                         </p>
-                        <p className="text-xs text-muted-foreground">/mês</p>
+                        <p className="text-muted-foreground text-xs">/mês</p>
                       </div>
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                        className="text-muted-foreground hover:text-destructive h-8 w-8"
                         onClick={() => handleRemoveExpense(expense.id!)}
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>
@@ -201,8 +201,8 @@ export function BillingAndExpenses() {
 
         {/* Ongoing Cases */}
         <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-foreground">
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="text-foreground text-sm font-medium">
               Casos de Arrecadação Ativos
             </h3>
             <AddOngoingCaseDialog onAdd={handleAddOngoingCase} />
@@ -211,9 +211,9 @@ export function BillingAndExpenses() {
           {ongoingCases.length === 0 ? (
             <Card className="p-8 text-center">
               <div className="flex flex-col items-center gap-2">
-                <div className="p-3 bg-muted rounded-full text-muted-foreground">
+                <div className="bg-muted text-muted-foreground rounded-full p-3">
                   <svg
-                    className="w-6 h-6"
+                    className="h-6 w-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -226,10 +226,10 @@ export function BillingAndExpenses() {
                     />
                   </svg>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Nenhum caso de arrecadação ativo
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   Clique em &quot;Adicionar Caso&quot; para começar
                 </p>
               </div>
@@ -244,15 +244,15 @@ export function BillingAndExpenses() {
                     <div className="flex gap-4">
                       {ongoingCase.photo ? (
                         <div
-                          className="w-16 h-16 rounded bg-muted shrink-0 bg-cover bg-center"
+                          className="bg-muted h-16 w-16 shrink-0 rounded bg-cover bg-center"
                           style={{
                             backgroundImage: `url(${ongoingCase.photo})`,
                           }}
                         />
                       ) : (
-                        <div className="w-16 h-16 rounded bg-muted shrink-0 flex items-center justify-center text-muted-foreground">
+                        <div className="bg-muted text-muted-foreground flex h-16 w-16 shrink-0 items-center justify-center rounded">
                           <svg
-                            className="w-8 h-8"
+                            className="h-8 w-8"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -266,11 +266,11 @@ export function BillingAndExpenses() {
                           </svg>
                         </div>
                       )}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground mb-1">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-foreground mb-1 text-sm font-medium">
                           {ongoingCase.title} - {ongoingCase.petName}
                         </p>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                        <div className="text-muted-foreground mb-2 flex items-center gap-2 text-xs">
                           <span>
                             Meta: {formatCurrency(ongoingCase.targetAmount)}
                           </span>
@@ -280,7 +280,7 @@ export function BillingAndExpenses() {
                             {formatCurrency(ongoingCase.currentAmount)}
                           </span>
                         </div>
-                        <div className="w-full bg-muted rounded-full h-2">
+                        <div className="bg-muted h-2 w-full rounded-full">
                           <div
                             className="bg-primary h-2 rounded-full transition-all"
                             style={{ width: `${Math.min(percentage, 100)}%` }}
@@ -291,10 +291,10 @@ export function BillingAndExpenses() {
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-muted-foreground hover:text-destructive shrink-0"
+                        className="text-muted-foreground hover:text-destructive h-8 w-8 shrink-0"
                         onClick={() => handleRemoveOngoingCase(ongoingCase.id!)}
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </Card>

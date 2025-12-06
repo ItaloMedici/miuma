@@ -1,0 +1,1 @@
+ALTER TABLE "caregivers" ADD COLUMN "short_bio" varchar(160);

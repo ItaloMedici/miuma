@@ -2,16 +2,25 @@
 
 import { getServerSession } from "@/lib/auth-server";
 import { caregiverUseCases } from "@/use-cases/caregiver";
-import { CaregiverProfileFormData } from "./schemas";
+import {
+  CaregiverProfileFormData,
+  caregiverProfileFormSchema,
+} from "./schemas";
 
 export async function saveCaregiverProfile(data: CaregiverProfileFormData) {
   const session = await getServerSession();
 
   if (!session) {
-    return { success: false, error: "User not authenticated" };
+    return { success: false, error: "Usuário não autenticado" };
   }
 
-  await caregiverUseCases.updateProfile(session.user.id, data);
+  const isValid = caregiverProfileFormSchema.safeParse(data);
+
+  if (!isValid.success) {
+    return { success: false, error: "Dados do formulário inválidos" };
+  }
+
+  await caregiverUseCases.updateProfile(session.user.id, isValid.data);
 
   return { success: true };
 }
@@ -71,6 +80,52 @@ export async function fetchAddressByCep(cep: string) {
     return {
       success: false,
       error: "Erro ao buscar CEP. Tente novamente.",
+    };
+  }
+}
+
+export async function checkSlugAvailability(slug: string) {
+  try {
+    const session = await getServerSession();
+
+    // Normalize slug: lowercase, trim
+    const normalizedSlug = slug.toLowerCase().trim();
+
+    if (normalizedSlug.length < 3) {
+      return {
+        available: false,
+        message: "Slug deve ter pelo menos 3 caracteres",
+      };
+    }
+
+    // Check if slug is already in use by another user
+    const existingCaregiver = await caregiverUseCases.getBySlug(normalizedSlug);
+
+    // If slug exists and belongs to another user
+    if (existingCaregiver) {
+      // If user is authenticated and it's their own slug, it's available
+      if (session?.user?.id && existingCaregiver.userId === session.user.id) {
+        return {
+          available: true,
+          message: "Este é seu slug atual",
+        };
+      }
+
+      return {
+        available: false,
+        message: "Este slug já está em uso",
+      };
+    }
+
+    return {
+      available: true,
+      message: "Slug disponível",
+    };
+  } catch (error) {
+    console.error("Error checking slug availability:", error);
+    return {
+      available: false,
+      message: "Erro ao verificar disponibilidade do slug",
     };
   }
 }

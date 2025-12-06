@@ -97,7 +97,7 @@ export function ImageUploader({
     return (
       <div
         className={cn(
-          "relative overflow-hidden group",
+          "group relative overflow-hidden",
           getVariantClasses(),
           getAspectClass(),
           className
@@ -111,7 +111,7 @@ export function ImageUploader({
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         {!disabled && onRemove && (
-          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
             <Button
               type="button"
               variant="destructive"
@@ -119,7 +119,7 @@ export function ImageUploader({
               onClick={onRemove}
               className="gap-2"
             >
-              <X className="w-4 h-4" />
+              <X className="h-4 w-4" />
               Remover
             </Button>
           </div>
@@ -131,9 +131,9 @@ export function ImageUploader({
   return (
     <div
       className={cn(
-        "relative border-2 border-dashed border-stone-300 bg-stone-50 hover:bg-stone-100 transition-colors flex flex-col items-center justify-center cursor-pointer group",
+        "group relative flex cursor-pointer flex-col items-center justify-center border-2 border-dashed border-stone-300 bg-stone-50 transition-colors hover:bg-stone-100",
         isDragging && "border-primary bg-primary/5",
-        disabled && "opacity-50 cursor-not-allowed",
+        disabled && "cursor-not-allowed opacity-50",
         getVariantClasses(),
         getAspectClass(),
         className
@@ -146,23 +146,23 @@ export function ImageUploader({
         type="file"
         accept="image/*"
         onChange={handleFileInput}
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+        className="absolute inset-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
         disabled={disabled}
       />
-      <div className="flex flex-col items-center gap-2 pointer-events-none">
+      <div className="pointer-events-none flex flex-col items-center gap-2">
         <div>
           {variant === "profile" ? (
-            <Upload className="w-4 h-4 text-muted-foreground" />
+            <Upload className="text-muted-foreground h-4 w-4" />
           ) : (
-            <ImageIcon className="w-5 h-5 text-muted-foreground" />
+            <ImageIcon className="text-muted-foreground h-5 w-5" />
           )}
         </div>
-        <span className="text-[10px] font-medium text-muted-foreground">
+        <span className="text-muted-foreground text-[10px] font-medium">
           {variant === "profile"
             ? "Carregar foto"
             : isDragging
-            ? "Solte a imagem"
-            : "Clique ou arraste"}
+              ? "Solte a imagem"
+              : "Clique ou arraste"}
         </span>
       </div>
     </div>

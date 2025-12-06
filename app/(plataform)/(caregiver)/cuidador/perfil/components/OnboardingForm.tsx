@@ -2,36 +2,28 @@
 
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { ReactNode } from "react";
+import { useForm, UseFormReturn } from "react-hook-form";
 import {
   BillingAndExpenses,
   Gallery,
   Location,
   PetsInCare,
   ProfileEssentials,
-  StoryAndSocial,
+  Story,
 } from ".";
+import { ONBOARDING_STEPS, OnboardingStepEnum } from "../constants";
 import { useOnboarding } from "../context";
+import { useBeforeUnload } from "../hooks/useBeforeUnload";
 import { useFormPersistence } from "../hooks/useFormPersistence";
 import {
-  BillingAndExpensesFormData,
-  billingAndExpensesSchema,
-  GalleryFormData,
-  gallerySchema,
-  LocationFormData,
-  locationSchema,
-  PetsInCareFormData,
-  petsInCareSchema,
-  ProfileEssentialsFormData,
-  profileEssentialsSchema,
-  StoryAndSocialFormData,
-  storyAndSocialSchema,
+  STEP_SCHEMA_MAP,
+  type OnboardingFormsMap,
+  type StepFormDataMap,
 } from "../schemas";
 import { FooterNavigation } from "./FooterNavigation";
+import { SocialMedia } from "./SocialMedia";
 import { UnsavedChangesBanner } from "./UnsavedChangesBanner";
-
-import { OnboardingStepEnum } from "../constants";
 
 export function OnboardingForm() {
   const {
@@ -47,42 +39,49 @@ export function OnboardingForm() {
     user,
   } = useOnboarding();
 
-  const {
-    loadBackup,
-    saveBackup,
-    setupAutoSave,
-    markAsChanged,
-    hasUnsavedChanges,
-    lastSaved,
-  } = useFormPersistence();
-
-  const loadBackupRef = useRef(loadBackup);
-
-  const profileForm = useForm<ProfileEssentialsFormData>({
-    resolver: zodResolver(profileEssentialsSchema),
+  const profileForm = useForm<
+    StepFormDataMap[OnboardingStepEnum.PROFILE_ESSENTIALS]
+  >({
+    resolver: zodResolver(
+      STEP_SCHEMA_MAP[OnboardingStepEnum.PROFILE_ESSENTIALS]
+    ),
     defaultValues: {
       name: user.name,
-      shortBio: inititalCaregiver?.data.shortBio ?? "",
+      shortBio: inititalCaregiver?.shortBio ?? "",
       profilePhoto: inititalCaregiver?.caregiverImageUrl ?? "",
       profileName: inititalCaregiver?.publicName ?? "",
+      slug:
+        inititalCaregiver?.profileSlug ??
+        user.name.toLowerCase().replace(/\s+/g, "-"),
     },
     reValidateMode: "onBlur",
   });
 
-  const storyForm = useForm<StoryAndSocialFormData>({
-    resolver: zodResolver(storyAndSocialSchema),
+  const storyForm = useForm<StepFormDataMap[OnboardingStepEnum.STORY]>({
+    resolver: zodResolver(STEP_SCHEMA_MAP[OnboardingStepEnum.STORY]),
     defaultValues: {
       story: inititalCaregiver?.data.descriptionMarkdown ?? "",
-      instagram: inititalCaregiver?.data.socialMedia?.instagram ?? "",
-      facebook: inititalCaregiver?.data.socialMedia?.facebook ?? "",
-      youtube: inititalCaregiver?.data.socialMedia?.youtube ?? "",
-      whatsapp: inititalCaregiver?.data.socialMedia?.whatsapp ?? "",
     },
     reValidateMode: "onBlur",
   });
 
-  const locationForm = useForm<LocationFormData>({
-    resolver: zodResolver(locationSchema),
+  const socialMediaForm = useForm<
+    StepFormDataMap[OnboardingStepEnum.SOCIAL_MEDIA]
+  >({
+    resolver: zodResolver(STEP_SCHEMA_MAP[OnboardingStepEnum.SOCIAL_MEDIA]),
+    defaultValues: {
+      instagram: inititalCaregiver?.data.socialMedia?.instagram,
+      facebook: inititalCaregiver?.data.socialMedia?.facebook,
+      youtube: inititalCaregiver?.data.socialMedia?.youtube,
+      whatsapp: inititalCaregiver?.data.socialMedia?.whatsapp,
+      tiktok: inititalCaregiver?.data.socialMedia?.tiktok,
+      website: inititalCaregiver?.data.socialMedia?.website,
+    },
+    reValidateMode: "onBlur",
+  });
+
+  const locationForm = useForm<StepFormDataMap[OnboardingStepEnum.LOCATION]>({
+    resolver: zodResolver(STEP_SCHEMA_MAP[OnboardingStepEnum.LOCATION]),
     defaultValues: {
       zipCode: inititalCaregiver?.address?.zipCode ?? "",
       street: inititalCaregiver?.address?.street ?? "",
@@ -96,8 +95,8 @@ export function OnboardingForm() {
     reValidateMode: "onBlur",
   });
 
-  const galleryForm = useForm<GalleryFormData>({
-    resolver: zodResolver(gallerySchema),
+  const galleryForm = useForm<StepFormDataMap[OnboardingStepEnum.GALLERY]>({
+    resolver: zodResolver(STEP_SCHEMA_MAP[OnboardingStepEnum.GALLERY]),
     defaultValues: {
       coverImage: inititalCaregiver?.data?.galleryImages?.cover?.url ?? "",
       galleryPhotos:
@@ -108,16 +107,20 @@ export function OnboardingForm() {
     reValidateMode: "onBlur",
   });
 
-  const petsForm = useForm<PetsInCareFormData>({
-    resolver: zodResolver(petsInCareSchema),
+  const petsForm = useForm<StepFormDataMap[OnboardingStepEnum.PETS_IN_CARE]>({
+    resolver: zodResolver(STEP_SCHEMA_MAP[OnboardingStepEnum.PETS_IN_CARE]),
     defaultValues: {
       pets: inititalCaregiver?.data.petsInCare ?? [],
     },
     reValidateMode: "onBlur",
   });
 
-  const billingForm = useForm<BillingAndExpensesFormData>({
-    resolver: zodResolver(billingAndExpensesSchema),
+  const billingForm = useForm<
+    StepFormDataMap[OnboardingStepEnum.BILLING_AND_EXPENSES]
+  >({
+    resolver: zodResolver(
+      STEP_SCHEMA_MAP[OnboardingStepEnum.BILLING_AND_EXPENSES]
+    ),
     defaultValues: {
       pixKey: inititalCaregiver?.pixKey ?? "",
       expenses: inititalCaregiver?.data.expenses ?? [],
@@ -126,111 +129,61 @@ export function OnboardingForm() {
     reValidateMode: "onBlur",
   });
 
-  // Load backup on mount
-  useEffect(() => {
-    const backup = loadBackupRef.current();
-
-    if (!backup) return;
-
-    if (backup.profileEssentials) {
-      profileForm.reset(backup.profileEssentials as ProfileEssentialsFormData);
-    }
-
-    if (backup.storyAndSocial) {
-      storyForm.reset(backup.storyAndSocial as StoryAndSocialFormData);
-    }
-
-    if (backup.location) {
-      locationForm.reset(backup.location as LocationFormData);
-    }
-
-    if (backup.gallery) {
-      galleryForm.reset(backup.gallery as GalleryFormData);
-    }
-
-    if (backup.petsInCare) {
-      petsForm.reset(backup.petsInCare as PetsInCareFormData);
-    }
-
-    if (backup.billingAndExpenses) {
-      billingForm.reset(
-        backup.billingAndExpenses as BillingAndExpensesFormData
-      );
-    }
-
-    if (backup.completedSteps && Array.isArray(backup.completedSteps)) {
-      setCompletedSteps(new Set(backup.completedSteps as OnboardingStepEnum[]));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Setup auto-save
-  useEffect(() => {
-    const forms = {
+  const { saveBackup, hasUnsavedChanges, lastSaved } = useFormPersistence({
+    forms: {
       profileEssentials: profileForm,
-      storyAndSocial: storyForm,
+      story: storyForm,
+      socialMedia: socialMediaForm,
       location: locationForm,
       gallery: galleryForm,
       petsInCare: petsForm,
       billingAndExpenses: billingForm,
+    },
+    completedSteps,
+    setCompletedSteps,
+  });
+
+  useBeforeUnload(hasUnsavedChanges);
+
+  const getFormMap = () => {
+    const formMap: Record<OnboardingStepEnum, UseFormReturn<any>> = {
+      [OnboardingStepEnum.PROFILE_ESSENTIALS]: profileForm,
+      [OnboardingStepEnum.STORY]: storyForm,
+      [OnboardingStepEnum.LOCATION]: locationForm,
+      [OnboardingStepEnum.GALLERY]: galleryForm,
+      [OnboardingStepEnum.PETS_IN_CARE]: petsForm,
+      [OnboardingStepEnum.BILLING_AND_EXPENSES]: billingForm,
+      [OnboardingStepEnum.SOCIAL_MEDIA]: socialMediaForm,
     };
 
-    return setupAutoSave(forms, completedSteps);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [completedSteps]);
-
-  // Watch for changes in all forms
-  useEffect(() => {
-    const subscriptions = [
-      profileForm.watch(() => markAsChanged()),
-      storyForm.watch(() => markAsChanged()),
-      locationForm.watch(() => markAsChanged()),
-      galleryForm.watch(() => markAsChanged()),
-      petsForm.watch(() => markAsChanged()),
-      billingForm.watch(() => markAsChanged()),
-    ];
-
-    return () => {
-      subscriptions.forEach((unsubscribe) => unsubscribe.unsubscribe());
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Manual save function
-  const handleManualSave = () => {
-    const data = {
-      profileEssentials: profileForm.getValues(),
-      storyAndSocial: storyForm.getValues(),
-      location: locationForm.getValues(),
-      gallery: galleryForm.getValues(),
-      petsInCare: petsForm.getValues(),
-      billingAndExpenses: billingForm.getValues(),
-      completedSteps: Array.from(completedSteps),
-    };
-    saveBackup(data);
+    return formMap;
   };
 
   const getCurrentForm = () => {
-    switch (currentStep) {
-      case OnboardingStepEnum.PROFILE_ESSENTIALS:
-        return profileForm;
-      case OnboardingStepEnum.STORY_AND_SOCIAL:
-        return storyForm;
-      case OnboardingStepEnum.LOCATION:
-        return locationForm;
-      case OnboardingStepEnum.GALLERY:
-        return galleryForm;
-      case OnboardingStepEnum.PETS_IN_CARE:
-        return petsForm;
-      case OnboardingStepEnum.BILLING_AND_EXPENSES:
-        return billingForm;
-      default:
-        return profileForm;
-    }
+    return getFormMap()[currentStep];
   };
 
   const handleNext = async () => {
     const form = getCurrentForm();
+
+    if (currentStep === OnboardingStepEnum.PROFILE_ESSENTIALS) {
+      const slug = profileForm.getValues("slug");
+      const isDirty = profileForm.formState.dirtyFields.slug;
+
+      if (slug && isDirty) {
+        const { checkSlugAvailability } = await import("../action");
+        const result = await checkSlugAvailability(slug);
+
+        if (!result.available) {
+          profileForm.setError("slug", {
+            type: "manual",
+            message: result.message,
+          });
+          return;
+        }
+      }
+    }
+
     const isValid = await form.trigger();
 
     if (isValid) {
@@ -244,45 +197,11 @@ export function OnboardingForm() {
   };
 
   const handleSubmit = async () => {
-    // Validate all forms and collect errors
-    const validations = [
-      {
-        step: OnboardingStepEnum.PROFILE_ESSENTIALS,
-        form: profileForm,
-        name: "Informações Essenciais",
-      },
-      {
-        step: OnboardingStepEnum.STORY_AND_SOCIAL,
-        form: storyForm,
-        name: "Sua História",
-      },
-      {
-        step: OnboardingStepEnum.LOCATION,
-        form: locationForm,
-        name: "Localização",
-      },
-      {
-        step: OnboardingStepEnum.GALLERY,
-        form: galleryForm,
-        name: "Galeria de Fotos",
-      },
-      {
-        step: OnboardingStepEnum.PETS_IN_CARE,
-        form: petsForm,
-        name: "Pets sob Cuidado",
-      },
-      {
-        step: OnboardingStepEnum.BILLING_AND_EXPENSES,
-        form: billingForm,
-        name: "Cobrança e Despesas",
-      },
-    ];
-
-    for (const validation of validations) {
-      const isValid = await validation.form.trigger();
+    for (const steps of ONBOARDING_STEPS) {
+      const isValid = await getFormMap()[steps.id].trigger();
 
       if (!isValid) {
-        setCurrentStep(validation.step);
+        setCurrentStep(steps.id);
 
         setTimeout(() => {
           window.scrollTo({ top: 0, behavior: "smooth" });
@@ -292,10 +211,10 @@ export function OnboardingForm() {
       }
     }
 
-    // All forms are valid, combine and submit
-    const completeData = {
+    const completeData: OnboardingFormsMap = {
       profileEssentials: profileForm.getValues(),
-      storyAndSocial: storyForm.getValues(),
+      story: storyForm.getValues(),
+      socialMedia: socialMediaForm.getValues(),
       location: locationForm.getValues(),
       gallery: galleryForm.getValues(),
       petsInCare: petsForm.getValues(),
@@ -308,15 +227,15 @@ export function OnboardingForm() {
   };
 
   const renderStep = () => {
-    const formMap = {
+    const formMap: Record<OnboardingStepEnum, ReactNode> = {
       [OnboardingStepEnum.PROFILE_ESSENTIALS]: (
         <Form {...profileForm}>
           <ProfileEssentials />
         </Form>
       ),
-      [OnboardingStepEnum.STORY_AND_SOCIAL]: (
+      [OnboardingStepEnum.STORY]: (
         <Form {...storyForm}>
-          <StoryAndSocial />
+          <Story />
         </Form>
       ),
       [OnboardingStepEnum.LOCATION]: (
@@ -339,25 +258,30 @@ export function OnboardingForm() {
           <BillingAndExpenses />
         </Form>
       ),
+      [OnboardingStepEnum.SOCIAL_MEDIA]: (
+        <Form {...socialMediaForm}>
+          <SocialMedia />
+        </Form>
+      ),
     };
 
     return formMap[currentStep];
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
+    <div className="relative flex h-screen flex-1 flex-col overflow-hidden">
       {/* Unsaved Changes Banner - Only show in edit mode */}
       {isEditMode && (
         <UnsavedChangesBanner
           hasUnsavedChanges={hasUnsavedChanges}
           lastSaved={lastSaved}
-          onSave={handleManualSave}
+          onSave={saveBackup}
         />
       )}
 
       {/* Form Container */}
       <div className="flex-1 overflow-y-auto p-4 md:p-12 lg:p-16">
-        <div className="max-w-2xl mx-auto pb-32 md:pb-24">{renderStep()}</div>
+        <div className="mx-auto max-w-2xl pb-32 md:pb-24">{renderStep()}</div>
       </div>
 
       {/* Footer Navigation */}

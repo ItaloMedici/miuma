@@ -42,7 +42,6 @@ export interface CaregiverEntity {
 export interface CaregiverDataJson {
   galleryImages: CaregiverGallery;
   descriptionMarkdown: string;
-  shortBio: string;
   socialMedia?: {
     instagram?: string;
     facebook?: string;
@@ -94,10 +93,12 @@ export interface Testimonial {
 }
 
 export interface PetInCare {
-  id: string;
   name: string;
   imageUrl: string;
   description: string;
+  rescueDate?: string;
+  medicalNeeds?: string;
+  age?: number;
 }
 
 export interface Expenses {

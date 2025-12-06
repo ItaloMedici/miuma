@@ -25,7 +25,7 @@ export function MobileHeader() {
 
   return (
     <>
-      <div className="md:hidden bg-background border-b border-border p-4 flex items-center justify-between sticky top-0 z-50">
+      <div className="bg-background border-border sticky top-0 z-50 flex items-center justify-between border-b p-4 md:hidden">
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
@@ -33,9 +33,9 @@ export function MobileHeader() {
             className="h-8 w-8"
             onClick={() => setDrawerOpen(true)}
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="h-5 w-5" />
           </Button>
-          <div className="flex items-center gap-2 text-primary">
+          <div className="text-primary flex items-center gap-2">
             <Image
               src="/logo-horizontal.svg"
               alt="Miuma"
@@ -44,7 +44,7 @@ export function MobileHeader() {
             />
           </div>
         </div>
-        <div className="text-xs font-medium text-muted-foreground">
+        <div className="text-muted-foreground text-xs font-medium">
           Passo {currentStepNumber} de {totalSteps}
         </div>
       </div>
@@ -54,7 +54,7 @@ export function MobileHeader() {
           <DrawerHeader>
             <DrawerTitle>Etapas do Cadastro</DrawerTitle>
           </DrawerHeader>
-          <div className="p-4 space-y-1">
+          <div className="space-y-1 p-4">
             {steps.map((step) => {
               const isActive = step.id === currentStep;
               const isCompleted = isStepCompleted(step.id);
@@ -67,19 +67,19 @@ export function MobileHeader() {
                     setCurrentStep(step.id);
                     setDrawerOpen(false);
                   }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
+                  className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                     isActive
-                      ? "text-stone-900 bg-stone-50"
+                      ? "bg-stone-50 text-stone-900"
                       : "text-stone-500 hover:bg-stone-50"
                   }`}
                 >
                   <div
-                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-colors shrink-0 ${
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
                       isActive
                         ? "bg-stone-900 text-white"
                         : isCompleted
-                        ? "bg-primary text-primary-foreground"
-                        : "border border-stone-200 text-stone-400"
+                          ? "bg-primary text-primary-foreground"
+                          : "border border-stone-200 text-stone-400"
                     }`}
                   >
                     {step.number}

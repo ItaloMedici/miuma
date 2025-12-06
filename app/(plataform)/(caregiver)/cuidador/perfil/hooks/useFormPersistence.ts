@@ -1,91 +1,159 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 import { UseFormReturn } from "react-hook-form";
+import { formStorage, LAST_SAVED_KEY, STORAGE_KEY } from "../form-storage";
+import type { OnboardingFormsMap } from "../schemas";
 
-const STORAGE_KEY = "onboarding_form_backup";
-const LAST_SAVED_KEY = "onboarding_last_saved";
+export type OnboardingForms = {
+  [K in keyof OnboardingFormsMap]: UseFormReturn<OnboardingFormsMap[K]>;
+};
 
-interface FormBackup {
-  profileEssentials?: unknown;
-  storyAndSocial?: unknown;
-  location?: unknown;
-  gallery?: unknown;
-  locationAndMedia?: unknown; // Backward compatibility
-  petsInCare?: unknown;
-  billingAndExpenses?: unknown;
+type FormBackup = Partial<OnboardingFormsMap> & {
   completedSteps?: string[];
+};
+
+interface UseFormPersistenceParams {
+  forms: OnboardingForms;
+  completedSteps: Set<string>;
+  setCompletedSteps: (steps: Set<any>) => void;
 }
 
-export function useFormPersistence() {
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+export function useFormPersistence({
+  forms,
+  completedSteps,
+  setCompletedSteps,
+}: UseFormPersistenceParams) {
+  const lastSaved = useSyncExternalStore(
+    formStorage.subscribe,
+    formStorage.getLastSaved,
+    () => null
+  );
 
-  // Load backup from session storage
-  const loadBackup = (): FormBackup | null => {
-    if (typeof window === "undefined") return null;
+  const hasUnsavedChanges = useSyncExternalStore(
+    formStorage.subscribe,
+    formStorage.getHasUnsavedChanges,
+    () => false
+  );
 
-    try {
-      const backup = sessionStorage.getItem(STORAGE_KEY);
-      const lastSavedStr = sessionStorage.getItem(LAST_SAVED_KEY);
-
-      if (backup) {
-        if (lastSavedStr) {
-          setLastSaved(new Date(lastSavedStr));
-        }
-        return JSON.parse(backup);
-      }
-    } catch (error) {
-      console.error("Error loading form backup:", error);
-    }
-
-    return null;
-  };
-
-  // Save backup to session storage
-  const saveBackup = (data: FormBackup) => {
+  const saveBackup = useCallback((data: FormBackup) => {
     if (typeof window === "undefined") return;
 
     try {
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       const now = new Date();
-      sessionStorage.setItem(LAST_SAVED_KEY, now.toISOString());
-      setLastSaved(now);
-      setHasUnsavedChanges(false);
+      formStorage.setLastSaved(now);
+      formStorage.setHasUnsavedChanges(false);
     } catch (error) {
       console.error("Error saving form backup:", error);
     }
-  };
+  }, []);
 
-  // Clear backup from session storage
-  const clearBackup = () => {
+  const clearBackup = useCallback(() => {
     if (typeof window === "undefined") return;
 
     try {
       sessionStorage.removeItem(STORAGE_KEY);
-      sessionStorage.removeItem(LAST_SAVED_KEY);
-      setLastSaved(null);
-      setHasUnsavedChanges(false);
+      formStorage.setLastSaved(null);
+      formStorage.setHasUnsavedChanges(false);
     } catch (error) {
       console.error("Error clearing form backup:", error);
     }
-  };
+  }, []);
 
-  // Auto-save functionality
-  const setupAutoSave = (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    forms: Record<string, UseFormReturn<any>>,
-    completedSteps: Set<string>
-  ) => {
+  const markAsChanged = useCallback(() => {
+    console.log(
+      "📝 FormPersistence: Mudança detectada - marcando como não salvo"
+    );
+    formStorage.setHasUnsavedChanges(true);
+  }, []);
+
+  const hasBackup = useCallback((): boolean => {
+    if (typeof window === "undefined") return false;
+    return sessionStorage.getItem(STORAGE_KEY) !== null;
+  }, []);
+
+  const handleManualSave = useCallback(() => {
+    const data: FormBackup = {
+      profileEssentials: forms.profileEssentials.getValues(),
+      story: forms.story.getValues(),
+      socialMedia: forms.socialMedia.getValues(),
+      location: forms.location.getValues(),
+      gallery: forms.gallery.getValues(),
+      petsInCare: forms.petsInCare.getValues(),
+      billingAndExpenses: forms.billingAndExpenses.getValues(),
+      completedSteps: Array.from(completedSteps),
+    };
+    saveBackup(data);
+  }, [forms, completedSteps, saveBackup]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    try {
+      const backup = sessionStorage.getItem(STORAGE_KEY);
+      const lastSavedStr = sessionStorage.getItem(LAST_SAVED_KEY);
+
+      if (!backup) return;
+
+      const parsedBackup: FormBackup = JSON.parse(backup);
+
+      if (lastSavedStr) {
+        formStorage.setLastSaved(new Date(lastSavedStr));
+      }
+
+      if (parsedBackup.profileEssentials) {
+        forms.profileEssentials.reset(parsedBackup.profileEssentials);
+      }
+
+      if (parsedBackup.story) {
+        forms.story.reset(parsedBackup.story);
+      }
+
+      if (parsedBackup.socialMedia) {
+        forms.socialMedia.reset(parsedBackup.socialMedia);
+      }
+
+      if (parsedBackup.location) {
+        forms.location.reset(parsedBackup.location);
+      }
+
+      if (parsedBackup.gallery) {
+        forms.gallery.reset(parsedBackup.gallery);
+      }
+
+      if (parsedBackup.petsInCare) {
+        forms.petsInCare.reset(parsedBackup.petsInCare);
+      }
+
+      if (parsedBackup.billingAndExpenses) {
+        forms.billingAndExpenses.reset(parsedBackup.billingAndExpenses);
+      }
+
+      if (
+        parsedBackup.completedSteps &&
+        Array.isArray(parsedBackup.completedSteps)
+      ) {
+        setCompletedSteps(new Set(parsedBackup.completedSteps));
+      }
+    } catch (error) {
+      console.error("Error loading form backup:", error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     const saveInterval = setInterval(() => {
+      console.log("Auto-saving form backup...");
+
       const data: FormBackup = {
-        profileEssentials: forms.profileEssentials?.getValues(),
-        storyAndSocial: forms.storyAndSocial?.getValues(),
-        location: forms.location?.getValues(),
-        gallery: forms.gallery?.getValues(),
-        locationAndMedia: forms.locationAndMedia?.getValues(), // Backward compatibility
-        petsInCare: forms.petsInCare?.getValues(),
-        billingAndExpenses: forms.billingAndExpenses?.getValues(),
+        profileEssentials: forms.profileEssentials.getValues(),
+        story: forms.story.getValues(),
+        socialMedia: forms.socialMedia.getValues(),
+        location: forms.location.getValues(),
+        gallery: forms.gallery.getValues(),
+        petsInCare: forms.petsInCare.getValues(),
+        billingAndExpenses: forms.billingAndExpenses.getValues(),
         completedSteps: Array.from(completedSteps),
       };
 
@@ -93,25 +161,28 @@ export function useFormPersistence() {
     }, 30000); // Auto-save every 30 seconds
 
     return () => clearInterval(saveInterval);
-  };
+  }, [forms, completedSteps, saveBackup]);
 
-  // Mark as having unsaved changes
-  const markAsChanged = () => {
-    setHasUnsavedChanges(true);
-  };
+  // Watch for form changes
+  useEffect(() => {
+    const subscriptions = [
+      forms.profileEssentials.watch(() => markAsChanged()),
+      forms.story.watch(() => markAsChanged()),
+      forms.socialMedia.watch(() => markAsChanged()),
+      forms.location.watch(() => markAsChanged()),
+      forms.gallery.watch(() => markAsChanged()),
+      forms.petsInCare.watch(() => markAsChanged()),
+      forms.billingAndExpenses.watch(() => markAsChanged()),
+    ];
 
-  // Check if backup exists
-  const hasBackup = (): boolean => {
-    if (typeof window === "undefined") return false;
-    return sessionStorage.getItem(STORAGE_KEY) !== null;
-  };
+    return () => {
+      subscriptions.forEach((unsubscribe) => unsubscribe.unsubscribe());
+    };
+  }, [forms, markAsChanged]);
 
   return {
-    loadBackup,
-    saveBackup,
+    saveBackup: handleManualSave,
     clearBackup,
-    setupAutoSave,
-    markAsChanged,
     hasBackup,
     hasUnsavedChanges,
     lastSaved,

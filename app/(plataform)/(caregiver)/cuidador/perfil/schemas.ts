@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { OnboardingStepEnum } from "./constants";
 
 // Step 1: Profile Essentials
 export const profileEssentialsSchema = z.object({
@@ -12,22 +13,25 @@ export const profileEssentialsSchema = z.object({
     .string()
     .min(20, "Bio deve ter pelo menos 20 caracteres")
     .max(160, "Bio deve ter no máximo 160 caracteres"),
+  slug: z
+    .string()
+    .min(3, "Slug deve ter pelo menos 3 caracteres")
+    .max(50, "Slug muito longo")
+    .regex(
+      /^[a-zA-Z0-9-_]+$/,
+      "Slug pode conter apenas letras, números, hífens e underscores"
+    ),
 });
 
-// Step 2: Story & Social
-export const storyAndSocialSchema = z.object({
+export const STORY_MAX_LENGTH = 5000;
+export const STORY_MIN_LENGTH = 100;
+
+// Step 2: Story
+export const storySchema = z.object({
   story: z
     .string()
-    .min(100, "História deve ter pelo menos 100 caracteres")
-    .max(5000, "História muito longa"),
-  instagram: z.string().optional(),
-  facebook: z.string().optional(),
-  youtube: z.string().optional(),
-  whatsapp: z
-    .string()
-    .regex(/^\+?[1-9]\d{1,14}$/, "Número de telefone inválido")
-    .optional()
-    .or(z.literal("")),
+    .min(STORY_MIN_LENGTH, "História deve ter pelo menos 100 caracteres")
+    .max(STORY_MAX_LENGTH, "História muito longa"),
 });
 
 // Step 3: Location
@@ -53,27 +57,9 @@ export const gallerySchema = z.object({
   galleryPhotos: z.array(z.string()).max(20, "Máximo de 20 fotos na galeria"),
 });
 
-// Backward compatibility - will be deprecated
-export const locationAndMediaSchema = z.object({
-  city: z.string().min(2, "Cidade é obrigatória"),
-  state: z.string().length(2, "Selecione um estado"),
-  country: z.string(),
-  coverImage: z.string().optional(),
-  street: z.string().min(1, "Rua é obrigatória"),
-  zipCode: z
-    .string()
-    .min(1, "CEP é obrigatório")
-    .refine((val) => /^[0-9]{5}-?[0-9]{3}$/.test(val), {
-      message: "CEP inválido",
-    }),
-  galleryPhotos: z.array(z.string()).max(10, "Máximo de 10 fotos na galeria"),
-});
-
 // Step 5: Pet Schema
 export const petSchema = z.object({
-  id: z.string().optional(),
   name: z.string().min(2, "Nome do pet é obrigatório"),
-  species: z.enum(["dog", "cat", "other"]).optional(),
   age: z.number().min(0, "Idade inválida").max(30, "Idade inválida").optional(),
   description: z
     .string()
@@ -114,22 +100,34 @@ export const billingAndExpensesSchema = z.object({
   ongoingCases: z.array(ongoingCaseSchema).optional(),
 });
 
-// Complete onboarding schema
+export const socialMediaSchema = z.object({
+  instagram: z.string().optional(),
+  facebook: z.string().optional(),
+  youtube: z.string().optional(),
+  whatsapp: z
+    .string()
+    .regex(/^\+?[1-9]\d{1,14}$/, "Número de telefone inválido")
+    .optional()
+    .or(z.literal("")),
+  tiktok: z.string().optional(),
+  website: z.url("URL inválida").optional().or(z.literal("")),
+});
+
 export const caregiverProfileFormSchema = z.object({
   profileEssentials: profileEssentialsSchema,
-  storyAndSocial: storyAndSocialSchema,
+  story: storySchema,
   location: locationSchema,
+  socialMedia: socialMediaSchema,
   gallery: gallerySchema,
   petsInCare: petsInCareSchema,
   billingAndExpenses: billingAndExpensesSchema,
 });
 
-// Type exports
 export type ProfileEssentialsFormData = z.infer<typeof profileEssentialsSchema>;
-export type StoryAndSocialFormData = z.infer<typeof storyAndSocialSchema>;
+export type StoryFormData = z.infer<typeof storySchema>;
+export type SocialMediaFormData = z.infer<typeof socialMediaSchema>;
 export type LocationFormData = z.infer<typeof locationSchema>;
 export type GalleryFormData = z.infer<typeof gallerySchema>;
-export type LocationAndMediaFormData = z.infer<typeof locationAndMediaSchema>;
 export type PetFormData = z.infer<typeof petSchema>;
 export type PetsInCareFormData = z.infer<typeof petsInCareSchema>;
 export type ExpenseFormData = z.infer<typeof expenseSchema>;
@@ -140,3 +138,52 @@ export type BillingAndExpensesFormData = z.infer<
 export type CaregiverProfileFormData = z.infer<
   typeof caregiverProfileFormSchema
 >;
+
+export type AggregateProfileFormSchema =
+  | ProfileEssentialsFormData
+  | StoryFormData
+  | LocationFormData
+  | GalleryFormData
+  | PetsInCareFormData
+  | BillingAndExpensesFormData;
+
+export const STEP_SCHEMA_MAP = {
+  [OnboardingStepEnum.PROFILE_ESSENTIALS]: profileEssentialsSchema,
+  [OnboardingStepEnum.STORY]: storySchema,
+  [OnboardingStepEnum.SOCIAL_MEDIA]: socialMediaSchema,
+  [OnboardingStepEnum.LOCATION]: locationSchema,
+  [OnboardingStepEnum.GALLERY]: gallerySchema,
+  [OnboardingStepEnum.PETS_IN_CARE]: petsInCareSchema,
+  [OnboardingStepEnum.BILLING_AND_EXPENSES]: billingAndExpensesSchema,
+} as const;
+
+export type StepFormDataMap = {
+  [OnboardingStepEnum.PROFILE_ESSENTIALS]: ProfileEssentialsFormData;
+  [OnboardingStepEnum.STORY]: StoryFormData;
+  [OnboardingStepEnum.SOCIAL_MEDIA]: SocialMediaFormData;
+  [OnboardingStepEnum.LOCATION]: LocationFormData;
+  [OnboardingStepEnum.GALLERY]: GalleryFormData;
+  [OnboardingStepEnum.PETS_IN_CARE]: PetsInCareFormData;
+  [OnboardingStepEnum.BILLING_AND_EXPENSES]: BillingAndExpensesFormData;
+};
+
+export type StepToFormKey<T extends OnboardingStepEnum> =
+  T extends OnboardingStepEnum.PROFILE_ESSENTIALS
+    ? "profileEssentials"
+    : T extends OnboardingStepEnum.STORY
+      ? "story"
+      : T extends OnboardingStepEnum.SOCIAL_MEDIA
+        ? "socialMedia"
+        : T extends OnboardingStepEnum.LOCATION
+          ? "location"
+          : T extends OnboardingStepEnum.GALLERY
+            ? "gallery"
+            : T extends OnboardingStepEnum.PETS_IN_CARE
+              ? "petsInCare"
+              : T extends OnboardingStepEnum.BILLING_AND_EXPENSES
+                ? "billingAndExpenses"
+                : never;
+
+export type OnboardingFormsMap = {
+  [K in OnboardingStepEnum as StepToFormKey<K>]: StepFormDataMap[K];
+};
