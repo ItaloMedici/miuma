@@ -93,6 +93,10 @@
   --radius-5xl: 3rem;
   --radius-6xl: 4rem;
   --radius-7xl: 5rem;
+
+  ----background-to-red: var(--background-to-red);
+  ----background-to-green: var(--background-to-green);
+  ----background-to-warning: var(--background-to-warning);
 }
 
 :root {
@@ -170,6 +174,19 @@
 
   --fifth: oklch(0.8302 0.081 47.72);
   --fifth-foreground: oklch(0.9967 0.0054 95.0974);
+
+  /* // Gradient from background to red-700 */
+  --background-to-red: linear-gradient(170deg, #fffefa 47%, #fadbdb 120%);
+  --background-to-green: linear-gradient(
+    170deg,
+    rgba(255, 254, 250, 1) 47%,
+    rgb(223, 251, 223) 120%
+  );
+  --background-to-warning: linear-gradient(
+    170deg,
+    rgba(255, 254, 250, 1) 47%,
+    rgba(250, 240, 207, 1) 120%
+  );
 }
 
 .dark {
