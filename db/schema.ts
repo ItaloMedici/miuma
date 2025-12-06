@@ -3,6 +3,7 @@ import { relations } from "drizzle-orm";
 import {
   boolean,
   index,
+  integer,
   json,
   pgEnum,
   pgTable,
@@ -81,6 +82,7 @@ export const caregiversTable = pgTable(
     caregiverImageUrl: varchar("caregiver_image_url", { length: 255 }),
     publicName: varchar("public_name", { length: 255 }).notNull(),
     shortBio: varchar("short_bio", { length: 160 }).notNull(),
+    totalAnimalsCared: integer("total_animals_cared").notNull().default(0),
 
     subscriptionPaymentStatus: subscriptionStatusEnum()
       .notNull()

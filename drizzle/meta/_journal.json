@@ -43,6 +43,13 @@
       "when": 1765005115861,
       "tag": "0005_high_fabian_cortez",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1765010246593,
+      "tag": "0006_known_human_torch",
+      "breakpoints": true
     }
   ]
 }

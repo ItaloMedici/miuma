@@ -1,0 +1,1 @@
+ALTER TABLE "caregivers" ADD COLUMN "total_animals_cared" integer DEFAULT 0 NOT NULL;

@@ -1,29 +1,24 @@
 import { CaregiverProfileFormData } from "@/app/(plataform)/(caregiver)/cuidador/perfil/schemas";
 import { db } from "@/db";
 import { addresses, caregiversTable } from "@/db/schema";
-import { CaregiverDataJson, CaregiverEntity } from "@/interfaces/caregiver";
-import { caregivers } from "@/lib/mock/caregiver";
-import { eq } from "drizzle-orm";
+import { CaregiverDataJson } from "@/interfaces/caregiver";
+import { and, eq } from "drizzle-orm";
 import { addressUseCases } from "../address";
-
-async function getCaregiverByProfileSlug(profileSlug: string) {
-  return caregivers.find((caregiver) => caregiver.profileSlug === profileSlug);
-}
 
 async function getCaregiverBySlug(slug: string) {
   const result = await db
     .select()
     .from(caregiversTable)
     .where(eq(caregiversTable.profileSlug, slug))
+    .leftJoin(addresses, eq(addresses.id, caregiversTable.addressId))
     .limit(1);
 
   if (result.length === 0) return null;
 
-  return result[0];
-}
-
-function parseDataJson(caregiver: CaregiverEntity) {
-  return JSON.parse(caregiver.data) as CaregiverDataJson;
+  return {
+    ...result[0].caregivers,
+    address: result[0].addresses,
+  };
 }
 
 async function getCaregiverByUserId(userId: string) {
@@ -149,15 +144,49 @@ async function getAll({ limit }: { limit?: number } = {}) {
   return result;
 }
 
-export const caregiverUseCases = {
-  // Legacy support - will be removed
-  getCaregiverByProfileSlug,
-  parseDataJson,
-  getCaregiverByProfileId: getCaregiverByProfileSlug,
+async function checkSlugAvailability(slug: string, userId: string) {
+  const result = await db
+    .select({ id: caregiversTable.id })
+    .from(caregiversTable)
+    .where(
+      and(
+        eq(caregiversTable.profileSlug, slug),
+        eq(caregiversTable.userId, userId)
+      )
+    )
+    .limit(1);
 
-  // Using real DB
+  return result.length === 0;
+}
+
+async function getProfileSummaryBySlug(slug: string) {
+  const result = await db
+    .select({
+      id: caregiversTable.id,
+      profileSlug: caregiversTable.profileSlug,
+      publicName: caregiversTable.publicName,
+      caregiverImageUrl: caregiversTable.caregiverImageUrl,
+      shortBio: caregiversTable.shortBio,
+      city: addresses.city,
+      state: addresses.state,
+      totalAnimalsCared: caregiversTable.totalAnimalsCared,
+    })
+    .from(caregiversTable)
+    .where(eq(caregiversTable.profileSlug, slug))
+    .leftJoin(addresses, eq(addresses.id, caregiversTable.addressId))
+    .limit(1);
+
+  if (result.length === 0) return null;
+
+  return result[0];
+}
+
+export const caregiverUseCases = {
   getBySlug: getCaregiverBySlug,
   getByUserId: getCaregiverByUserId,
   updateProfile,
   getAll,
+  checkSlugAvailability,
+  createCaregiverProfile,
+  getProfileSummaryBySlug,
 };

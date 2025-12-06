@@ -40,7 +40,7 @@ export const getLandingPageData = async (): Promise<LandingPageData> => {
   });
 
   const totalPetsHelped = allCaregivers.reduce((acc, caregiver) => {
-    return acc + caregiver.data.petsInCare.length;
+    return acc + caregiver.totalAnimalsCared;
   }, 0);
 
   return {
