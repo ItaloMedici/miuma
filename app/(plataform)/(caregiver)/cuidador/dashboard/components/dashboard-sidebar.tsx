@@ -1,26 +1,40 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import {
   CreditCard,
   Heart,
   LayoutDashboard,
   Send,
-  Settings,
   User,
   Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
+import { CaregiverAvatarAccount } from "./caregiver-avatar-account";
 
-const navigation = [
+type NavLinks = Array<{
+  name: string;
+  href: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}>;
+
+const activeNavigation: NavLinks = [
   {
     name: "Visão Geral",
     href: "/cuidador/dashboard",
     icon: LayoutDashboard,
   },
+  {
+    name: "Editar Perfil",
+    href: "/cuidador/perfil",
+    icon: User,
+  },
+];
+
+const disabledNavigation: NavLinks = [
   {
     name: "Doadores",
     href: "/cuidador/dashboard/doadores",
@@ -43,120 +57,85 @@ const navigation = [
   },
 ];
 
-const accountNav = [
-  {
-    name: "Editar Perfil",
-    href: "/cuidador/perfil",
-    icon: User,
-  },
-  {
-    name: "Configurações",
-    href: "/cuidador/dashboard/configuracoes",
-    icon: Settings,
-  },
-];
-
 interface DashboardSidebarProps {
   onNavigate?: () => void;
+  isMobile?: boolean;
 }
 
-export function DashboardSidebar({ onNavigate }: DashboardSidebarProps = {}) {
+export function DashboardSidebar({
+  onNavigate,
+  isMobile = false,
+}: DashboardSidebarProps = {}) {
   const pathname = usePathname();
 
   return (
-    <aside className="z-20 hidden w-64 flex-col border-r border-stone-200 bg-white md:flex">
+    <aside
+      className={cn(
+        "border-border z-20 flex-col",
+        isMobile ? "flex w-full border-none" : "hidden w-62 border-r md:flex"
+      )}
+    >
       <div className="p-6 pb-2">
-        <Link href="/" className="mb-8 flex items-center gap-2">
-          <Image
-            src="/logo-horizontal.svg"
-            alt="Miuma"
-            width={120}
-            height={28}
-            className="h-7 w-auto"
-          />
-        </Link>
+        {!isMobile && (
+          <Link href="/" className="mb-8 flex items-center gap-2 px-3">
+            <Image
+              src="/logo-horizontal.svg"
+              alt="Miuma"
+              width={100}
+              height={35}
+            />
+          </Link>
+        )}
 
         <nav className="space-y-1">
-          {navigation.map((item) => {
+          {activeNavigation.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
+
             return (
               <Link
                 key={item.name}
                 href={item.href}
                 onClick={onNavigate}
                 className={cn(
-                  "group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-stone-50 text-stone-900"
-                    : "text-stone-500 hover:bg-stone-50 hover:text-stone-900"
+                  "group text-muted-foreground flex w-full items-center gap-3 rounded-lg px-3 py-1 text-sm font-medium transition-colors",
+                  {
+                    "text-lime-700": isActive,
+                  }
                 )}
               >
-                <Icon
-                  className={cn(
-                    "h-4 w-4",
-                    isActive
-                      ? "text-stone-900"
-                      : "text-stone-400 group-hover:text-stone-900"
-                  )}
-                />
+                <Icon className={cn("h-4 w-4")} />
                 <span>{item.name}</span>
               </Link>
             );
           })}
         </nav>
-      </div>
 
-      <div className="mt-auto space-y-1 p-6 pt-2">
-        <div className="mb-2 border-t border-stone-100 pt-4">
-          <h4 className="mb-2 px-3 text-xs font-medium tracking-wider text-stone-400 uppercase">
-            Conta
+        <div className="mt-6">
+          <h4 className="text-muted-foreground/70 mb-2 px-3 text-xs font-medium tracking-wider uppercase">
+            Em Breve
           </h4>
+          <nav className="space-y-1">
+            {disabledNavigation.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.name}
+                  className="group flex w-full cursor-not-allowed items-center gap-3 rounded-lg px-3 py-1 text-sm font-medium"
+                >
+                  <Icon className="text-muted-foreground/70 h-4 w-4" />
+                  <span className="text-muted-foreground/70">{item.name}</span>
+                </div>
+              );
+            })}
+          </nav>
         </div>
-        {accountNav.map((item) => {
-          const isActive = pathname === item.href;
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
-              onClick={onNavigate}
-              className={cn(
-                "group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                isActive
-                  ? "bg-stone-50 text-stone-900"
-                  : "text-stone-500 hover:bg-stone-50 hover:text-stone-900"
-              )}
-            >
-              <Icon
-                className={cn(
-                  "h-4 w-4",
-                  isActive
-                    ? "text-stone-900"
-                    : "text-stone-400 group-hover:text-stone-900"
-                )}
-              />
-              <span>{item.name}</span>
-            </Link>
-          );
-        })}
       </div>
 
-      <div className="border-t border-stone-200 p-4">
-        <div className="flex items-center gap-3">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="https://images.unsplash.com/photo-1636957690653-1c8f74f7c295?w=100&auto=format&fit=crop" />
-            <AvatarFallback>MS</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col overflow-hidden">
-            <span className="truncate text-sm font-medium text-stone-900">
-              Maria Silva
-            </span>
-            <span className="truncate text-xs text-stone-500">
-              maria.silva@example.com
-            </span>
-          </div>
-        </div>
+      <div className="border-border mt-auto border-t p-4">
+        <Suspense fallback={<CaregiverAvatarAccount.Skeleton />}>
+          <CaregiverAvatarAccount />
+        </Suspense>
       </div>
     </aside>
   );

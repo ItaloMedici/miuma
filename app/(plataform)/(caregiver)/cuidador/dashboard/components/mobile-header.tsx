@@ -1,8 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, X } from "lucide-react";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -12,26 +18,31 @@ export function MobileHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-stone-200 bg-white px-4 py-3 md:hidden">
+    <header className="border-border bg-background sticky top-0 z-30 flex items-center justify-between border-b px-4 py-2 md:hidden">
       <Link href="/" className="flex items-center gap-2">
         <Image
           src="/logo-horizontal.svg"
           alt="Miuma"
-          width={100}
-          height={24}
-          className="h-6 w-auto"
+          width={70}
+          height={16}
+          className="h-4 w-auto"
         />
       </Link>
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="text-stone-500">
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
+          <Button variant="ghost" size="icon" className="text-muted-foreground">
+            <Menu className="h-5 w-5" />
           </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-64 p-0">
-          <DashboardSidebar onNavigate={() => setOpen(false)} />
-        </SheetContent>
-      </Sheet>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader className="sr-only">
+            <DrawerTitle>Menu de Navegação</DrawerTitle>
+          </DrawerHeader>
+          <div className="max-h-[80vh] overflow-y-auto">
+            <DashboardSidebar isMobile onNavigate={() => setOpen(false)} />
+          </div>
+        </DrawerContent>
+      </Drawer>
     </header>
   );
 }

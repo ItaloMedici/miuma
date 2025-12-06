@@ -1,7 +1,7 @@
-export { ActiveCasesWidget } from "./active-cases-widget";
-export { AnalyticsCards } from "./analytics-cards";
+export { ComingSoonCard } from "./coming-soon-card";
 export { DashboardHeader } from "./dashboard-header";
 export { DashboardSidebar } from "./dashboard-sidebar";
 export { MobileHeader } from "./mobile-header";
-export { MonthlyGoalCard } from "./monthly-goal-card";
-export { RecentActivity } from "./recent-activity";
+export { ProfileCompletionCard } from "./profile-completion-card";
+export { ProfileStatsCard } from "./profile-stats-card";
+export { QuickActionsCard } from "./quick-actions-card";
