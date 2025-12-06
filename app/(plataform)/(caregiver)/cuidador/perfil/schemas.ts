@@ -53,7 +53,7 @@ export const locationSchema = z.object({
 
 // Step 4: Gallery
 export const gallerySchema = z.object({
-  coverImage: z.string().optional(),
+  coverImage: z.string().optional().nullable(),
   coverImageDescription: z.string().optional(),
   galleryPhotos: z
     .array(

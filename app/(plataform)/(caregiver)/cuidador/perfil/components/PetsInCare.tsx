@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -21,7 +22,10 @@ export function PetsInCare() {
     const currentPets = form.getValues("pets") || [];
     form.setValue("pets", [
       ...currentPets,
-      { ...pet, id: crypto.randomUUID() },
+      {
+        ...pet,
+        id: pet.id ?? crypto.randomUUID(),
+      },
     ]);
   };
 
@@ -34,7 +38,7 @@ export function PetsInCare() {
     const currentPets = form.getValues("pets") || [];
     form.setValue(
       "pets",
-      currentPets.map((p) => (p.id === editingPet?.id ? updatedPet : p))
+      currentPets.map((pet) => (pet.id === editingPet?.id ? updatedPet : pet))
     );
     setEditingPet(undefined);
   };
@@ -43,9 +47,11 @@ export function PetsInCare() {
     const currentPets = form.getValues("pets") || [];
     form.setValue(
       "pets",
-      currentPets.filter((p) => p.id !== petId)
+      currentPets.filter((pet) => pet.id !== petId)
     );
   };
+
+  const hasErrors = Boolean(form.formState.errors.pets);
 
   return (
     <div>
@@ -72,7 +78,11 @@ export function PetsInCare() {
       </div>
 
       {pets.length === 0 ? (
-        <Card className="p-12 text-center">
+        <Card
+          className={cn("p-12 text-center", {
+            "border-red-600": hasErrors,
+          })}
+        >
           <div className="mx-auto max-w-sm">
             <div className="bg-muted mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
               <Plus className="text-muted-foreground h-8 w-8" />
@@ -89,6 +99,11 @@ export function PetsInCare() {
             >
               Adicionar Primeiro Pet
             </Button>
+            <div className="mt-6">
+              <span className="text-sm text-red-600">
+                {form.formState.errors.pets?.message}
+              </span>
+            </div>
           </div>
         </Card>
       ) : (

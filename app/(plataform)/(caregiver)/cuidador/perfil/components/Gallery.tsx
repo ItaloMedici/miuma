@@ -73,7 +73,7 @@ export function Gallery() {
                     aspectRatio="video"
                     value={field.value}
                     onChange={field.onChange}
-                    onRemove={() => field.onChange(undefined)}
+                    onRemove={() => field.onChange(null)}
                   />
                 </FormControl>
                 <FormMessage />

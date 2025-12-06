@@ -21,7 +21,7 @@ export const ONBOARDING_STEPS: Array<{
   {
     id: OnboardingStepEnum.STORY,
     number: 2,
-    label: "História e Redes",
+    label: "História",
   },
   {
     id: OnboardingStepEnum.LOCATION,

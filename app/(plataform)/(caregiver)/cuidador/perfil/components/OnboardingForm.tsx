@@ -4,6 +4,7 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
+import { toast } from "sonner";
 import {
   BillingAndExpenses,
   Gallery,
@@ -194,7 +195,10 @@ export function OnboardingForm() {
     if (isValid) {
       markStepAsCompleted(currentStep);
       goToNextStep();
+      return;
     }
+
+    toast.error("Por favor, corrija os erros antes de continuar.");
   };
 
   const handlePrevious = () => {

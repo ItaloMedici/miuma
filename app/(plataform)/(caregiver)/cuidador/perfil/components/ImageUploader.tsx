@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useCallback, useState } from "react";
 
 interface ImageUploaderProps {
-  value?: string;
+  value?: string | null;
   onChange?: (value: string) => void;
   onRemove?: () => void;
   className?: string;
