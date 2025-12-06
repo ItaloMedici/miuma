@@ -4,6 +4,7 @@ import { CaregiverProfile } from "@/interfaces/profile";
 import { getServerSession } from "@/lib/auth-server";
 import { logger } from "@/lib/logger";
 import { formatCurrency } from "@/lib/utils/currency";
+import { lexicalToMarkdown } from "@/lib/utils/markdown";
 import { caregiverUseCases } from "@/use-cases/caregiver";
 import { formatDate } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -46,6 +47,11 @@ export const getProfile = async (
     caregiver.active &&
     caregiver.accountVerified;
 
+  // Converte o estado do Lexical para Markdown no servidor
+  const descriptionMarkdown = caregiverData.descriptionMarkdown
+    ? lexicalToMarkdown(caregiverData.descriptionMarkdown)
+    : "";
+
   return {
     profile: {
       animalsCount: caregiver.totalAnimalsCared,
@@ -70,7 +76,7 @@ export const getProfile = async (
       subscriptionPaymentStatus: caregiver.subscriptionPaymentStatus,
     },
     galleryImages: caregiverData.galleryImages,
-    descriptionMarkdown: caregiverData.descriptionMarkdown,
+    descriptionMarkdown,
     socialMedia: caregiverData.socialMedia,
     ongoingCases: caregiverData.ongoingCases,
     recentUpdates: caregiverData.recentUpdates,

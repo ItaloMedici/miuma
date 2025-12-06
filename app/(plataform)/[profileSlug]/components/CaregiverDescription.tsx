@@ -8,10 +8,10 @@ import remarkGfm from "remark-gfm";
 import { useCaregiverProfile } from "./context";
 
 export function CaregiverDescription() {
-  const { descriptionMarkdown: description } = useCaregiverProfile();
+  const { descriptionMarkdown } = useCaregiverProfile();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const descriptionAlreadyHasTitle = description?.includes("# ");
+  const descriptionAlreadyHasTitle = descriptionMarkdown?.includes("# ");
 
   return (
     <section>
@@ -26,7 +26,7 @@ export function CaregiverDescription() {
         >
           <div className="markdown-content">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {description || ""}
+              {descriptionMarkdown || ""}
             </ReactMarkdown>
           </div>
         </div>
