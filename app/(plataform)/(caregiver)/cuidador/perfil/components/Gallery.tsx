@@ -69,7 +69,7 @@ export function Gallery() {
                 <FormLabel>Upload da Imagem</FormLabel>
                 <FormControl>
                   <ImageUploader
-                    variant="cover"
+                    variant="gallery"
                     aspectRatio="video"
                     value={field.value}
                     onChange={field.onChange}
