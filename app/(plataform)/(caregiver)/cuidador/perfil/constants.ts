@@ -4,7 +4,8 @@ export enum OnboardingStepEnum {
   LOCATION = "LOCATION",
   GALLERY = "GALLERY",
   PETS_IN_CARE = "PETS_IN_CARE",
-  BILLING_AND_EXPENSES = "BILLING_AND_EXPENSES",
+  BILLING_INFO = "BILLING_INFO",
+  CASES_AND_UPDATES = "CASES_AND_UPDATES",
   SOCIAL_MEDIA = "SOCIAL_MEDIA",
 }
 
@@ -44,9 +45,14 @@ export const ONBOARDING_STEPS: Array<{
     label: "Pets sob Cuidado",
   },
   {
-    id: OnboardingStepEnum.BILLING_AND_EXPENSES,
+    id: OnboardingStepEnum.BILLING_INFO,
     number: 7,
-    label: "Cobrança e Despesas",
+    label: "Informações Financeiras",
+  },
+  {
+    id: OnboardingStepEnum.CASES_AND_UPDATES,
+    number: 8,
+    label: "Casos e Atualizações",
   },
 ];
 

@@ -24,10 +24,10 @@ export function SocialMedia() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-foreground text-2xl font-semibold tracking-tight">
+        <h1 className="text-foreground text-xl font-semibold tracking-tight md:text-2xl">
           Suas redes sociais
         </h1>
-        <p className="text-muted-foreground mt-2 text-sm">
+        <p className="text-muted-foreground mt-2 text-xs">
           Compartilhe suas redes sociais para que os tutores possam conhecer
           mais sobre você.
         </p>

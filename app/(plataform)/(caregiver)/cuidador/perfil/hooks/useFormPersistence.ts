@@ -39,6 +39,17 @@ export function useFormPersistence({
   const saveBackup = useCallback((data: FormBackup) => {
     if (typeof window === "undefined") return;
 
+    const isFormDirty = Object.values(forms).some(
+      (form) => form.formState.isDirty
+    );
+
+    if (!isFormDirty) {
+      console.log(
+        "📝 FormPersistence: Nenhuma mudança detectada - backup não salvo"
+      );
+      return;
+    }
+
     try {
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       const now = new Date();
@@ -81,7 +92,8 @@ export function useFormPersistence({
       location: forms.location.getValues(),
       gallery: forms.gallery.getValues(),
       petsInCare: forms.petsInCare.getValues(),
-      billingAndExpenses: forms.billingAndExpenses.getValues(),
+      billingInfo: forms.billingInfo.getValues(),
+      casesAndUpdates: forms.casesAndUpdates.getValues(),
       completedSteps: Array.from(completedSteps),
     };
     saveBackup(data);
@@ -126,8 +138,12 @@ export function useFormPersistence({
         forms.petsInCare.reset(parsedBackup.petsInCare);
       }
 
-      if (parsedBackup.billingAndExpenses) {
-        forms.billingAndExpenses.reset(parsedBackup.billingAndExpenses);
+      if (parsedBackup.billingInfo) {
+        forms.billingInfo.reset(parsedBackup.billingInfo);
+      }
+
+      if (parsedBackup.casesAndUpdates) {
+        forms.casesAndUpdates.reset(parsedBackup.casesAndUpdates);
       }
 
       if (
@@ -153,7 +169,8 @@ export function useFormPersistence({
         location: forms.location.getValues(),
         gallery: forms.gallery.getValues(),
         petsInCare: forms.petsInCare.getValues(),
-        billingAndExpenses: forms.billingAndExpenses.getValues(),
+        billingInfo: forms.billingInfo.getValues(),
+        casesAndUpdates: forms.casesAndUpdates.getValues(),
         completedSteps: Array.from(completedSteps),
       };
 
@@ -172,7 +189,8 @@ export function useFormPersistence({
       forms.location.watch(() => markAsChanged()),
       forms.gallery.watch(() => markAsChanged()),
       forms.petsInCare.watch(() => markAsChanged()),
-      forms.billingAndExpenses.watch(() => markAsChanged()),
+      forms.billingInfo.watch(() => markAsChanged()),
+      forms.casesAndUpdates.watch(() => markAsChanged()),
     ];
 
     return () => {

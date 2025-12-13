@@ -40,10 +40,10 @@ export function Location() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-foreground text-2xl font-semibold tracking-tight">
+        <h1 className="text-foreground text-xl font-semibold tracking-tight md:text-2xl">
           Localização
         </h1>
-        <p className="text-muted-foreground mt-2 text-sm">
+        <p className="text-muted-foreground mt-2 text-xs">
           Onde você está localizado? Isso ajuda tutores a encontrarem você.
         </p>
       </div>

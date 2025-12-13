@@ -26,10 +26,10 @@ export function Story() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-foreground text-2xl font-semibold tracking-tight">
+        <h1 className="text-foreground text-xl font-semibold tracking-tight md:text-2xl">
           Sua História
         </h1>
-        <p className="text-muted-foreground mt-2 text-sm">
+        <p className="text-muted-foreground mt-2 text-xs">
           Conte aos apoiadores sobre sua missão e porque você cuida de animais.
         </p>
       </div>

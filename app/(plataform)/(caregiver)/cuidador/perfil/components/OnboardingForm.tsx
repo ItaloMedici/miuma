@@ -6,7 +6,8 @@ import { ReactNode } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 import {
-  BillingAndExpenses,
+  BillingInfo,
+  CasesAndUpdates,
   Gallery,
   Location,
   PetsInCare,
@@ -18,6 +19,7 @@ import { useOnboarding } from "../context";
 import { useBeforeUnload } from "../hooks/useBeforeUnload";
 import { useFormPersistence } from "../hooks/useFormPersistence";
 import {
+  PetFormData,
   STEP_SCHEMA_MAP,
   type OnboardingFormsMap,
   type StepFormDataMap,
@@ -115,21 +117,34 @@ export function OnboardingForm() {
   const petsForm = useForm<StepFormDataMap[OnboardingStepEnum.PETS_IN_CARE]>({
     resolver: zodResolver(STEP_SCHEMA_MAP[OnboardingStepEnum.PETS_IN_CARE]),
     defaultValues: {
-      pets: inititalCaregiver?.data.petsInCare ?? [],
+      pets:
+        inititalCaregiver?.data.petsInCare.map<PetFormData>((pet) => ({
+          ...pet,
+          photo: pet.imageUrl,
+        })) ?? [],
     },
     reValidateMode: "onBlur",
   });
 
-  const billingForm = useForm<
-    StepFormDataMap[OnboardingStepEnum.BILLING_AND_EXPENSES]
+  const billingInfoForm = useForm<
+    StepFormDataMap[OnboardingStepEnum.BILLING_INFO]
   >({
-    resolver: zodResolver(
-      STEP_SCHEMA_MAP[OnboardingStepEnum.BILLING_AND_EXPENSES]
-    ),
+    resolver: zodResolver(STEP_SCHEMA_MAP[OnboardingStepEnum.BILLING_INFO]),
     defaultValues: {
       pixKey: inititalCaregiver?.pixKey ?? "",
-      expenses: inititalCaregiver?.data.expenses ?? [],
+    },
+    reValidateMode: "onBlur",
+  });
+
+  const casesAndUpdatesForm = useForm<
+    StepFormDataMap[OnboardingStepEnum.CASES_AND_UPDATES]
+  >({
+    resolver: zodResolver(
+      STEP_SCHEMA_MAP[OnboardingStepEnum.CASES_AND_UPDATES]
+    ),
+    defaultValues: {
       ongoingCases: inititalCaregiver?.data.ongoingCases ?? [],
+      recentUpdates: inititalCaregiver?.data.recentUpdates ?? [],
     },
     reValidateMode: "onBlur",
   });
@@ -143,7 +158,8 @@ export function OnboardingForm() {
         location: locationForm,
         gallery: galleryForm,
         petsInCare: petsForm,
-        billingAndExpenses: billingForm,
+        billingInfo: billingInfoForm,
+        casesAndUpdates: casesAndUpdatesForm,
       },
       completedSteps,
       setCompletedSteps,
@@ -158,7 +174,8 @@ export function OnboardingForm() {
       [OnboardingStepEnum.LOCATION]: locationForm,
       [OnboardingStepEnum.GALLERY]: galleryForm,
       [OnboardingStepEnum.PETS_IN_CARE]: petsForm,
-      [OnboardingStepEnum.BILLING_AND_EXPENSES]: billingForm,
+      [OnboardingStepEnum.BILLING_INFO]: billingInfoForm,
+      [OnboardingStepEnum.CASES_AND_UPDATES]: casesAndUpdatesForm,
       [OnboardingStepEnum.SOCIAL_MEDIA]: socialMediaForm,
     };
 
@@ -227,7 +244,8 @@ export function OnboardingForm() {
       location: locationForm.getValues(),
       gallery: galleryForm.getValues(),
       petsInCare: petsForm.getValues(),
-      billingAndExpenses: billingForm.getValues(),
+      billingInfo: billingInfoForm.getValues(),
+      casesAndUpdates: casesAndUpdatesForm.getValues(),
     };
 
     saveBackup();
@@ -264,9 +282,14 @@ export function OnboardingForm() {
           <PetsInCare />
         </Form>
       ),
-      [OnboardingStepEnum.BILLING_AND_EXPENSES]: (
-        <Form {...billingForm}>
-          <BillingAndExpenses />
+      [OnboardingStepEnum.BILLING_INFO]: (
+        <Form {...billingInfoForm}>
+          <BillingInfo />
+        </Form>
+      ),
+      [OnboardingStepEnum.CASES_AND_UPDATES]: (
+        <Form {...casesAndUpdatesForm}>
+          <CasesAndUpdates />
         </Form>
       ),
       [OnboardingStepEnum.SOCIAL_MEDIA]: (

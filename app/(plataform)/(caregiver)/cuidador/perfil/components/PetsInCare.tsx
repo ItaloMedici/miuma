@@ -55,12 +55,12 @@ export function PetsInCare() {
 
   return (
     <div>
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-col items-stretch justify-between gap-2 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-foreground text-2xl font-semibold tracking-tight">
+          <h1 className="text-foreground text-xl font-semibold tracking-tight md:text-2xl">
             Pets sob Cuidado
           </h1>
-          <p className="text-muted-foreground mt-2 text-sm">
+          <p className="text-muted-foreground mt-2 text-xs">
             Gerencie os animais atualmente sob sua proteção.
           </p>
         </div>

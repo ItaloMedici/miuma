@@ -1,12 +1,30 @@
 "use server";
 
 import { getServerSession } from "@/lib/auth-server";
+import { imageClient } from "@/lib/image-client";
 import { caregiverUseCases } from "@/use-cases/caregiver";
 import { redirect } from "next/navigation";
 import {
   CaregiverProfileFormData,
   caregiverProfileFormSchema,
 } from "./schemas";
+
+export const uploadImage = async (
+  image: File,
+  imageType?: "profile" | "gallery"
+) => {
+  const result = await imageClient.upload({
+    fileName: image.name,
+    imageFile: image,
+    imageType,
+  });
+
+  return result;
+};
+
+export const removeImage = async (imageUrl: string) => {
+  return imageClient.remove(imageUrl);
+};
 
 export async function saveCaregiverProfile(data: CaregiverProfileFormData) {
   const session = await getServerSession();

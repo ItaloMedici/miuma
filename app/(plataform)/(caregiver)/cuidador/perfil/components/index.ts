@@ -1,5 +1,7 @@
 export { AddPetDialog } from "./AddPetDialog";
-export { BillingAndExpenses } from "./BillingAndExpenses";
+export { AddRecentUpdateDialog } from "./AddRecentUpdateDialog";
+export { BillingInfo } from "./BillingInfo";
+export { CasesAndUpdates } from "./CasesAndUpdates";
 export { FooterNavigation } from "./FooterNavigation";
 export { Gallery } from "./Gallery";
 export { ImageUploader } from "./ImageUploader";

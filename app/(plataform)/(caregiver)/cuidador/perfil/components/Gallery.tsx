@@ -42,10 +42,10 @@ export function Gallery() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-foreground text-2xl font-semibold tracking-tight">
+        <h1 className="text-foreground text-xl font-semibold tracking-tight md:text-2xl">
           Galeria de Fotos
         </h1>
-        <p className="text-muted-foreground mt-2 text-sm">
+        <p className="text-muted-foreground mt-2 text-xs">
           Mostre seu abrigo e o ambiente onde cuida dos pets. Adicione até 20
           fotos para dar aos tutores uma visão completa.
         </p>

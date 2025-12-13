@@ -25,7 +25,8 @@ export function stepToFormKey<T extends OnboardingStepEnum>(
     [OnboardingStepEnum.LOCATION]: "location",
     [OnboardingStepEnum.GALLERY]: "gallery",
     [OnboardingStepEnum.PETS_IN_CARE]: "petsInCare",
-    [OnboardingStepEnum.BILLING_AND_EXPENSES]: "billingAndExpenses",
+    [OnboardingStepEnum.BILLING_INFO]: "billingInfo",
+    [OnboardingStepEnum.CASES_AND_UPDATES]: "casesAndUpdates",
   };
 
   return mapping[step] as StepToFormKey<T>;
@@ -49,7 +50,8 @@ export function validateOnboardingSteps(): void {
     OnboardingStepEnum.LOCATION,
     OnboardingStepEnum.GALLERY,
     OnboardingStepEnum.PETS_IN_CARE,
-    OnboardingStepEnum.BILLING_AND_EXPENSES,
+    OnboardingStepEnum.BILLING_INFO,
+    OnboardingStepEnum.CASES_AND_UPDATES,
   ];
 
   requiredSteps.forEach((step) => {
@@ -69,7 +71,8 @@ export function isValidFormKey(key: string): key is keyof OnboardingFormsMap {
     "location",
     "gallery",
     "petsInCare",
-    "billingAndExpenses",
+    "billingInfo",
+    "casesAndUpdates",
   ];
   return validKeys.includes(key as keyof OnboardingFormsMap);
 }
@@ -159,14 +162,25 @@ export const checkCompletedSteps = (caregiver: Partial<CaregiverEntity>) => {
     completedSteps.add(OnboardingStepEnum.PETS_IN_CARE);
   }
 
-  const completedBillingAndExpenses = STEP_SCHEMA_MAP[
-    OnboardingStepEnum.BILLING_AND_EXPENSES
+  const completedBillingInfo = STEP_SCHEMA_MAP[
+    OnboardingStepEnum.BILLING_INFO
   ].safeParse({
-    billingAndExpenses: caregiver.data?.expenses,
+    pixKey: caregiver.pixKey,
   }).success;
 
-  if (completedBillingAndExpenses) {
-    completedSteps.add(OnboardingStepEnum.BILLING_AND_EXPENSES);
+  if (completedBillingInfo) {
+    completedSteps.add(OnboardingStepEnum.BILLING_INFO);
+  }
+
+  const completedCasesAndUpdates = STEP_SCHEMA_MAP[
+    OnboardingStepEnum.CASES_AND_UPDATES
+  ].safeParse({
+    ongoingCases: caregiver.data?.ongoingCases,
+    recentUpdates: caregiver.data?.recentUpdates,
+  }).success;
+
+  if (completedCasesAndUpdates) {
+    completedSteps.add(OnboardingStepEnum.CASES_AND_UPDATES);
   }
 
   const missingSteps = Object.values(OnboardingStepEnum).filter(

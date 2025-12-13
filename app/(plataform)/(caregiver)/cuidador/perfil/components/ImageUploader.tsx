@@ -2,9 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Image as ImageIcon, Upload, X } from "lucide-react";
+import { Image as ImageIcon, Trash, Upload } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useState } from "react";
+import { toast } from "sonner";
+import { removeImage, uploadImage } from "../action";
 
 interface ImageUploaderProps {
   value?: string | null;
@@ -14,7 +16,30 @@ interface ImageUploaderProps {
   aspectRatio?: "square" | "video" | "auto";
   variant?: "profile" | "cover" | "gallery";
   disabled?: boolean;
+  pathType?: "profile" | "gallery";
 }
+
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+
+const getAspectClass = (aspectRatio: "square" | "video" | "auto") => {
+  return (
+    {
+      square: "aspect-square",
+      video: "aspect-video",
+      auto: "",
+    }[aspectRatio] || ""
+  );
+};
+
+const getVariantClasses = (variant: "profile" | "cover" | "gallery") => {
+  return (
+    {
+      profile: "w-24 h-24 rounded-full",
+      cover: "w-full h-48 rounded-xl",
+      gallery: "w-full aspect-square rounded-lg",
+    }[variant] || ""
+  );
+};
 
 export function ImageUploader({
   value,
@@ -24,8 +49,10 @@ export function ImageUploader({
   aspectRatio = "auto",
   variant = "cover",
   disabled = false,
+  pathType = "gallery",
 }: ImageUploaderProps) {
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -37,69 +64,98 @@ export function ImageUploader({
     setIsDragging(false);
   }, []);
 
+  const handleImageUpload = useCallback(
+    (file: File) => {
+      if (!file.type.startsWith("image/")) {
+        toast.error("Por favor, selecione um arquivo de imagem válido");
+        return;
+      }
+
+      // Validar tamanho máximo (5MB)
+      if (file.size > MAX_IMAGE_SIZE) {
+        toast.error("Imagem muito grande. Tamanho máximo: 5MB");
+        return;
+      }
+
+      setIsUploading(true);
+
+      uploadImage(file, pathType)
+        .then((result) => {
+          if (result.error) {
+            toast.error(result.error);
+            return;
+          }
+
+          toast.success("Imagem carregada com sucesso!");
+          onChange?.(result.url);
+        })
+        .catch(() => {
+          toast.error("Erro ao carregar a imagem. Tente novamente mais tarde.");
+        })
+        .finally(() => {
+          setIsUploading(false);
+        });
+    },
+    [onChange, pathType]
+  );
+
   const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
+    (event: React.DragEvent) => {
+      event.preventDefault();
       setIsDragging(false);
 
-      const file = e.dataTransfer.files[0];
-      if (file && file.type.startsWith("image/")) {
-        // In production, upload to storage service
-        const reader = new FileReader();
-        reader.onload = () => {
-          onChange?.(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-      }
+      const file = event.dataTransfer.files[0];
+      if (!file) return;
+
+      handleImageUpload(file);
     },
-    [onChange]
+    [handleImageUpload]
   );
 
   const handleFileInput = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          onChange?.(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-      }
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      handleImageUpload(file);
     },
-    [onChange]
+    [handleImageUpload]
   );
 
-  const getAspectClass = () => {
-    switch (aspectRatio) {
-      case "square":
-        return "aspect-square";
-      case "video":
-        return "aspect-video";
-      default:
-        return "";
-    }
-  };
+  const handleRemove = useCallback(async () => {
+    if (!value) return;
 
-  const getVariantClasses = () => {
-    switch (variant) {
-      case "profile":
-        return "w-24 h-24 rounded-full";
-      case "cover":
-        return "w-full h-48 rounded-xl";
-      case "gallery":
-        return "w-full aspect-square rounded-lg";
-      default:
-        return "";
-    }
-  };
+    removeImage(value)
+      .then(() => {
+        onRemove?.();
+      })
+      .catch(() => {
+        toast.error("Erro ao remover a imagem. Tente novamente mais tarde.");
+      });
+  }, [onRemove, value]);
+
+  if (isUploading) {
+    return (
+      <div
+        className={cn(
+          "bg-muted flex items-center justify-center",
+          getVariantClasses(variant),
+          getAspectClass(aspectRatio),
+          className
+        )}
+      >
+        <span className="text-muted-foreground text-sm">Carregando...</span>
+      </div>
+    );
+  }
 
   if (value) {
     return (
       <div
         className={cn(
           "group relative overflow-hidden",
-          getVariantClasses(),
-          getAspectClass(),
+          getVariantClasses(variant),
+          getAspectClass(aspectRatio),
           className
         )}
       >
@@ -110,17 +166,17 @@ export function ImageUploader({
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {!disabled && onRemove && (
+        {!disabled && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
             <Button
               type="button"
               variant="destructive"
               size="sm"
-              onClick={onRemove}
+              onClick={handleRemove}
               className="gap-2"
             >
-              <X className="h-4 w-4" />
-              Remover
+              <Trash className="h-4 w-4" />
+              {variant !== "profile" && "Remover Imagem"}
             </Button>
           </div>
         )}
@@ -134,8 +190,8 @@ export function ImageUploader({
         "group relative flex cursor-pointer flex-col items-center justify-center border-2 border-dashed border-stone-300 bg-stone-50 transition-colors hover:bg-stone-100",
         isDragging && "border-primary bg-primary/5",
         disabled && "cursor-not-allowed opacity-50",
-        getVariantClasses(),
-        getAspectClass(),
+        getVariantClasses(variant),
+        getAspectClass(aspectRatio),
         className
       )}
       onDragOver={handleDragOver}

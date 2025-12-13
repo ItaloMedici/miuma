@@ -97,30 +97,58 @@ export const petsInCareSchema = z.object({
   pets: z.array(petSchema).min(1, "Adicione pelo menos um pet"),
 });
 
-// Step 6: Billing & Expenses
-export const expenseSchema = z.object({
-  id: z.string().optional(),
-  category: z.string().min(1, "Categoria é obrigatória"),
-  description: z.string().min(5, "Descrição é obrigatória"),
-  amount: z.number().min(0, "Valor deve ser positivo"),
-});
-
 export const ongoingCaseSchema = z.object({
   id: z.string().optional(),
   petName: z.string().min(1, "Nome do pet é obrigatório"),
   title: z.string().min(5, "Título é obrigatório"),
+  description: z
+    .string()
+    .min(10, "Descrição deve ter pelo menos 10 caracteres"),
   targetAmount: z.number().min(1, "Meta deve ser positiva"),
   currentAmount: z.number().min(0, "Valor atual inválido"),
   photo: z.string().optional(),
 });
 
-export const billingAndExpensesSchema = z.object({
+export const recentUpdateSchema = z.object({
+  id: z.string().optional(),
+  date: z
+    .string()
+    .min(1, "Data é obrigatória")
+    .refine(
+      (date) => {
+        const parsedDate = new Date(date);
+        return !isNaN(parsedDate.getTime()) && parsedDate <= new Date();
+      },
+      { message: "Data inválida ou no futuro" }
+    ),
+  message: z
+    .string()
+    .min(10, "Mensagem deve ter pelo menos 10 caracteres")
+    .max(500, "Mensagem muito longa"),
+  emoji: z.string().optional(),
+  images: z
+    .array(
+      z.object({
+        url: z.string().url("URL da imagem inválida"),
+        alt: z.string(),
+      })
+    )
+    .max(10, "Máximo de 10 imagens por atualização")
+    .optional(),
+});
+
+// Step 6: Billing Info (Financial Information)
+export const billingInfoSchema = z.object({
   pixKey: z
     .string()
     .min(1, "Chave Pix é obrigatória")
     .max(100, "Chave Pix muito longa"),
-  expenses: z.array(expenseSchema).optional(),
+});
+
+// Step 7: Cases and Updates (Optional - can be edited in dashboard)
+export const casesAndUpdatesSchema = z.object({
   ongoingCases: z.array(ongoingCaseSchema).optional(),
+  recentUpdates: z.array(recentUpdateSchema).optional(),
 });
 
 export const socialMediaSchema = z.object({
@@ -143,7 +171,8 @@ export const caregiverProfileFormSchema = z.object({
   socialMedia: socialMediaSchema,
   gallery: gallerySchema,
   petsInCare: petsInCareSchema,
-  billingAndExpenses: billingAndExpensesSchema,
+  billingInfo: billingInfoSchema,
+  casesAndUpdates: casesAndUpdatesSchema,
 });
 
 export type ProfileEssentialsFormData = z.infer<typeof profileEssentialsSchema>;
@@ -153,11 +182,10 @@ export type LocationFormData = z.infer<typeof locationSchema>;
 export type GalleryFormData = z.infer<typeof gallerySchema>;
 export type PetFormData = z.infer<typeof petSchema>;
 export type PetsInCareFormData = z.infer<typeof petsInCareSchema>;
-export type ExpenseFormData = z.infer<typeof expenseSchema>;
 export type OngoingCaseFormData = z.infer<typeof ongoingCaseSchema>;
-export type BillingAndExpensesFormData = z.infer<
-  typeof billingAndExpensesSchema
->;
+export type RecentUpdateFormData = z.infer<typeof recentUpdateSchema>;
+export type BillingInfoFormData = z.infer<typeof billingInfoSchema>;
+export type CasesAndUpdatesFormData = z.infer<typeof casesAndUpdatesSchema>;
 export type CaregiverProfileFormData = z.infer<
   typeof caregiverProfileFormSchema
 >;
@@ -168,7 +196,8 @@ export type AggregateProfileFormSchema =
   | LocationFormData
   | GalleryFormData
   | PetsInCareFormData
-  | BillingAndExpensesFormData;
+  | BillingInfoFormData
+  | CasesAndUpdatesFormData;
 
 export const STEP_SCHEMA_MAP = {
   [OnboardingStepEnum.PROFILE_ESSENTIALS]: profileEssentialsSchema,
@@ -177,7 +206,8 @@ export const STEP_SCHEMA_MAP = {
   [OnboardingStepEnum.LOCATION]: locationSchema,
   [OnboardingStepEnum.GALLERY]: gallerySchema,
   [OnboardingStepEnum.PETS_IN_CARE]: petsInCareSchema,
-  [OnboardingStepEnum.BILLING_AND_EXPENSES]: billingAndExpensesSchema,
+  [OnboardingStepEnum.BILLING_INFO]: billingInfoSchema,
+  [OnboardingStepEnum.CASES_AND_UPDATES]: casesAndUpdatesSchema,
 } as const;
 
 export type StepFormDataMap = {
@@ -187,7 +217,8 @@ export type StepFormDataMap = {
   [OnboardingStepEnum.LOCATION]: LocationFormData;
   [OnboardingStepEnum.GALLERY]: GalleryFormData;
   [OnboardingStepEnum.PETS_IN_CARE]: PetsInCareFormData;
-  [OnboardingStepEnum.BILLING_AND_EXPENSES]: BillingAndExpensesFormData;
+  [OnboardingStepEnum.BILLING_INFO]: BillingInfoFormData;
+  [OnboardingStepEnum.CASES_AND_UPDATES]: CasesAndUpdatesFormData;
 };
 
 export type StepToFormKey<T extends OnboardingStepEnum> =
@@ -203,9 +234,11 @@ export type StepToFormKey<T extends OnboardingStepEnum> =
             ? "gallery"
             : T extends OnboardingStepEnum.PETS_IN_CARE
               ? "petsInCare"
-              : T extends OnboardingStepEnum.BILLING_AND_EXPENSES
-                ? "billingAndExpenses"
-                : never;
+              : T extends OnboardingStepEnum.BILLING_INFO
+                ? "billingInfo"
+                : T extends OnboardingStepEnum.CASES_AND_UPDATES
+                  ? "casesAndUpdates"
+                  : never;
 
 export type OnboardingFormsMap = {
   [K in OnboardingStepEnum as StepToFormKey<K>]: StepFormDataMap[K];

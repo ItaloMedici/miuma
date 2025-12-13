@@ -54,7 +54,7 @@ export function MobileHeader() {
           <DrawerHeader>
             <DrawerTitle>Etapas do Cadastro</DrawerTitle>
           </DrawerHeader>
-          <div className="space-y-1 p-4">
+          <div className="space-y-1 p-4 pb-6">
             {steps.map((step) => {
               const isActive = step.id === currentStep;
               const isCompleted = isStepCompleted(step.id);
