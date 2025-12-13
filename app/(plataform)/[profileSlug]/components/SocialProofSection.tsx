@@ -11,7 +11,7 @@ export const SocialProofSection = () => {
   const { socialProof } = useCaregiverProfile();
   const [showAll, setShowAll] = useState(false);
 
-  if (!socialProof) return null;
+  if (!socialProof?.totalSupporters || !socialProof.testimonials) return null;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

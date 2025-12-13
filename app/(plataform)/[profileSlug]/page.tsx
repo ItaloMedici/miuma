@@ -10,13 +10,13 @@ import { CaregiverProfileProvider } from "./components/context";
 import { DonationCard } from "./components/DonationCard";
 import { Gallery } from "./components/Gallery";
 import { MobileDonationBar } from "./components/MobileDonationBar";
+import { MyProfileHeader } from "./components/MyProfileHeader";
 import { OngoingCases } from "./components/OngoingCases";
 import { PetsInCare } from "./components/PetsInCare";
 import { ProfileNavHeader } from "./components/ProfileNavHeader";
 import { RecentUpdates } from "./components/RecentUpdates";
 import { SocialMedia } from "./components/SocialMedia";
 import { SocialProofSection } from "./components/SocialProofSection";
-import { MyProfileHeader } from "./components/MyProfileHeader";
 
 type Params = {
   profileSlug: string;

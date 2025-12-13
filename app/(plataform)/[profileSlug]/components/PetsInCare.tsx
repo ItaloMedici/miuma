@@ -44,13 +44,13 @@ export const PetsInCare = () => {
           <button
             key={`pet-in-care-${pet.name}`}
             onClick={() => openGallery(index)}
-            className="group corner-squircle relative aspect-square h-[100px] w-full cursor-pointer overflow-hidden rounded-2xl transition-opacity hover:opacity-90"
+            className="group corner-squircle relative aspect-square h-[150px] w-full cursor-pointer overflow-hidden rounded-2xl transition-opacity hover:opacity-90 sm:h-[300px]"
           >
             <Image
               src={pet.imageUrl}
               alt={pet.name}
-              width={150}
-              height={100}
+              width={300}
+              height={300}
               className="h-full w-full object-cover"
             />
             {/* Overlay with pet name */}
