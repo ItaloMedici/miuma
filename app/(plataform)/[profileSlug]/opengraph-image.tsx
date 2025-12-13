@@ -29,15 +29,16 @@ async function loadGoogleFont(font: string, text: string) {
 export default async function Image({
   params,
 }: {
-  params: Promise<{ profileId: string }>;
+  params: Promise<{ profileSlug: string }>;
 }) {
-  const { profileId } = await params;
+  const { profileSlug } = await params;
 
-  if (!profileId) {
-    return new Response("Missing profileId", { status: 400 });
+  if (!profileSlug) {
+    return new Response("Missing profileSlug", { status: 400 });
   }
 
-  const caregiver = await caregiverUseCases.getProfileSummaryBySlug(profileId);
+  const caregiver =
+    await caregiverUseCases.getProfileSummaryBySlug(profileSlug);
 
   if (!caregiver) {
     return new Response("Caregiver not found", { status: 404 });

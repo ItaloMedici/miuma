@@ -1,4 +1,5 @@
 import { Footer } from "@/components/footer";
+import { env } from "@/lib/env";
 import { cn } from "@/lib/utils";
 import { profile } from "console";
 import { Metadata } from "next";
@@ -51,6 +52,8 @@ export const generateMetadata = async ({
     openGraph: {
       title,
       description,
+      url: `${env.NEXT_PUBLIC_URL}/${id}`,
+      siteName: "Miuma",
     },
     icons: {
       icon: caregiver.profile.imageUrl || "/favicon.ico",
