@@ -28,20 +28,20 @@ export const FeaturedCaregivers = ({ caregivers }: Props) => {
           {caregivers.map((caregiver, index) => (
             <div
               key={index}
-              className="corner-squircle rounded-5xl bg-card border-border space-y-4 border p-4 transition-shadow hover:shadow-lg md:p-6"
+              className="corner-squircle rounded-5xl bg-card border-border flex flex-col gap-4 border p-4 transition-shadow hover:shadow-lg md:p-6"
             >
               {caregiver.imageUrl && (
-                <div className="corner-squircle bg-muted border-border aspect-video overflow-hidden rounded-4xl border md:aspect-square">
+                <div className="corner-squircle bg-muted border-border aspect-video overflow-hidden rounded-4xl border">
                   <Image
                     src={caregiver.imageUrl}
                     alt={caregiver.name}
-                    width={250}
-                    height={250}
+                    width={800}
+                    height={800}
                     className="h-full w-full object-cover"
                   />
                 </div>
               )}
-              <div className="space-y-3">
+              <div className="flex flex-1 flex-col gap-2">
                 <div>
                   <h3 className="text-lg font-semibold">{caregiver.name}</h3>
                   <p className="text-muted-foreground text-sm">
@@ -54,7 +54,7 @@ export const FeaturedCaregivers = ({ caregivers }: Props) => {
                 <Link
                   className={cn(
                     buttonVariants({ variant: "outline", size: "sm" }),
-                    "w-full"
+                    "mt-auto w-full"
                   )}
                   href={`/${caregiver.profileSlug}`}
                 >
