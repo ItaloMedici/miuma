@@ -4,6 +4,8 @@ import { useMemo } from "react";
 
 export const Impact = ({ metrics }: { metrics: LandingPageData["impact"] }) => {
   const data = useMemo(() => {
+    if (!metrics?.totalCaregivers) return [];
+
     const list = [
       {
         value: metrics.totalCaregivers,
@@ -27,6 +29,8 @@ export const Impact = ({ metrics }: { metrics: LandingPageData["impact"] }) => {
 
     return list;
   }, [metrics]);
+
+  if (!metrics?.totalCaregivers) return null;
 
   return (
     <section className="px-6 py-14 md:py-20">
