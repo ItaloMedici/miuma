@@ -16,7 +16,7 @@ export interface CaregiverProfileInfo {
   animalsCount: number;
   verified: boolean;
   active?: boolean;
-  imageUrl?: string;
+  imageUrl: string;
   shortBio: string;
 }
 
