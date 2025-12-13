@@ -64,7 +64,10 @@ export const MyProfileHeader = () => {
                 className="border-border hover:text-foreground flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors"
               >
                 <Eye className="h-3 w-3" />
-                <span>Ver Perfil como Público</span>
+                <span className="inline sm:hidden">Ver Perfil</span>
+                <span className="hidden sm:inline">
+                  Ver Perfil como Público
+                </span>
               </Link>
 
               <Button variant="ghost" size="sm" asChild className="gap-2">
