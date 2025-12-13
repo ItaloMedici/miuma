@@ -58,7 +58,7 @@ export const FeaturedCaregivers = ({ caregivers }: Props) => {
                   )}
                   href={`/${caregiver.profileSlug}`}
                 >
-                  Ver perfil e doar
+                  Ver perfil e apoiar
                 </Link>
               </div>
             </div>
