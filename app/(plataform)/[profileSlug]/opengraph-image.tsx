@@ -44,6 +44,8 @@ export default async function Image({
     return new Response("Caregiver not found", { status: 404 });
   }
 
+  const profileImg = caregiver.caregiverImageUrl;
+
   const location = `${caregiver.city}, ${caregiver.state}`;
 
   return new ImageResponse(
@@ -84,7 +86,7 @@ export default async function Image({
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          zIndex: "10px",
+          zIndex: 10,
         }}
       >
         {/* Logo */}
@@ -206,18 +208,22 @@ export default async function Image({
           background: "#f0fdf4",
         }}
       >
-        <img
-          alt="Caregiver profile"
-          src={caregiver.caregiverImageUrl ?? ""}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            padding: "24px",
-            borderRadius: "48px",
-            backgroundColor: "#e0e7ff",
-          }}
-        />
+        {profileImg ? (
+          <img
+            alt="Caregiver profile"
+            src={profileImg}
+            width={480}
+            height={630}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              padding: "24px",
+              borderRadius: "48px",
+              backgroundColor: "#e0e7ff",
+            }}
+          />
+        ) : null}
 
         {/* Floating badge */}
         <div
