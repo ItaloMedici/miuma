@@ -1,23 +1,66 @@
 import { db } from "@/db";
 import { addresses } from "@/db/schema";
 import { Address, AddressSummary, formatAddress } from "@/interfaces/address";
-import {
-  getAddressById,
-  getAddressesByCity,
-  getAddressesByState,
-} from "@/lib/mock/addresses";
-import { eq } from "drizzle-orm";
+import { eq, ilike } from "drizzle-orm";
 
 async function getAddress(addressId: string): Promise<Address | undefined> {
-  return getAddressById(addressId);
+  const result = await db
+    .select()
+    .from(addresses)
+    .where(eq(addresses.id, addressId))
+    .limit(1);
+
+  if (!result[0]) return undefined;
+
+  return {
+    id: result[0].id,
+    city: result[0].city,
+    state: result[0].state,
+    country: result[0].country,
+    zip: result[0].zipCode,
+    street: result[0].street,
+    complement: result[0].complement,
+    createdAt: result[0].createdAt.toISOString(),
+    updatedAt: result[0].updatedAt.toISOString(),
+  };
 }
 
 async function getAddressesByCityName(city: string): Promise<Address[]> {
-  return getAddressesByCity(city);
+  const result = await db
+    .select()
+    .from(addresses)
+    .where(ilike(addresses.city, `%${city}%`));
+
+  return result.map((addr) => ({
+    id: addr.id,
+    city: addr.city,
+    state: addr.state,
+    country: addr.country,
+    zip: addr.zipCode,
+    street: addr.street,
+    complement: addr.complement,
+    createdAt: addr.createdAt.toISOString(),
+    updatedAt: addr.updatedAt.toISOString(),
+  }));
 }
 
 async function getAddressesByStateName(state: string): Promise<Address[]> {
-  return getAddressesByState(state);
+  const result = await db
+    .select()
+    .from(addresses)
+    .where(ilike(addresses.state, `%${state}%`));
+
+  return result.map((addr) => ({
+    id: addr.id,
+    city: addr.city,
+    state: addr.state,
+    country: addr.country,
+    zip: addr.zipCode,
+    street: addr.street,
+    complement: addr.complement,
+    createdAt: addr.createdAt.toISOString(),
+    updatedAt: addr.updatedAt.toISOString(),
+  }));
 }
 
 async function getAddressSummary(
