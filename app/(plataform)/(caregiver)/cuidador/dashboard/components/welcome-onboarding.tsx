@@ -23,7 +23,7 @@ export function WelcomeOnboarding({
   }
 
   return (
-    <div className="flex flex-col gap-4 md:flex-row">
+    <div className="flex flex-col gap-4 lg:flex-row">
       <Card className="flex-1">
         <CardContent>
           {/* Conteúdo Principal */}
@@ -32,7 +32,7 @@ export function WelcomeOnboarding({
               <h2 className="text-lg font-semibold tracking-tight">
                 Bem-vindo à Miuma, {caregiverName}! 👋
               </h2>
-              <p className="text-muted-foreground hidden text-sm leading-relaxed md:block">
+              <p className="text-muted-foreground hidden text-sm leading-relaxed lg:block">
                 Estamos animados em ter você. Para garantir confiança e
                 segurança para todos os doadores, nossa equipe verifica
                 manualmente cada conta de cuidador. Por favor, complete seu
@@ -41,7 +41,7 @@ export function WelcomeOnboarding({
             </div>
 
             {/* Passos do Onboarding */}
-            <div className="flex flex-col gap-3 md:flex-row md:items-center">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
               {/* Passo 1 - Criar Conta */}
               <div className="flex min-w-fit items-center gap-3">
                 <div className="bg-primary/10 text-primary flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
@@ -53,7 +53,7 @@ export function WelcomeOnboarding({
               </div>
 
               {/* Horizontal line */}
-              <hr className="border-muted hidden h-px w-full md:block" />
+              <hr className="border-muted hidden h-px w-full lg:block" />
 
               {/* Passo 2 - Completar Perfil */}
               <div className="flex min-w-fit items-center gap-3">
@@ -86,7 +86,7 @@ export function WelcomeOnboarding({
                 </div>
               </div>
 
-              <hr className="border-muted hidden h-px w-full md:block" />
+              <hr className="border-muted hidden h-px w-full lg:block" />
 
               {/* Passo 3 - Revisão da Equipe */}
               <div className="flex min-w-fit items-center gap-3">

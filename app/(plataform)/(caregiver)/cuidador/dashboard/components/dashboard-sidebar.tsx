@@ -132,7 +132,7 @@ export function DashboardSidebar({
         </div>
       </div>
 
-      <div className="border-border mt-auto border-t p-4">
+      <div className="border-border mt-auto border-t p-2">
         <Suspense fallback={<CaregiverAvatarAccount.Skeleton />}>
           <CaregiverAvatarAccount />
         </Suspense>
