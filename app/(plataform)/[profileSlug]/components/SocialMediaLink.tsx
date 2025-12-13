@@ -47,27 +47,27 @@ const socialMediaConfig = {
   instagram: {
     icon: siInstagramIcon,
     label: "Instagram",
-    color: "hover:text-pink-600",
+    color: "hover:border-pink-300 hover:text-pink-600",
   },
   facebook: {
     icon: siFacebookIcon,
     label: "Facebook",
-    color: "hover:text-blue-600",
+    color: "hover:border-blue-300 hover:text-blue-600",
   },
   whatsapp: {
     icon: siWhatsappIcon,
     label: "WhatsApp",
-    color: "hover:text-green-600",
+    color: "hover:border-green-300 hover:text-green-600",
   },
   youtube: {
     icon: siYoutubeIcon,
     label: "YouTube",
-    color: "hover:text-red-600",
+    color: "hover:border-red-300 hover:text-red-600",
   },
   tiktok: {
     icon: siTiktokIcon,
     label: "TikTok",
-    color: "hover:text-gray-900 dark:hover:text-white",
+    color: "hover:border-gray-900 hover:text-gray-900 dark:hover:text-white",
   },
   website: { icon: Globe, label: "Website", color: "hover:text-blue-500" },
 };
@@ -103,7 +103,7 @@ export function SocialMediaLink({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`corner-squircle border-border text-muted-foreground hover:border-primary/50 flex items-center gap-2 rounded-2xl border px-4 py-2 text-sm transition-colors ${config.color}`}
+      className={`corner-squircle border-border text-muted-foreground flex items-center gap-2 rounded-2xl border px-4 py-2 text-sm transition-colors ${config.color}`}
       aria-label={`Visitar ${config.label}`}
     >
       <Icon className={iconSize} />
