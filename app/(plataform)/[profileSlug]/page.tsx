@@ -16,6 +16,7 @@ import { OngoingCases } from "./components/OngoingCases";
 import { PetsInCare } from "./components/PetsInCare";
 import { ProfileNavHeader } from "./components/ProfileNavHeader";
 import { RecentUpdates } from "./components/RecentUpdates";
+import { ShareButton } from "./components/ShareProfile";
 import { SocialMedia } from "./components/SocialMedia";
 import { SocialProofSection } from "./components/SocialProofSection";
 
@@ -93,7 +94,10 @@ export default async function CaregiverProfile({
                       !caregiver?.billingInfo.isReadyForDonations,
                   })}
                 >
-                  <CaregiverHeader />
+                  <div className="flex items-center justify-between gap-4">
+                    <CaregiverHeader />
+                    <ShareButton className="hidden sm:flex" />
+                  </div>
 
                   <section id="sobre">
                     <CaregiverDescription />

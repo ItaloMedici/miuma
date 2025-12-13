@@ -1,22 +1,14 @@
 "use client";
 
+import { CopyField } from "@/components/copy-field";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from "@/components/ui/input-group";
 import { Slider } from "@/components/ui/slider";
-import { cn } from "@/lib/utils";
 import {
   ArrowRight,
   BedDouble,
-  Check,
   CheckCircle2,
   Circle,
-  Copy,
   HandHeart,
   Heart,
   Info,
@@ -260,18 +252,9 @@ export const MonthlyDonation = () => {
 };
 
 export const OneTimeDonation = () => {
-  const [pixCopied, setPixCopied] = useState(false);
   const {
     billingInfo: { pixKey },
   } = useCaregiverProfile();
-
-  const handleCopyPix = () => {
-    if (!pixKey) return;
-    navigator.clipboard.writeText(pixKey);
-    // feedback to user that the pix key was copied
-    setPixCopied(true);
-    setTimeout(() => setPixCopied(false), 2000);
-  };
 
   return (
     <>
@@ -282,40 +265,14 @@ export const OneTimeDonation = () => {
         </p>
       </div>
 
-      <div>
-        <InputGroup onClick={handleCopyPix}>
-          <InputGroupInput value={pixKey} readOnly />
-          <InputGroupAddon align="inline-end">
-            <InputGroupButton
-              aria-label="Copiar chave PIX"
-              title="Copiar chave PIX"
-              size="icon-xs"
-              onClick={handleCopyPix}
-            >
-              {pixCopied ? <Check /> : <Copy />}
-            </InputGroupButton>
-          </InputGroupAddon>
-        </InputGroup>
-        <span
-          className={cn(
-            "text-muted-foreground mt-2 flex items-center gap-1 text-xs",
-            {
-              "text-green-600": pixCopied,
-            }
-          )}
-        >
-          {pixCopied ? (
-            <>
-              <CheckCircle2 className="h-3 w-3" /> Chave PIX copiada com
-              sucesso!
-            </>
-          ) : (
-            <>
-              <Info className="h-3 w-3" /> Clique para copiar
-            </>
-          )}
-        </span>
-      </div>
+      <CopyField
+        value={pixKey as string}
+        title="Copiar chave PIX"
+        supportMessage={{
+          copied: "Chave PIX copiada com sucesso!",
+          default: "Clique para copiar",
+        }}
+      />
 
       <div className="bg-muted/50 border-border/50 flex items-start gap-3 rounded-xl border p-4">
         <Heart className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />

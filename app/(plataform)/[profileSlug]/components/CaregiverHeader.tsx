@@ -10,7 +10,7 @@ export function CaregiverHeader() {
   const { profile, socialMedia } = useCaregiverProfile();
 
   return (
-    <div className="mb-8 flex flex-col gap-2 md:mb-12">
+    <div className="flex flex-col gap-2">
       <div className="flex items-start gap-4">
         <div className="bg-muted h-8 w-8 overflow-hidden rounded-2xl md:h-16 md:w-16">
           <Image

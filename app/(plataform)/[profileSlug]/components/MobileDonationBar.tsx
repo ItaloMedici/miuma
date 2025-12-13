@@ -7,13 +7,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Heart } from "lucide-react";
+import { Heart, Share2 } from "lucide-react";
 import { useState } from "react";
 import { DonationCard } from "./DonationCard";
+import { ShareProfileDrawer } from "./ShareProfile";
 import { useCaregiverProfile } from "./context";
 
 export function MobileDonationBar() {
   const [open, setOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const { billingInfo } = useCaregiverProfile();
 
   if (!billingInfo.isReadyForDonations) {
@@ -27,17 +29,24 @@ export function MobileDonationBar() {
         <div className="px-6 py-4">
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0 flex-1">
-              <p className="text-muted-foreground text-sm">Faça a diferença</p>
-              <p className="truncate text-lg font-bold">Apoie este projeto</p>
+              <p className="text-muted-foreground text-xs">Faça a diferença</p>
+              <p className="text-md truncate font-bold">Apoie este projeto</p>
             </div>
-            <Button
-              size="lg"
-              onClick={() => setOpen(true)}
-              className="shrink-0"
-            >
-              <Heart className="mr-2 h-4 w-4" />
-              Doar
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                className="shrink-0"
+                onClick={() => setShareOpen(true)}
+                aria-label="Compartilhar perfil"
+              >
+                <Share2 className="h-4 w-4" />
+              </Button>
+              <Button onClick={() => setOpen(true)} className="shrink-0">
+                <Heart className="mr-1 h-4 w-4" />
+                Doar
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -53,6 +62,9 @@ export function MobileDonationBar() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Share Profile Component */}
+      <ShareProfileDrawer open={shareOpen} onOpenChange={setShareOpen} />
     </>
   );
 }

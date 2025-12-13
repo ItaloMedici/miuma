@@ -3,6 +3,7 @@ import {
   siInstagram,
   siTiktok,
   siWhatsapp,
+  siX,
   siYoutube,
 } from "simple-icons";
 
@@ -41,6 +42,7 @@ const siFacebookIcon = buildIconComponent(siFacebook.path);
 const siWhatsappIcon = buildIconComponent(siWhatsapp.path);
 const siYoutubeIcon = buildIconComponent(siYoutube.path);
 const siTiktokIcon = buildIconComponent(siTiktok.path);
+const twitterIcon = buildIconComponent(siX.path);
 
 export const Icons = {
   Pix,
@@ -49,4 +51,5 @@ export const Icons = {
   Whatsapp: siWhatsappIcon,
   Youtube: siYoutubeIcon,
   Tiktok: siTiktokIcon,
+  Twitter: twitterIcon,
 };
