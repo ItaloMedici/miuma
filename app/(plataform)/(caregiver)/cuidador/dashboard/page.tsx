@@ -1,11 +1,22 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getCachedDashboardCaregiver } from "./actions";
 import {
   DashboardHeader,
   ProfileCompletionCard,
   ProfileStatsCard,
   QuickActionsCard,
+  WelcomeOnboarding,
 } from "./components";
-import { getCachedDashboardCaregiver } from "./actions";
+
+export const generateMetadata = async (): Promise<Metadata> => {
+  const caregiver = await getCachedDashboardCaregiver();
+
+  return {
+    title: `Dashboard - ${caregiver?.publicName || "Cuidador"}`,
+    description: `Veja uma visão geral do seu perfil de cuidador, estatísticas rápidas e ações para gerenciar sua presença na plataforma.`,
+  };
+};
 
 export default async function DashboardPage() {
   const caregiver = await getCachedDashboardCaregiver();
@@ -46,8 +57,16 @@ export default async function DashboardPage() {
       <DashboardHeader title="Dashboard" />
 
       <div className="flex-1 space-y-6 p-6 md:p-8 md:pt-0">
+        {caregiver.accountVerified ? null : (
+          <WelcomeOnboarding
+            caregiverName={caregiver.publicName}
+            isProfileComplete={isProfileComplete}
+            accountVerified={caregiver.accountVerified}
+          />
+        )}
+
         {/* Profile Completion */}
-        {!isProfileComplete && (
+        {!isProfileComplete && !caregiver.accountVerified && (
           <ProfileCompletionCard
             percentage={completionPercentage}
             items={completionItems}

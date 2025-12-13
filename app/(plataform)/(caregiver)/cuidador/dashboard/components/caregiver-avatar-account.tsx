@@ -3,9 +3,13 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { useDashboard } from "../context";
 
 export const CaregiverAvatarAccount = () => {
   const { data, isPending } = authClient.useSession();
+  const {
+    caregiver: { caregiverImageUrl },
+  } = useDashboard();
 
   if (isPending) {
     return <CaregiverAvatarAccount.Skeleton />;
@@ -18,7 +22,7 @@ export const CaregiverAvatarAccount = () => {
   return (
     <div className="flex items-center gap-3">
       <Avatar className="bg-muted flex h-8 w-8 items-center justify-center overflow-hidden rounded-full">
-        <AvatarImage src={data.user.image ?? undefined} />
+        <AvatarImage src={data.user.image ?? caregiverImageUrl ?? undefined} />
         <AvatarFallback>{data.user.name?.[0] ?? "?"}</AvatarFallback>
       </Avatar>
       <div className="flex flex-col overflow-hidden">
