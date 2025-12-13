@@ -11,7 +11,7 @@ export const Hero = () => {
           <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-5xl leading-tight font-bold tracking-tight lg:text-6xl">
-                Divulgue seu trabalho e receba apoio direto.
+                Conectamos quem cuida com quem quer ajudar.
               </h1>
               <p className="text-muted-foreground max-w-xl text-lg leading-relaxed">
                 A Miuma é um portal gratuito para cuidadores de animais criarem
