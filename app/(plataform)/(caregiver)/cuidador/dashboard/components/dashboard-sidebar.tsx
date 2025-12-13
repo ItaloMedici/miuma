@@ -32,6 +32,11 @@ const activeNavigation: NavLinks = [
     href: "/cuidador/perfil",
     icon: User,
   },
+  {
+    name: "Casos Ativos",
+    href: "/cuidador/dashboard/casos",
+    icon: Heart,
+  },
 ];
 
 const disabledNavigation: NavLinks = [
@@ -39,11 +44,6 @@ const disabledNavigation: NavLinks = [
     name: "Doadores",
     href: "/cuidador/dashboard/doadores",
     icon: Users,
-  },
-  {
-    name: "Casos Ativos",
-    href: "/cuidador/dashboard/casos",
-    icon: Heart,
   },
   {
     name: "Comunicações",

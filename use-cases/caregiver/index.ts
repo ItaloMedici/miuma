@@ -51,8 +51,23 @@ function parseFormDataToJson(
       })),
     },
     descriptionMarkdown: data.story.story,
-    ongoingCases: [],
-    recentUpdates: [],
+    ongoingCases: (data.casesAndUpdates.ongoingCases ?? []).map(
+      (ongoingCase) => ({
+        id: ongoingCase.id ?? crypto.randomUUID(),
+        title: ongoingCase.title,
+        description: ongoingCase.description,
+        targetAmount: ongoingCase.targetAmount,
+        currentAmount: ongoingCase.currentAmount,
+        imageUrl: ongoingCase.photo,
+      })
+    ),
+    recentUpdates: (data.casesAndUpdates.recentUpdates ?? []).map((update) => ({
+      id: update.id ?? crypto.randomUUID(),
+      date: update.date,
+      message: update.message,
+      emoji: update.emoji,
+      images: update.images,
+    })),
     socialProof: {
       testimonials: [],
       totalSupporters: 0,
@@ -94,9 +109,10 @@ async function createCaregiverProfile(
       accountVerified: false,
       shortBio: data.profileEssentials.shortBio,
       active: true,
-      pixKey: data.billingAndExpenses.pixKey,
+      pixKey: data.billingInfo.pixKey,
       subscriptionPaymentStatus: "DISABLED",
       addressId: address.id,
+      totalAnimalsCared: data.petsInCare.pets.length,
       data: parseFormDataToJson(data),
     })
     .returning();
@@ -117,8 +133,6 @@ async function updateProfile(userId: string, data: CaregiverProfileFormData) {
 
   const updatedDataJson = parseFormDataToJson(data);
 
-  console.log(JSON.stringify(updatedDataJson, null, 2));
-
   const caregiverResult = await db
     .update(caregiversTable)
     .set({
@@ -126,7 +140,8 @@ async function updateProfile(userId: string, data: CaregiverProfileFormData) {
       publicName: data.profileEssentials.profileName,
       caregiverImageUrl: data.profileEssentials.profilePhoto,
       shortBio: data.profileEssentials.shortBio,
-      pixKey: data.billingAndExpenses.pixKey,
+      pixKey: data.billingInfo.pixKey,
+      totalAnimalsCared: data.petsInCare.pets.length,
       data: updatedDataJson,
     })
     .where(eq(caregiversTable.userId, userId))
