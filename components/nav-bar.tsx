@@ -2,6 +2,7 @@
 
 import { buttonVariants } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { FEATURE_FLAGS } from "@/lib/constants/feature-flags";
 import { links } from "@/lib/contants/links";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -99,15 +100,17 @@ const SideLinks = ({ showLinks }: { showLinks: boolean }) => {
       >
         Entrar
       </Link>
-      <Link
-        href="/cadastro?type=supporter"
-        className={cn(
-          buttonVariants({ variant: "outline" }),
-          "hidden md:inline-flex"
-        )}
-      >
-        Ajudar agora
-      </Link>
+      {FEATURE_FLAGS.ENABLE_DONORS ? (
+        <Link
+          href="/cadastro?type=supporter"
+          className={cn(
+            buttonVariants({ variant: "outline" }),
+            "hidden md:inline-flex"
+          )}
+        >
+          Ajudar agora
+        </Link>
+      ) : null}
       <Link href="/cadastro?type=caregiver" className={cn(buttonVariants({}))}>
         Criar perfil de cuidador
       </Link>
