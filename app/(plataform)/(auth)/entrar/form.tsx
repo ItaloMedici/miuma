@@ -12,11 +12,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { env } from "@/lib/env";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, MailCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const signInSchema = z.object({
@@ -76,6 +78,51 @@ export const SignInForm = () => {
     );
   };
 
+  const onPasswordReset = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+
+    if (!form.getValues("email")) {
+      form.setError("email", {
+        type: "manual",
+        message: "Por favor, insira seu email para redefinir a senha.",
+      });
+      return;
+    }
+
+    form.clearErrors();
+
+    const resetPageUrl = `${env.NEXT_PUBLIC_URL}/entrar/redefinir-senha`;
+
+    const { data, error } = await authClient.requestPasswordReset({
+      email: form.getValues("email"),
+      redirectTo: resetPageUrl,
+    });
+
+    console.log({
+      data,
+      error,
+    });
+
+    if (error) {
+      form.setError("email", {
+        type: "manual",
+        message: "Erro ao solicitar redefinição de senha. Tente novamente.",
+      });
+      return;
+    }
+
+    toast(
+      "Se este email existe em nosso sistema, verifique seu email para o link de redefinição.",
+      {
+        duration: 8000,
+        position: "bottom-center",
+        icon: <MailCheck className="text-muted-foreground mr-2 h-4 w-4" />,
+      }
+    );
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -103,6 +150,16 @@ export const SignInForm = () => {
                 <PasswordField placeholder="Digite sua senha" {...field} />
               </FormControl>
               <FormMessage />
+              <span>
+                <Button
+                  variant="link"
+                  size="sm"
+                  className="text-muted-foreground float-end p-0 text-xs"
+                  onClick={onPasswordReset}
+                >
+                  Esqueci minha senha
+                </Button>
+              </span>
             </FormItem>
           )}
         />
