@@ -30,8 +30,22 @@ export const STORY_MIN_LENGTH = 100;
 export const storySchema = z.object({
   story: z
     .string()
-    .min(STORY_MIN_LENGTH, "História deve ter pelo menos 100 caracteres")
-    .max(STORY_MAX_LENGTH, "História muito longa"),
+    .refine((val) => {
+      try {
+        const parsed = JSON.parse(val || "{}");
+        return parsed?.characterCount >= STORY_MIN_LENGTH;
+      } catch {
+        return false;
+      }
+    }, `História deve ter pelo menos ${STORY_MIN_LENGTH} caracteres`)
+    .refine((val) => {
+      try {
+        const parsed = JSON.parse(val || "{}");
+        return parsed?.characterCount <= STORY_MAX_LENGTH;
+      } catch {
+        return false;
+      }
+    }, `História excede o limite máximo de ${STORY_MAX_LENGTH} caracteres`),
 });
 
 // Step 3: Location

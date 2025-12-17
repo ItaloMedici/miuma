@@ -8,6 +8,7 @@ import { MobileHeader, OnboardingForm, OnboardingSidebar } from "./components";
 import { OnboardingStepEnum } from "./constants";
 import { OnboardingProvider } from "./context";
 import { checkCompletedSteps } from "./form-utils";
+import { WelcomeDialog } from "./components/WelcomeDialog";
 
 const cachedData = cache(async () => {
   const session = await getServerSession();
@@ -51,7 +52,7 @@ export default async function ProfilePage() {
     >
       <div className="bg-background flex min-h-screen flex-col overflow-hidden md:flex-row">
         <OnboardingSidebar />
-
+        <WelcomeDialog />
         <MobileHeader />
         <OnboardingForm />
       </div>

@@ -4,7 +4,6 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-import { toast } from "sonner";
 import {
   BillingInfo,
   CasesAndUpdates,
@@ -27,6 +26,11 @@ import {
 import { FooterNavigation } from "./FooterNavigation";
 import { SocialMedia } from "./SocialMedia";
 import { UnsavedChangesBanner } from "./UnsavedChangesBanner";
+
+const formDefaultOptions = {
+  reValidateMode: "onBlur",
+  mode: "all",
+} as const;
 
 export function OnboardingForm() {
   const {
@@ -58,7 +62,7 @@ export function OnboardingForm() {
         inititalCaregiver?.profileSlug ??
         user.name.toLowerCase().replace(/\s+/g, "-"),
     },
-    reValidateMode: "onBlur",
+    ...formDefaultOptions,
   });
 
   const storyForm = useForm<StepFormDataMap[OnboardingStepEnum.STORY]>({
@@ -66,7 +70,7 @@ export function OnboardingForm() {
     defaultValues: {
       story: inititalCaregiver?.data.descriptionMarkdown ?? "",
     },
-    reValidateMode: "onBlur",
+    ...formDefaultOptions,
   });
 
   const socialMediaForm = useForm<
@@ -81,7 +85,7 @@ export function OnboardingForm() {
       tiktok: inititalCaregiver?.data.socialMedia?.tiktok,
       website: inititalCaregiver?.data.socialMedia?.website,
     },
-    reValidateMode: "onBlur",
+    ...formDefaultOptions,
   });
 
   const locationForm = useForm<StepFormDataMap[OnboardingStepEnum.LOCATION]>({
@@ -96,7 +100,7 @@ export function OnboardingForm() {
       state: inititalCaregiver?.address?.state ?? "",
       country: inititalCaregiver?.address?.country ?? "Brasil",
     },
-    reValidateMode: "onBlur",
+    ...formDefaultOptions,
   });
 
   const galleryForm = useForm<StepFormDataMap[OnboardingStepEnum.GALLERY]>({
@@ -111,7 +115,7 @@ export function OnboardingForm() {
           description: photo.alt ?? "",
         })) ?? [],
     },
-    reValidateMode: "onBlur",
+    ...formDefaultOptions,
   });
 
   const petsForm = useForm<StepFormDataMap[OnboardingStepEnum.PETS_IN_CARE]>({
@@ -123,7 +127,7 @@ export function OnboardingForm() {
           photo: pet.imageUrl,
         })) ?? [],
     },
-    reValidateMode: "onBlur",
+    ...formDefaultOptions,
   });
 
   const billingInfoForm = useForm<
@@ -133,7 +137,7 @@ export function OnboardingForm() {
     defaultValues: {
       pixKey: inititalCaregiver?.pixKey ?? "",
     },
-    reValidateMode: "onBlur",
+    ...formDefaultOptions,
   });
 
   const casesAndUpdatesForm = useForm<
@@ -146,7 +150,7 @@ export function OnboardingForm() {
       ongoingCases: inititalCaregiver?.data.ongoingCases ?? [],
       recentUpdates: inititalCaregiver?.data.recentUpdates ?? [],
     },
-    reValidateMode: "onBlur",
+    ...formDefaultOptions,
   });
 
   const { saveBackup, hasUnsavedChanges, lastSaved, clearBackup } =
@@ -209,13 +213,25 @@ export function OnboardingForm() {
 
     const isValid = await form.trigger();
 
+    console.log("Form valid:", isValid, form.getValues());
+
     if (isValid) {
       markStepAsCompleted(currentStep);
       goToNextStep();
-      return;
     }
 
-    toast.error("Por favor, corrija os erros antes de continuar.");
+    // focus and scroll on the element invalid element
+    const firstError = Object.keys(form.formState.errors)[0];
+    if (firstError) {
+      const errorElement = document.querySelector(
+        `[name="${firstError}"]`
+      ) as HTMLElement;
+
+      if (errorElement) {
+        errorElement.focus();
+        errorElement.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
   };
 
   const handlePrevious = () => {

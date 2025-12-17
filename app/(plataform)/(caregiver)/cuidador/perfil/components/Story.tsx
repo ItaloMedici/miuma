@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   FormControl,
   FormField,
@@ -7,11 +8,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  createEditorData,
+  createEmptyParagraph,
+  createHeading,
+  createParagraph,
+  serializeEditorData,
+} from "@/lib/utils/editor";
+import { User } from "better-auth";
 import { useFormContext } from "react-hook-form";
+import { useOnboarding } from "../context";
 import { STORY_MAX_LENGTH, StoryFormData } from "../schemas";
 import { MarkdownEditor } from "./MarkdownEditor";
 
 export function Story() {
+  const { user } = useOnboarding();
   const form = useFormContext<StoryFormData>();
 
   const getCounter = (value: string | undefined) => {
@@ -21,6 +32,13 @@ export function Story() {
     } catch {
       return value?.length || 0;
     }
+  };
+
+  const onFillPlaceholderStory = () => {
+    form.setValue("story", generateStoryPlaceholder(user), {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
   return (
@@ -57,6 +75,16 @@ export function Story() {
                   {getCounter(field.value)}/{STORY_MAX_LENGTH}
                 </p>
               </div>
+              {form.formState.errors.story && (
+                <Button
+                  variant="link"
+                  size="sm"
+                  className="text-muted-foreground float-end p-0 text-xs underline"
+                  onClick={onFillPlaceholderStory}
+                >
+                  Gerar texto inicial com IA
+                </Button>
+              )}
             </FormItem>
           )}
         />
@@ -64,3 +92,27 @@ export function Story() {
     </div>
   );
 }
+
+const generateStoryPlaceholder = (user: User) => {
+  const headline = `Olá, me chamo ${user.name} e cuido de animais! 👋`;
+
+  const caregiverIntroduction =
+    "Dedico meu tempo e cuidado aos animais que vivem sob minha responsabilidade. Cada um deles tem necessidades únicas, e trabalho diariamente para garantir que recebam alimentação adequada, cuidados veterinários e, acima de tudo, carinho e atenção.";
+  const caregiverJourneyDescription =
+    "Manter os animais bem cuidados exige dedicação constante. Estou aqui na plataforma Miuma para compartilhar essa jornada e receber o apoio necessário para continuar oferecendo o melhor cuidado possível aos meus companheiros. ❤️";
+
+  const plainText = `${headline}\n\n${caregiverIntroduction}\n\n${caregiverJourneyDescription}`;
+
+  const editorData = createEditorData(
+    [
+      createHeading(headline, "h2"),
+      createEmptyParagraph(),
+      createParagraph(caregiverIntroduction),
+      createEmptyParagraph(),
+      createParagraph(caregiverJourneyDescription),
+    ],
+    plainText
+  );
+
+  return serializeEditorData(editorData);
+};

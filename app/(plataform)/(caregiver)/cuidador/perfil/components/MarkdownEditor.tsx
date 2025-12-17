@@ -1,8 +1,8 @@
 "use client";
 
 import { Editor } from "@/components/blocks/editor-00/editor";
+import { createEmptyEditorState, parseEditorData } from "@/lib/utils/editor";
 import { SerializedEditorState } from "lexical";
-import { useState } from "react";
 
 interface MarkdownEditorProps {
   value: string;
@@ -11,26 +11,6 @@ interface MarkdownEditorProps {
   maxLength?: number;
   minHeight?: string;
 }
-
-const emptyEditorState = {
-  root: {
-    children: [
-      {
-        children: [],
-        direction: "ltr",
-        format: "",
-        indent: 0,
-        type: "paragraph",
-        version: 1,
-      },
-    ],
-    direction: "ltr",
-    format: "",
-    indent: 0,
-    type: "root",
-    version: 1,
-  },
-} as unknown as SerializedEditorState;
 
 function extractTextFromEditorState(state: SerializedEditorState): string {
   let text = "";
@@ -55,63 +35,25 @@ function extractTextFromEditorState(state: SerializedEditorState): string {
   return text;
 }
 
+function parseEditorValue(val: string): SerializedEditorState {
+  const data = parseEditorData(val);
+
+  if (data) {
+    return data.editorState;
+  }
+
+  return createEmptyEditorState();
+}
+
 export function MarkdownEditor({
   value,
   onChange,
   minHeight = "300px",
 }: MarkdownEditorProps) {
-  const [editorState, setEditorState] = useState<SerializedEditorState>(() => {
-    if (!value || typeof value !== "string" || !value.trim()) {
-      return emptyEditorState;
-    }
-
-    try {
-      const parsed = JSON.parse(value);
-
-      if (parsed.editorState) {
-        return parsed.editorState as SerializedEditorState;
-      }
-
-      if (parsed.root && Array.isArray(parsed.root.children)) {
-        return parsed as SerializedEditorState;
-      }
-
-      return emptyEditorState;
-    } catch {
-      return {
-        root: {
-          children: [
-            {
-              children: [
-                {
-                  detail: 0,
-                  format: 0,
-                  mode: "normal",
-                  style: "",
-                  text: value,
-                  type: "text",
-                  version: 1,
-                },
-              ],
-              direction: "ltr",
-              format: "",
-              indent: 0,
-              type: "paragraph",
-              version: 1,
-            },
-          ],
-          direction: "ltr",
-          format: "",
-          indent: 0,
-          type: "root",
-          version: 1,
-        },
-      } as unknown as SerializedEditorState;
-    }
-  });
+  // Deriva o estado diretamente da prop value, sem usar useState
+  const editorState = parseEditorValue(value);
 
   const handleChange = (state: SerializedEditorState) => {
-    setEditorState(state);
     const plainText = extractTextFromEditorState(state);
     const jsonWithMetadata = JSON.stringify({
       editorState: state,
@@ -124,6 +66,7 @@ export function MarkdownEditor({
   return (
     <div style={{ minHeight }}>
       <Editor
+        key={value} // Force re-render when value changes externally
         editorSerializedState={editorState}
         onSerializedChange={handleChange}
       />
