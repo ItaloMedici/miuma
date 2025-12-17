@@ -11,7 +11,7 @@ export default async function SignUpPage({
   searchParams: Promise<{ type: UserRole }>;
 }) {
   const params = await searchParams;
-  const role = params.type ?? UserRole.Supporter;
+  const role = params.type ?? UserRole.Caregiver;
 
   const subTitle =
     role === UserRole.Caregiver
