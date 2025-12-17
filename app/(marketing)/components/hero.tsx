@@ -37,15 +37,13 @@ export const Hero = () => {
             </div>
           </div>
 
-          <div className="relative">
-            <div className="aspect-4/3">
-              <Image
-                src="/hero.webp"
-                alt="Pessoa cuidando de um cachorro e um gato, simbolizando o cuidado animal"
-                layout="fill"
-                objectFit="contain"
-              />
-            </div>
+          <div className="relative aspect-4/3">
+            <Image
+              src="/hero.webp"
+              alt="Pessoa cuidando de um cachorro e um gato, simbolizando o cuidado animal"
+              fill
+              className="object-contain"
+            />
           </div>
         </div>
       </div>
