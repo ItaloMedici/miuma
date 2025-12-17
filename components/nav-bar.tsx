@@ -81,10 +81,10 @@ const SideLinks = ({ showLinks }: { showLinks: boolean }) => {
     const isCaregiver = session.user.role === "CAREGIVER";
     return (
       <Link
-        href={isCaregiver ? "/cuidador/perfil" : "/perfil"}
+        href={isCaregiver ? "/cuidador/dashbord" : "/perfil"}
         className={cn(buttonVariants({ variant: "outline" }))}
       >
-        Perfil
+        {isCaregiver ? "Painel" : "Perfil"}
       </Link>
     );
   }
