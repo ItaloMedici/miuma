@@ -15,6 +15,10 @@ export const getCachedDashboardCaregiver = cache(async () => {
   const caregiver = await caregiverUseCases.getByUserId(session.user.id);
 
   if (!caregiver) {
+    if (session.user.role === "CAREGIVER") {
+      redirect("/cuidador/perfil");
+    }
+
     notFound();
   }
 
