@@ -34,6 +34,12 @@ export function Location() {
       form.setValue("city", result.data.city);
       form.setValue("state", result.data.state);
       form.setValue("country", result.data.country);
+
+      form.trigger("street");
+      form.trigger("neighborhood");
+      form.trigger("city");
+      form.trigger("state");
+      form.trigger("country");
     }
   };
 

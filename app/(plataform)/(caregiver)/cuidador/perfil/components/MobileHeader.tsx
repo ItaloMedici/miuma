@@ -25,7 +25,7 @@ export function MobileHeader() {
 
   return (
     <>
-      <div className="bg-background border-border sticky top-0 z-50 flex items-center justify-between border-b p-4 md:hidden">
+      <div className="bg-background border-border sticky top-0 z-50 flex items-center justify-between border-b px-4 py-2 md:hidden">
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
