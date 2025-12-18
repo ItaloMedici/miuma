@@ -9,6 +9,7 @@ import { caregiverUseCases } from "@/use-cases/caregiver";
 import { formatDate } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { notFound, redirect } from "next/navigation";
+import { CAREGIVER_IMAGE_PLACEHOLDER } from "../(caregiver)/cuidador/perfil/constants";
 
 export const getProfile = async (
   profileSlug: string
@@ -42,12 +43,14 @@ export const getProfile = async (
   const shortMemberSince = formatDate(joinedAtDate, "LLL yy", { locale: ptBR });
 
   const isSubscriptionReady = caregiver.subscriptionPaymentStatus === "READY";
-  const isReadyForDonations =
-    (isSubscriptionReady || Boolean(caregiver.pixKey)) &&
-    caregiver.active &&
-    caregiver.accountVerified;
 
-  // Converte o estado do Lexical para Markdown no servidor
+  const paymentIsInitialized = isSubscriptionReady || Boolean(caregiver.pixKey);
+
+  const isProfileActive = caregiver.active && caregiver.accountVerified;
+
+  const isReadyForDonations =
+    isMyProfile || (paymentIsInitialized && isProfileActive);
+
   const descriptionMarkdown = caregiverData.descriptionMarkdown
     ? lexicalToMarkdown(caregiverData.descriptionMarkdown)
     : "";
@@ -75,6 +78,7 @@ export const getProfile = async (
       supporters: 0,
       pixKey: caregiver.pixKey ?? undefined,
       isReadyForDonations,
+      isProfileActive,
       subscriptionPaymentStatus: caregiver.subscriptionPaymentStatus,
     },
     galleryImages: caregiverData.galleryImages,
