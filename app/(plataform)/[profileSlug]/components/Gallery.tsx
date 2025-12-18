@@ -47,10 +47,11 @@ function GalleryImage({ url, alt, onClick, className }: GalleryImageProps) {
 export function Gallery() {
   const { galleryImages: gallery } = useCaregiverProfile();
 
-  const images = useMemo(
-    () => [gallery.cover, ...(gallery.photos || [])],
-    [gallery.cover, gallery.photos]
-  );
+  const images = useMemo(() => {
+    const imgs = [gallery.cover, ...(gallery.photos || [])];
+
+    return imgs.filter((img) => !!img.url);
+  }, [gallery.cover, gallery.photos]);
 
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
@@ -69,6 +70,10 @@ export function Gallery() {
   );
 
   const close = useCallback(() => setOpen(false), []);
+
+  console.log({ images });
+
+  if (!images.length) return null;
 
   const additionalPhotos = gallery.photos || [];
   const photoCount = additionalPhotos.length;
