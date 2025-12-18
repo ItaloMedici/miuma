@@ -3,10 +3,10 @@
 import { cn } from "@/lib/utils";
 import {
   CreditCard,
+  ExternalLink,
   Heart,
   LayoutDashboard,
   Send,
-  User,
   Users,
 } from "lucide-react";
 import Image from "next/image";
@@ -28,14 +28,14 @@ const activeNavigation: NavLinks = [
     icon: LayoutDashboard,
   },
   {
-    name: "Editar Perfil",
-    href: "/cuidador/perfil",
-    icon: User,
-  },
-  {
     name: "Casos Ativos",
     href: "/cuidador/dashboard/casos",
     icon: Heart,
+  },
+  {
+    name: "Editar Perfil",
+    href: "/cuidador/perfil",
+    icon: ExternalLink,
   },
 ];
 
