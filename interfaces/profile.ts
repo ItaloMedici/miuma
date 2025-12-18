@@ -30,8 +30,9 @@ export interface CaregiverProfileBillingInfo {
     | "DISABLED"
     | "PENDING_PROVIDER_SETUP"
     | "REJECTED"
-    | "READY"; // Phase 1: Added for subscription control
+    | "READY";
   isReadyForDonations: boolean;
+  isProfileActive: boolean;
 }
 
 export interface CaregiverProfile {
