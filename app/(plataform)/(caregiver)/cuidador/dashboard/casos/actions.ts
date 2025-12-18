@@ -15,10 +15,6 @@ export async function getOngoingCases() {
 
   const cases = await ongoingCasesUseCases.getAll(session.user.id);
 
-  if (!cases || cases.length === 0) {
-    redirect("/cuidador/perfil");
-  }
-
   return cases;
 }
 
