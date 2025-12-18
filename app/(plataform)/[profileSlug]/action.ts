@@ -56,7 +56,9 @@ export const getProfile = async (
     profile: {
       animalsCount: caregiver.totalAnimalsCared,
       id: caregiver.profileSlug,
-      imageUrl: caregiver.caregiverImageUrl ?? "",
+      imageUrl: caregiver.caregiverImageUrl?.length
+        ? caregiver.caregiverImageUrl
+        : CAREGIVER_IMAGE_PLACEHOLDER,
       location,
       memberSince,
       shortMemberSince,

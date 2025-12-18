@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { GalleryModal } from "./GalleryModal";
 import { useCaregiverProfile } from "./context";
+import { PET_IMAGE_PLACEHOLDER } from "../../(caregiver)/cuidador/perfil/constants";
 
 const LIMIT = 6;
 
@@ -47,7 +48,7 @@ export const PetsInCare = () => {
             className="group corner-squircle relative aspect-square h-[150px] w-full cursor-pointer overflow-hidden rounded-2xl transition-opacity hover:opacity-90 sm:h-[300px]"
           >
             <Image
-              src={pet.imageUrl}
+              src={pet.imageUrl?.length ? pet.imageUrl : PET_IMAGE_PLACEHOLDER}
               alt={pet.name}
               width={300}
               height={300}

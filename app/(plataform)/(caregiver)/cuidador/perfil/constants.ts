@@ -63,3 +63,6 @@ export type OnboardingStep = {
   number: number;
   label: string;
 };
+
+export const CAREGIVER_IMAGE_PLACEHOLDER = `/caregiver-placeholder.webp`;
+export const PET_IMAGE_PLACEHOLDER = `/pet-placeholder.webp`;
