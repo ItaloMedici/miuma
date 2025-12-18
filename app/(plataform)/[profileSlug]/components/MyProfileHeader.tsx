@@ -18,10 +18,7 @@ export const MyProfileHeader = () => {
   const { profile, billingInfo } = caregiverProfile;
 
   const getStatusPill = () => {
-    const isActive = profile.active;
-    const canReceiveDonations = billingInfo.isReadyForDonations;
-
-    if (isActive && canReceiveDonations) {
+    if (billingInfo.isProfileActive && billingInfo.isReadyForDonations) {
       return (
         <div className="flex items-center gap-2 rounded-full bg-green-50 px-3 py-1.5 text-sm font-medium text-green-700">
           <span className="h-2 w-2 rounded-full bg-green-500" />
